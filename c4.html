@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect 4 Alphabet Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px; /* Max width for larger screens */
+        }
+
+        canvas {
+            background-color: #4a90e2; /* Connect 4 blue */
+            border-radius: 15px;
+            touch-action: none; /* Prevent default touch actions like scrolling */
+            width: 100%; /* Make canvas responsive */
+            max-width: 500px; /* Limit canvas size */
+            height: auto; /* Maintain aspect ratio */
+            aspect-ratio: 1 / 1; /* Make it square */
+        }
+
+        .info-panel {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-turn {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #e2e8f0;
+            min-width: 200px;
+        }
+
+        .message-box {
+            font-size: 1.2rem;
+            color: #ef4444; /* Red for error/win messages */
+            font-weight: 700;
+            min-height: 30px;
+            text-align: center;
+        }
+
+        .reset-button {
+            background-color: #10b981; /* Green for reset */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+            border: none;
+        }
+
+        .reset-button:hover {
+            background-color: #059669;
+        }
+
+        /* Player color indicators */
+        .player-1-color {
+            color: #ef4444; /* Red */
+        }
+
+        .player-2-color {
+            color: #f59e0b; /* Yellow */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 15px;
+            }
+            .player-turn {
+                font-size: 1.2rem;
+                padding: 8px 15px;
+            }
+            .message-box {
+                font-size: 1rem;
+            }
+            .reset-button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Connect 4 Alphabet Challenge</h1>
+        <canvas id="gameCanvas"></canvas>
+        <div class="info-panel">
+            <div id="playerTurn" class="player-turn">Player 1's Turn</div>
+            <div id="messageBox" class="message-box"></div>
+            <button id="resetButton" class="reset-button">Reset Game</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the canvas element and its 2D rendering context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Get UI elements
+        const playerTurnDisplay = document.getElementById('playerTurn');
+        const messageBox = document.getElementById('messageBox');
+        const resetButton = document.getElementById('resetButton');
+
+        // Game board dimensions
+        const COLS = 4;
+        const ROWS = 4;
+        const CELL_SIZE = 100; // Size of each cell (square)
+        const CIRCLE_RADIUS = 40; // Radius of the circles inside cells
+        const PADDING = 10; // Padding around the circles
+
+        let board = []; // 2D array representing the game board (0: empty, 1: Player 1, 2: Player 2)
+        let alphabets = []; // 2D array to store unique alphabets for each cell
+        let currentPlayer = 1; // Start with Player 1
+        let gameOver = false; // Game over flag
+
+        // Player colors
+        const playerColors = {
+            1: '#ef4444', // Red for Player 1
+            2: '#f59e0b'  // Yellow for Player 2
+        };
+
+        // Function to shuffle an array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+        // Function to generate unique alphabets for the board
+        function generateUniqueAlphabets() {
+            const allAlphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            shuffleArray(allAlphabets); // Shuffle all alphabets
+            const selectedAlphabets = allAlphabets.slice(0, ROWS * COLS); // Take enough for the board
+
+            let k = 0;
+            for (let r = 0; r < ROWS; r++) {
+                alphabets[r] = [];
+                for (let c = 0; c < COLS; c++) {
+                    alphabets[r][c] = selectedAlphabets[k++];
+                }
+            }
+        }
+
+        // Initialize the game board and alphabets
+        function initializeGame() {
+            board = [];
+            for (let r = 0; r < ROWS; r++) {
+                board[r] = new Array(COLS).fill(0); // Fill board with 0 (empty)
+            }
+            generateUniqueAlphabets(); // Generate new unique alphabets for each game
+            currentPlayer = 1; // Reset to Player 1
+            gameOver = false; // Reset game over flag
+            messageBox.textContent = ''; // Clear any messages
+            updatePlayerTurnDisplay(); // Update turn display
+            drawBoard(); // Redraw the board
+        }
+
+        // Update the player turn display
+        function updatePlayerTurnDisplay() {
+            playerTurnDisplay.innerHTML = `<span class="player-${currentPlayer}-color">Player ${currentPlayer}</span>'s Turn`;
+        }
+
+        // Draw the game board and pieces
+        function drawBoard() {
+            // Set canvas dimensions based on cell size and number of rows/columns
+            canvas.width = COLS * CELL_SIZE;
+            canvas.height = ROWS * CELL_SIZE;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
+
+            // Draw the blue background for the Connect 4 board
+            ctx.fillStyle = '#4a90e2';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw each cell and its content
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    // Calculate center of the circle
+                    const centerX = c * CELL_SIZE + CELL_SIZE / 2;
+                    const centerY = r * CELL_SIZE + CELL_SIZE / 2;
+
+                    // Draw the empty circle (hole)
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, CIRCLE_RADIUS, 0, Math.PI * 2);
+                    ctx.fillStyle = '#f0f4f8'; // Light background for holes
+                    ctx.fill();
+                    ctx.closePath();
+
+                    // If a piece is in this cell, draw it
+                    if (board[r][c] !== 0) {
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, CIRCLE_RADIUS - PADDING / 2, 0, Math.PI * 2);
+                        ctx.fillStyle = playerColors[board[r][c]]; // Player's color
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+
+                    // Draw the alphabet in the center of the circle
+                    ctx.fillStyle = '#333'; // Text color
+                    ctx.font = 'bold 24px Inter'; // Font for alphabet
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(alphabets[r][c], centerX, centerY);
+                }
+            }
+        }
+
+        // Check for a win condition (4 in a row)
+        function checkWin(player) {
+            // Check horizontal
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c <= COLS - 4; c++) {
+                    if (board[r][c] === player &&
+                        board[r][c + 1] === player &&
+                        board[r][c + 2] === player &&
+                        board[r][c + 3] === player) {
+                        return true;
+                    }
+                }
+            }
+
+            // Check vertical
+            for (let r = 0; r <= ROWS - 4; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (board[r][c] === player &&
+                        board[r + 1][c] === player &&
+                        board[r + 2][c] === player &&
+                        board[r + 3][c] === player) {
+                        return true;
+                    }
+                }
+            }
+
+            // Check diagonal (top-left to bottom-right)
+            for (let r = 0; r <= ROWS - 4; r++) {
+                for (let c = 0; c <= COLS - 4; c++) {
+                    if (board[r][c] === player &&
+                        board[r + 1][c + 1] === player &&
+                        board[r + 2][c + 2] === player &&
+                        board[r + 3][c + 3] === player) {
+                        return true;
+                    }
+                }
+            }
+
+            // Check diagonal (bottom-left to top-right)
+            for (let r = 3; r < ROWS; r++) { // Start from row 3 (index) to go upwards
+                for (let c = 0; c <= COLS - 4; c++) {
+                    if (board[r][c] === player &&
+                        board[r - 1][c + 1] === player &&
+                        board[r - 2][c + 2] === player &&
+                        board[r - 3][c + 3] === player) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // Check for a draw (board is full)
+        function checkDraw() {
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (board[r][c] === 0) {
+                        return false; // Found an empty spot, not a draw
+                    }
+                }
+            }
+            return true; // Board is full
+        }
+
+        // Handle a player's move
+        function handleMove(col) {
+            if (gameOver) return; // Do nothing if game is over
+
+            // Find the lowest empty row in the selected column
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (board[r][col] === 0) {
+                    board[r][col] = currentPlayer; // Place the piece
+                    drawBoard(); // Redraw the board with the new piece
+
+                    // Check for win
+                    if (checkWin(currentPlayer)) {
+                        messageBox.innerHTML = `<span class="player-${currentPlayer}-color">Player ${currentPlayer} Wins!</span>`;
+                        playerTurnDisplay.textContent = 'Game Over';
+                        gameOver = true;
+                        return;
+                    }
+
+                    // Check for draw
+                    if (checkDraw()) {
+                        messageBox.textContent = 'It\'s a Draw!';
+                        playerTurnDisplay.textContent = 'Game Over';
+                        gameOver = true;
+                        return;
+                    }
+
+                    // Switch to the next player
+                    currentPlayer = currentPlayer === 1 ? 2 : 1;
+                    updatePlayerTurnDisplay();
+                    return; // Move handled, exit function
+                }
+            }
+            // If column is full
+            messageBox.textContent = 'Column is full! Choose another.';
+        }
+
+        // Event listener for canvas clicks/taps
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;    // Relationship bitmap vs. element for X
+            const scaleY = canvas.height / rect.height;  // Relationship bitmap vs. element for Y
+
+            const x = (event.clientX - rect.left) * scaleX; // Get X coordinate relative to canvas
+            const col = Math.floor(x / CELL_SIZE); // Determine column based on X coordinate
+
+            if (col >= 0 && col < COLS) {
+                handleMove(col);
+            }
+        });
+
+        // Event listener for reset button
+        resetButton.addEventListener('click', initializeGame);
+
+        // Initialize the game when the page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>
