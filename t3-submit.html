@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge Tic-Tac-Toe</title>
+    <title>Simple Tic-Tac-Toe</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -29,7 +29,7 @@
             align-items: center;
             width: 100%;
             max-width: 450px;
-            position: relative; /* Needed for the modal */
+            position: relative;
         }
 
         h1 {
@@ -143,72 +143,6 @@
         .submit-button:active {
             transform: translateY(0);
         }
-        
-        /* --- Futuristic Modal Styles --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: #1a202c;
-            color: #e2e8f0;
-            border: 2px solid #4a90e2;
-            border-radius: 15px;
-            padding: 40px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
-            animation: modal-pop-in 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        @keyframes modal-pop-in {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #0ea5e9;
-        }
-
-        .modal-challenge {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .modal-button {
-            margin-top: 30px;
-            background-color: #10b981;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
-            border: none;
-        }
 
         /* Full-screen overlay for the SUBMIT button */
         .submit-overlay {
@@ -238,7 +172,7 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Challenge Tic-Tac-Toe</h1>
+        <h1>Simple Tic-Tac-Toe</h1>
         <div class="board" id="gameBoard">
             <!-- Cells will be dynamically created here -->
         </div>
@@ -246,15 +180,6 @@
         <div class="button-group">
             <button id="resetButton" class="reset-button">Reset Game</button>
             <button id="submitButton" class="submit-button">SUBMIT</button>
-        </div>
-    </div>
-
-    <!-- The Challenge Modal -->
-    <div id="challengeModal" class="modal-overlay">
-        <div class="modal-content">
-            <h2 class="modal-title">Challenge Revealed!</h2>
-            <p id="challengeText" class="modal-challenge">Your challenge is to...</p>
-            <button id="completeChallengeButton" class="modal-button">Complete Challenge</button>
         </div>
     </div>
     
@@ -268,7 +193,6 @@
         const board = ['', '', '', '', '', '', '', '', ''];
         let currentPlayer = 'X';
         let isGameActive = true;
-        let lastClickedIndex = null;
 
         // Winning combinations
         const winningConditions = [
@@ -282,24 +206,11 @@
             [2, 4, 6]
         ];
         
-        // Example challenges (you can customize these!)
-        const challenges = [
-            "Convince a friend to say 'banana' three times in a row.",
-            "Draw a happy little cloud in under 10 seconds.",
-            "Write a single sentence that is both a question and a statement.",
-            "Find something blue in your room and hold it up.",
-            "Make a sound effect for a robot walking on a beach.",
-            "Spell 'pneumonoultramicroscopicsilicovolcanoconiosis' backwards."
-        ];
-
         // Get DOM elements
         const gameBoard = document.getElementById('gameBoard');
         const statusDisplay = document.getElementById('status');
         const resetButton = document.getElementById('resetButton');
         const submitButton = document.getElementById('submitButton');
-        const challengeModal = document.getElementById('challengeModal');
-        const challengeText = document.getElementById('challengeText');
-        const completeChallengeButton = document.getElementById('completeChallengeButton');
         const submitOverlay = document.getElementById('submitOverlay');
 
         // Initial setup to create the board cells
@@ -372,26 +283,10 @@
                 return;
             }
 
-            lastClickedIndex = clickedCellIndex;
-            showChallengeModal();
-        }
-
-        function showChallengeModal() {
-            const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-            challengeText.textContent = randomChallenge;
-            challengeModal.classList.add('active');
-        }
-
-        function hideChallengeModal() {
-            challengeModal.classList.remove('active');
-            if (lastClickedIndex !== null) {
-                const cell = gameBoard.querySelector(`[data-index="${lastClickedIndex}"]`);
-                board[lastClickedIndex] = currentPlayer;
-                cell.textContent = currentPlayer;
-                cell.classList.add(currentPlayer.toLowerCase());
-                lastClickedIndex = null;
-                checkResult();
-            }
+            board[clickedCellIndex] = currentPlayer;
+            clickedCell.textContent = currentPlayer;
+            clickedCell.classList.add(currentPlayer.toLowerCase());
+            checkResult();
         }
 
         // Reset the game
@@ -417,11 +312,14 @@
 
         // Event listeners
         resetButton.addEventListener('click', resetGame);
-        completeChallengeButton.addEventListener('click', hideChallengeModal);
         submitButton.addEventListener('click', handleSubmit);
         
         // Initialize on load
         createBoard();
     </script>
 </body>
+</html>
+    </script>
+</body>
+
 </html>
