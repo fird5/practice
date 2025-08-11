@@ -1,0 +1,264 @@
+import { useState } from 'react';
+import { Sparkles, Trophy, Mic, Video, Brush, Gamepad2, X, Menu } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+const SectionTitle = ({ children }) => (
+  <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-12 relative z-10">
+    {children}
+    <Sparkles className="absolute -top-4 -right-4 w-12 h-12 text-purple-600 opacity-30 animate-pulse" />
+  </h2>
+);
+
+const FeatureCard = ({ icon, title, description }) => (
+  <motion.div
+    className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center"
+    whileHover={{ scale: 1.05, borderColor: '#a855f7' }}
+    transition={{ duration: 0.2 }}
+  >
+    <div className="p-4 bg-purple-600/30 rounded-full mb-4">
+      {icon}
+    </div>
+    <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+    <p className="text-gray-400 text-sm">{description}</p>
+  </motion.div>
+);
+
+const PrizeCard = ({ title, amount, description }) => (
+  <motion.div
+    className="bg-gray-800/50 p-8 rounded-2xl border border-gray-700 flex flex-col items-center text-center"
+    whileHover={{ y: -5, borderColor: '#a855f7' }}
+    transition={{ duration: 0.2 }}
+  >
+    <Trophy className="w-16 h-16 text-yellow-400 mb-4" />
+    <h3 className="text-3xl font-extrabold text-white mb-2">{title}</h3>
+    <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 mb-4">{amount}</p>
+    <p className="text-gray-300">{description}</p>
+  </motion.div>
+);
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navItems = ['Tournament', 'Prizes', 'Format', 'About Adobe'];
+
+  return (
+    <nav className="fixed w-full z-50 bg-black/50 backdrop-blur-lg border-b border-gray-800 py-4 px-8">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <Sparkles className="h-8 w-8 text-purple-500" />
+          <span className="text-xl font-bold text-white tracking-widest">AI SPORTS CUP</span>
+        </div>
+        <div className="hidden md:flex space-x-6 lg:space-x-10">
+          {navItems.map(item => (
+            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-gray-300 hover:text-white transition-colors duration-200 text-lg font-medium">
+              {item}
+            </a>
+          ))}
+        </div>
+        <button
+          className="md:hidden text-white"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden mt-4 flex flex-col space-y-4"
+          >
+            {navItems.map(item => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase().replace(' ', '-')}`}
+                className="block text-gray-300 hover:text-white transition-colors duration-200 text-lg font-medium p-2 border-b border-gray-700"
+                onClick={() => setIsOpen(false)}
+              >
+                {item}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Footer = () => (
+  <footer className="bg-black/50 backdrop-blur-sm border-t border-gray-800 py-8 px-4 text-center text-gray-400">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex justify-center items-center space-x-2 mb-4">
+        <Sparkles className="h-6 w-6 text-purple-500" />
+        <span className="text-xl font-bold text-white tracking-widest">AI SPORTS CUP</span>
+      </div>
+      <p className="text-sm">
+        © 2025 Mice Neurol. All rights reserved. <br/>
+        In partnership with Adobe Firefly.
+      </p>
+    </div>
+  </footer>
+);
+
+export default function App() {
+  return (
+    <div className="bg-gradient-to-br from-black via-gray-900 to-slate-950 min-h-screen text-gray-100 font-inter">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section
+        id="hero"
+        className="relative h-screen flex items-center justify-center text-center overflow-hidden"
+      >
+        <div className="absolute inset-0 z-0 bg-[url('https://placehold.co/1920x1080/010066/7000ff?text=AI+Generated+Abstract+Cyberpunk+Cityscape')] bg-cover bg-center opacity-30"></div>
+        <div className="absolute inset-0 z-10 bg-black/60"></div>
+        <div className="relative z-20 p-4 max-w-4xl mx-auto space-y-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl md:text-7xl font-black text-white leading-tight"
+          >
+            ADOBE FIREFLY AI SPORTS CUP
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-lg md:text-2xl text-purple-400 font-medium tracking-wide"
+          >
+            Unleash Your Creativity. Compete. Conquer.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <p className="text-base md:text-lg text-gray-300 mb-6">
+              A groundbreaking tournament where human skill and Generative AI mastery collide.
+            </p>
+            <a
+              href="#"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 text-lg tracking-wide shadow-lg hover:shadow-purple-500/50"
+            >
+              Register Now
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* About AI Sports Section */}
+      <section id="tournament" className="py-20 px-4 md:py-32">
+        <div className="max-w-7xl mx-auto text-center">
+          <SectionTitle>What is AI Sports?</SectionTitle>
+          <p className="max-w-4xl mx-auto text-lg md:text-xl text-gray-300 mb-12">
+            AI Sports is the next evolution in competitive entertainment. It's not about watching AI play—it's about you, the competitor, wielding the power of AI as your instrument to create, strategize, and dominate.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FeatureCard
+              icon={<Gamepad2 className="w-8 h-8 text-purple-400" />}
+              title="Competitive Creativity"
+              description="Harness Generative AI tools to produce breathtaking art, immersive stories, and cinematic masterpieces under pressure."
+            />
+            <FeatureCard
+              icon={<Sparkles className="w-8 h-8 text-purple-400" />}
+              title="Human-AI Collaboration"
+              description="Master the art of prompt engineering and model fine-tuning. Your skill and vision are the ultimate key to victory."
+            />
+            <FeatureCard
+              icon={<Trophy className="w-8 h-8 text-purple-400" />}
+              title="The Ultimate Showcase"
+              description="Compete in high-stakes challenges and have your work judged by industry experts and a live audience."
+            />
+            <FeatureCard
+              icon={<Brush className="w-8 h-8 text-purple-400" />}
+              title="Build Your Portfolio"
+              description="Every challenge is an opportunity to add professionally certified creative work to your portfolio for future opportunities."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Tournament Format Section */}
+      <section id="format" className="bg-gray-900/50 py-20 px-4 md:py-32">
+        <div className="max-w-7xl mx-auto">
+          <SectionTitle>The AI Sprint & Spark Challenge</SectionTitle>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <FeatureCard
+                icon={<Mic className="w-8 h-8 text-purple-400" />}
+                title="Phase 1: The AI Sprint"
+                description="Teams race against the clock to produce high-quality AI assets (image, video, audio) with precise technical specifications. Submissions are verified by an AI Judge for speed and accuracy."
+              />
+              <FeatureCard
+                icon={<Video className="w-8 h-8 text-purple-400" />}
+                title="Phase 2: The AI Spark"
+                description="The top teams advance to a grand finale, where they create a single, powerful multimedia piece that embodies an aspirational theme. Creativity and impact are judged by a panel of human experts."
+              />
+            </div>
+            <div className="bg-gray-800/50 p-8 rounded-xl border border-gray-700 backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-white mb-4">Powered by Adobe Firefly</h3>
+              <p className="text-gray-400 mb-6">
+                This tournament is a celebration of the creative power of Adobe Firefly. Participants will utilize Adobe's cutting-edge Generative AI platform for all challenges, from text-to-image and Generative Fill to text-to-video and audio generation.
+              </p>
+              <ul className="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                <li><span className="text-white font-medium">Text-to-Image:</span> Bring visions to life with precise prompts.</li>
+                <li><span className="text-white font-medium">Generative Fill:</span> Edit and manipulate images with unparalleled control.</li>
+                <li><span className="text-white font-medium">Text-to-Video:</span> Create dynamic video stories from a simple text description.</li>
+                <li><span className="text-white font-medium">Sound Effects:</span> Generate audio to complete your multimedia masterpiece.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Prizes Section */}
+      <section id="prizes" className="py-20 px-4 md:py-32">
+        <div className="max-w-7xl mx-auto text-center">
+          <SectionTitle>Prizes Worth Competing For</SectionTitle>
+          <div className="grid md:grid-cols-3 gap-8">
+            <PrizeCard
+              title="Grand Prize"
+              amount="MYR 10,000"
+              description="Cash prize pool for the winning team."
+            />
+            <PrizeCard
+              title="Internship Opportunities"
+              amount="Future-Proof Your Career"
+              description="Valuable internship placements with leading tech and creative firms."
+            />
+            <PrizeCard
+              title="Certified Portfolio"
+              amount="Portfolio of AI-Creative Work"
+              description="A professionally certified portfolio to showcase your skills to universities and employers."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* About Adobe Section */}
+      <section id="about-adobe" className="bg-gray-900/50 py-20 px-4 md:py-32">
+        <div className="max-w-7xl mx-auto text-center">
+          <SectionTitle>About Our Partner</SectionTitle>
+          <div className="max-w-4xl mx-auto">
+            <img src="https://placehold.co/200x60/800080/fff?text=Adobe+Firefly" alt="Adobe Firefly Logo" className="mx-auto mb-6" />
+            <p className="text-lg md:text-xl text-gray-300">
+              Adobe Firefly is the family of creative generative AI models that are integrated into Adobe's flagship creative applications. This partnership is a testament to our shared commitment to empowering the next generation of digital creators and innovators. The Adobe Firefly AI Sports Cup is a showcase of how human creativity, when powered by the right tools, can achieve the unthinkable.
+            </p>
+            <a
+              href="#"
+              className="mt-8 inline-block bg-white text-purple-600 font-bold py-3 px-8 rounded-full transition-colors duration-300 text-lg tracking-wide shadow-lg hover:shadow-purple-500/50"
+            >
+              Learn More About Adobe Firefly
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
+\
