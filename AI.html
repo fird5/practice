@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sports: The Future of Competitive Creativity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a09; /* A very dark, near-black base */
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #EE4266, #FFD23F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: rgba(23, 23, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            border-color: #3BCEAC;
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #3BCEAC;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-black/60 backdrop-blur-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-wider">
+                <span class="text-white">AI</span><span class="gradient-text">SPORTS</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#vision" class="hover:text-white transition-colors">The Vision</a>
+                <a href="#ecosystem" class="hover:text-white transition-colors">Ecosystem</a>
+                <a href="#audience" class="hover:text-white transition-colors">Audience</a>
+                <a href="#partnership" class="hover:text-white transition-colors">Partnership</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HERO/VISION SECTION -->
+        <section id="vision" class="py-24 px-6 text-center bg-black">
+            <div class="container mx-auto">
+                <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-4">Pioneering the Future of Competitive Creativity</h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+                    AI Sports is the new frontier in competitive entertainment, transforming prompt engineering and creative direction into a high-stakes sport. We turn the act of using generative AI tools into a game, where competitors race against the clock to create stunning multimedia masterpieces.
+                </p>
+            </div>
+        </section>
+
+        <!-- ECOSYSTEM SECTION -->
+        <section id="ecosystem" class="py-20 px-6 bg-gray-900/50">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">The AI Sports Ecosystem</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-emerald-400 mb-2">Gaming Platform</h3>
+                        <p class="text-gray-300">An on-demand hub for AI-driven challenges. Players build certified creative portfolios, trade assets in a marketplace, and engage with brand-sponsored quests.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rose-400 mb-2">Tournaments & Events</h3>
+                        <p class="text-gray-300">The competitive engine of our ecosystem, featuring high-stakes events like the Master Cup SEA Series where top AI talent is discovered and celebrated.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-amber-400 mb-2">Media & Content</h3>
+                        <p class="text-gray-300">We co-create viral content and cinematic masterpieces from tournament gameplay, streamed through our network of university channels to a captive Gen Z audience.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-violet-400 mb-2">Talent & Education</h3>
+                        <p class="text-gray-300">An entertainment-first approach to build a massive talent pipeline, offering a clear pathway for players to gain certifications and connect with employers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATA VISUALIZATION SECTION -->
+        <section id="audience" class="py-20 px-6">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <!-- Chart 1: Projected Participant Growth -->
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-white mb-4 text-center">Projected Participant Growth</h3>
+                        <p class="text-center text-gray-400 mb-6">Our tournament model is designed for rapid scaling, starting with university circuits and expanding to a pan-regional professional league.</p>
+                        <div class="chart-container">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Chart 2: Target Audience Breakdown -->
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-white mb-4 text-center">Captive Gen Z Audience</h3>
+                        <p class="text-center text-gray-400 mb-6">Our media network provides direct access to a highly engaged, digitally-native demographic passionate about tech and creativity.</p>
+                        <div class="chart-container">
+                            <canvas id="audienceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TALENT PIPELINE FLOWCHART -->
+        <section class="py-20 px-6 bg-gray-900/50">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white">From Player to Professional</h2>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
+                    <div class="card p-6 rounded-lg flex flex-col items-center w-64">
+                        <div class="text-5xl mb-2">🎮</div>
+                        <h4 class="font-bold text-lg">Play & Compete</h4>
+                        <p class="text-sm text-gray-400">Engage in challenges on the platform and in tournaments.</p>
+                    </div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">&rarr;</div>
+                    <div class="card p-6 rounded-lg flex flex-col items-center w-64">
+                        <div class="text-5xl mb-2">🏆</div>
+                        <h4 class="font-bold text-lg">Build Portfolio</h4>
+                        <p class="text-sm text-gray-400">Create a certified portfolio of AI-generated work.</p>
+                    </div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">&rarr;</div>
+                    <div class="card p-6 rounded-lg flex flex-col items-center w-64">
+                        <div class="text-5xl mb-2">🎓</div>
+                        <h4 class="font-bold text-lg">Get Certified</h4>
+                        <p class="text-sm text-gray-400">Access educational pathways and earn AI certifications.</p>
+                    </div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">&rarr;</div>
+                    <div class="card p-6 rounded-lg flex flex-col items-center w-64">
+                        <div class="text-5xl mb-2">💼</div>
+                        <h4 class="font-bold text-lg">Connect to Industry</h4>
+                        <p class="text-sm text-gray-400">Join our talent pool for career opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTNERSHIP SECTION -->
+        <section id="partnership" class="py-24 px-6 text-center bg-black">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Why Partner with AI Sports?</h2>
+                <p class="text-lg text-gray-300 mb-12">This is a unique opportunity to position your brand at the forefront of the AI revolution and connect with the next generation of innovators.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="border-l-4 border-rose-500 pl-4">
+                        <h4 class="text-xl font-bold text-white">Co-Create the Future</h4>
+                        <p class="text-gray-400">Define a new global category and shape the narrative of human-AI collaboration.</p>
+                    </div>
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h4 class="text-xl font-bold text-white">Capture Gen Z</h4>
+                        <p class="text-gray-400">Authentically engage a digitally-native audience passionate about gaming, art, and technology.</p>
+                    </div>
+                    <div class="border-l-4 border-emerald-500 pl-4">
+                        <h4 class="text-xl font-bold text-white">Own the AI Narrative</h4>
+                        <p class="text-gray-400">Become synonymous with innovation and creativity in the most exciting tech space today.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-gray-800">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h3 class="text-3xl font-bold text-white mb-4">Let's Co-Create the Future Together.</h3>
+            <p class="text-gray-400 mb-2">[Contact Person Name], [Title]</p>
+            <p class="text-gray-400">
+                <a href="mailto:[Email]" class="text-emerald-400 hover:underline">[Email]</a> | <span class="text-gray-500">[Phone Number]</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapLabel = (label) => {
+                const max_width = 16;
+                const words = label.split(' ');
+                const lines = [];
+                let current_line = '';
+                for (let i = 0; i < words.length; i++) {
+                    const word = words[i];
+                    if ((current_line + ' ' + word).length > max_width) {
+                        lines.push(current_line);
+                        current_line = word;
+                    } else {
+                        current_line += (current_line ? ' ' : '') + word;
+                    }
+                }
+                lines.push(current_line);
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            // Growth Chart
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            new Chart(growthCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 1: University Pilot', 'Year 2: National League', 'Year 3: SEA Master Cup'],
+                    datasets: [{
+                        label: 'Projected Participants',
+                        data: [500, 2500, 10000],
+                        backgroundColor: ['rgba(238, 66, 102, 0.6)', 'rgba(255, 210, 63, 0.6)', 'rgba(59, 206, 172, 0.6)'],
+                        borderColor: ['#EE4266', '#FFD23F', '#3BCEAC'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#9ca3af', maxRotation: 0, autoSkip: false, callback: function(value, index, values) {
+                                return wrapLabel(this.getLabelForValue(value));
+                            }},
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            // Audience Chart
+            const audienceCtx = document.getElementById('audienceChart').getContext('2d');
+            new Chart(audienceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['University Students (18-24)', 'Young Professionals (25-34)', 'Tech Enthusiasts', 'Casual Gamers'],
+                    datasets: [{
+                        label: 'Audience Breakdown',
+                        data: [55, 25, 15, 5],
+                        backgroundColor: ['#EE4266', '#540D6E', '#3BCEAC', '#FFD23F'],
+                        borderColor: '#0c0a09',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#9ca3af',
+                                font: { size: 14 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
+s
