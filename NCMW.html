@@ -116,18 +116,6 @@
             font-size: 1.1em;
         }
 
-        #difficulty-select {
-            background: #222222;
-            border: 2px solid #3c424a;
-            color: #d1d1d1;
-            padding: 8px;
-            font-family: 'Press Start 2P', cursive;
-            border-radius: 8px;
-            width: 100%;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-            margin-top: 10px;
-        }
-
         #start-button {
             padding: 15px 30px;
             font-size: 1.1em;
@@ -324,13 +312,6 @@
                     <span id="score-count">0</span>
                 </div>
             </div>
-            <div class="info-box">
-                <h2>Difficulty</h2>
-                <select id="difficulty-select">
-                    <option value="easy">Easy</option>
-                    <option value="normal" selected>Normal</option>
-                </select>
-            </div>
             <button id="start-button">Start Game</button>
             <div class="controls-info">
                 <h2>Controls</h2>
@@ -402,7 +383,6 @@
         let gameOver = false;
         let gameWon = false;
         let isPaused = false;
-        let difficulty = 'normal';
         let audioContextStarted = false;
 
         // DOM elements
@@ -411,7 +391,6 @@
         const scoreEl = document.getElementById('score-count');
         const linesEl = document.getElementById('lines-count');
         const startButton = document.getElementById('start-button');
-        const difficultySelect = document.getElementById('difficulty-select');
         const messageBoxEl = document.getElementById('message-box');
         const messageTextEl = document.getElementById('message-text');
         const messageScoreEl = document.getElementById('message-score');
@@ -602,7 +581,7 @@
                 if (audioContextStarted) {
                     playLineClearSound();
                 }
-                if (difficulty === 'easy' && lines >= 1) {
+                if (lines >= 1) { // Easy mode win condition
                     gameWon = true;
                     showWin();
                 }
@@ -642,12 +621,7 @@
 
         // Generate a new random piece
         function createPiece() {
-            let types;
-            if (difficulty === 'easy') {
-                types = ['I', 'O'];
-            } else {
-                types = Object.keys(PIECES);
-            }
+            const types = ['I', 'O']; // Easy mode pieces only
             const type = types[Math.floor(Math.random() * types.length)];
             const matrix = PIECES[type];
             return {
@@ -905,7 +879,6 @@
 
         startButton.addEventListener('click', async () => {
             await startAudioContext();
-            difficulty = difficultySelect.value;
             resetGame();
         });
 
