@@ -219,9 +219,12 @@
         /* Mobile controls */
         #mobile-controls {
             display: none;
-            position: absolute;
-            bottom: 20px;
+            position: fixed; /* Use fixed position to stay on screen */
+            bottom: 0;
+            left: 0;
             width: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            padding: 10px 0;
             justify-content: center;
             align-items: center;
             gap: 15px;
@@ -233,8 +236,8 @@
             font-family: 'Press Start 2P', cursive;
             border: none;
             border-radius: 10px;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -251,8 +254,8 @@
         }
 
         .mobile-btn.hard-drop {
-            width: 150px;
-            height: 70px;
+            width: 120px;
+            height: 60px;
         }
 
         /* Media query for mobile */
@@ -263,7 +266,7 @@
                 padding: 15px;
                 gap: 20px;
                 transform: scale(0.8);
-                margin-top: 100px;
+                margin-top: 50px; /* Adjusted margin to prevent overlap with controls */
             }
             #side-panel {
                 flex-direction: row;
@@ -280,8 +283,8 @@
                 display: none;
             }
             #game-board {
-                width: calc(30px * 10);
-                height: calc(30px * 20);
+                width: calc(25px * 10);
+                height: calc(25px * 20);
             }
             body {
                 justify-content: flex-start;
@@ -472,14 +475,11 @@
         }
 
         function playCountdownSound(count) {
-            const notes = {
-                3: 'G4',
-                2: 'F4',
-                1: 'D4'
-            };
-            if (notes[count]) {
-                synth.triggerAttackRelease(notes[count], '4n');
-            }
+            const notes = ['D4', 'F4', 'G4'];
+            const velocities = [0.5, 0.75, 1.0];
+            const note = notes[3 - count];
+            const velocity = velocities[3 - count];
+            synth.triggerAttackRelease(note, '4n', Tone.now(), velocity);
         }
 
         // Initialize game board
