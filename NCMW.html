@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Press Start 2P', cursive;
-            background: #121212;
+            background: #0d0d0d;
             color: #d1d1d1;
             display: flex;
             justify-content: center;
@@ -33,8 +33,8 @@
             display: flex;
             gap: 40px;
             padding: 30px;
-            background: #1e2127;
-            border: 8px solid #2a2d33;
+            background: #222222;
+            border: 8px solid #3c424a;
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
         }
@@ -45,15 +45,19 @@
             grid-template-columns: repeat(10, 1fr);
             border: 4px solid #3c424a;
             border-radius: 8px;
-            background: #14161a;
+            background: #333333;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Red_blue_yellow_watercolor_brushstrokes.jpg/800px-Red_blue_yellow_watercolor_brushstrokes.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
         .game-cell {
             width: 30px;
             height: 30px;
             box-sizing: border-box;
-            border: 1px solid #282c34;
+            border: 1px solid #444444;
             transition: background-color 0.1s ease;
         }
 
@@ -71,7 +75,7 @@
         }
 
         .info-box {
-            background: #14161a;
+            background: #222222;
             border: 4px solid #3c424a;
             border-radius: 12px;
             padding: 15px;
@@ -84,7 +88,7 @@
         .info-box h2 {
             margin: 0 0 15px;
             font-size: 1.4em;
-            color: #ffda01;
+            color: #e5c100;
         }
 
         #next-piece {
@@ -95,7 +99,7 @@
             height: 120px;
             margin: 10px auto;
             border: 2px solid #3c424a;
-            background: #14161a;
+            background: #333333;
         }
 
         .next-cell {
@@ -113,7 +117,7 @@
         }
 
         #difficulty-select {
-            background: #1e2127;
+            background: #222222;
             border: 2px solid #3c424a;
             color: #d1d1d1;
             padding: 8px;
@@ -128,7 +132,7 @@
             padding: 15px 30px;
             font-size: 1.1em;
             font-family: 'Press Start 2P', cursive;
-            background-color: #ffda01;
+            background-color: #e5c100;
             color: #121212;
             border: none;
             border-radius: 10px;
@@ -140,7 +144,7 @@
         }
 
         #start-button:hover {
-            background-color: #e5c400;
+            background-color: #d8b000;
             transform: translateY(-3px);
         }
 
@@ -155,7 +159,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.9);
-            border: 4px solid #ffda01;
+            border: 4px solid #e5c100;
             border-radius: 15px;
             padding: 30px 60px;
             z-index: 1000;
@@ -164,7 +168,7 @@
         }
 
         #message-box h2 {
-            color: #ffda01;
+            color: #e5c100;
             font-size: 2em;
         }
 
@@ -189,45 +193,111 @@
             background-color: #00006b;
         }
 
-        /* Malaysian flag colors for blocks */
-        .block-I { background-color: #00008b; } /* Blue */
-        .block-J { background-color: #ef3340; } /* Red */
-        .block-L { background-color: #ffda01; } /* Yellow */
-        .block-O { background-color: #ffffff; } /* White */
-        .block-S { background-color: #00008b; }
-        .block-T { background-color: #ef3340; }
-        .block-Z { background-color: #ffda01; }
+        #countdown-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            color: #e5c100;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+            display: none;
+            animation: pulse 1s infinite alternate;
+        }
 
-        .controls-info {
-            background: #14161a;
-            border: 4-px solid #3c424a;
-            border-radius: 12px;
-            padding: 15px;
+        @keyframes pulse {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile controls */
+        #mobile-controls {
+            display: none;
+            position: absolute;
+            bottom: 20px;
             width: 100%;
-            text-align: left;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-            margin-top: 25px;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
-        .controls-info h2 {
-            font-size: 1.4em;
-            text-align: center;
-            margin-bottom: 15px;
-            color: #ffda01;
-        }
-        .controls-info ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 1.1em;
-        }
-        .controls-info li {
-            margin-bottom: 10px;
-        }
-        .key-symbol {
+        
+        .mobile-btn {
+            background-color: #e5c100;
+            color: #121212;
+            font-family: 'Press Start 2P', cursive;
+            border: none;
+            border-radius: 10px;
+            width: 70px;
+            height: 70px;
             font-size: 1.2em;
-            display: inline-block;
-            width: 30px;
-            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .mobile-btn:active {
+            transform: scale(0.95);
+        }
+        .mobile-btn .fas {
+            font-size: 1.5em;
+        }
+
+        .mobile-btn.hard-drop {
+            width: 150px;
+            height: 70px;
+        }
+
+        /* Media query for mobile */
+        @media (max-width: 768px) {
+            #game-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 15px;
+                gap: 20px;
+                transform: scale(0.8);
+                margin-top: 100px;
+            }
+            #side-panel {
+                flex-direction: row;
+                justify-content: space-around;
+                width: 100%;
+            }
+            .info-box {
+                margin-bottom: 0;
+            }
+            #mobile-controls {
+                display: flex;
+            }
+            .controls-info {
+                display: none;
+            }
+            #game-board {
+                width: calc(30px * 10);
+                height: calc(30px * 20);
+            }
+            body {
+                justify-content: flex-start;
+            }
+            .game-cell {
+                width: 25px;
+                height: 25px;
+            }
+            #next-piece {
+                width: 100px;
+                height: 100px;
+            }
+            .next-cell {
+                width: 25px;
+                height: 25px;
+            }
         }
     </style>
 </head>
@@ -278,20 +348,33 @@
         <button id="message-button" onclick="hideMessage()">OK</button>
     </div>
 
+    <div id="countdown-display"></div>
+
+    <div id="mobile-controls">
+        <button class="mobile-btn" id="move-left"><i class="fas fa-arrow-left"></i></button>
+        <button class="mobile-btn" id="rotate"><i class="fas fa-sync-alt"></i></button>
+        <button class="mobile-btn" id="move-right"><i class="fas fa-arrow-right"></i></button>
+        <button class="mobile-btn" id="soft-drop"><i class="fas fa-arrow-down"></i></button>
+        <button class="mobile-btn hard-drop" id="hard-drop">DROP</button>
+    </div>
+
+    <!-- Tone.js library for sound effects -->
+    <script src="https://unpkg.com/tone@14.7.58/build/Tone.js"></script>
+
     <script>
         // Game constants
         const COLS = 10;
         const ROWS = 20;
         const BLOCK_SIZE = 30; // Updated block size for better visuals
-        // Malaysian flag colors
+        // Malaysian flag colors with a nostalgic feel
         const COLORS = {
             'I': '#00008b', // Blue
-            'J': '#ef3340', // Red
-            'L': '#ffda01', // Yellow
-            'O': '#ffffff', // White
+            'J': '#d24343', // Muted Red
+            'L': '#e5c100', // Muted Yellow
+            'O': '#00008b', // Blue
             'S': '#00008b',
-            'T': '#ef3340',
-            'Z': '#ffda01'
+            'T': '#d24343',
+            'Z': '#e5c100'
         };
 
         const PIECES = {
@@ -317,6 +400,7 @@
         let gameWon = false;
         let isPaused = false;
         let difficulty = 'normal';
+        let audioContextStarted = false;
 
         // DOM elements
         const gameBoardEl = document.getElementById('game-board');
@@ -328,6 +412,75 @@
         const messageBoxEl = document.getElementById('message-box');
         const messageTextEl = document.getElementById('message-text');
         const messageScoreEl = document.getElementById('message-score');
+        const gameContainerEl = document.getElementById('game-container');
+        const countdownDisplayEl = document.getElementById('countdown-display');
+
+        // Sound Effects
+        const synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'square' },
+            envelope: {
+                attack: 0.005,
+                decay: 0.1,
+                sustain: 0.2,
+                release: 0.5
+            }
+        }).toDestination();
+
+        const bassSynth = new Tone.Synth({
+            oscillator: { type: 'sine' },
+            envelope: {
+                attack: 0.05,
+                decay: 0.4,
+                sustain: 0.1,
+                release: 0.5
+            }
+        }).toDestination();
+
+        // Start audio context on user gesture
+        async function startAudioContext() {
+            if (audioContextStarted) return;
+            await Tone.start();
+            audioContextStarted = true;
+        }
+
+        function playMoveSound() {
+            synth.triggerAttackRelease('C4', '8n');
+        }
+
+        function playRotateSound() {
+            synth.triggerAttackRelease('G4', '8n');
+        }
+
+        function playDropSound() {
+            synth.triggerAttackRelease('D3', '8n');
+        }
+
+        function playLineClearSound() {
+            const now = Tone.now();
+            synth.triggerAttackRelease(['E5', 'G5', 'B5'], '8n', now);
+        }
+
+        function playGameOverSound() {
+            bassSynth.triggerAttackRelease(['C2', 'G1'], '1n');
+        }
+
+        function playWinSound() {
+            const now = Tone.now();
+            synth.triggerAttackRelease(['C4', 'E4', 'G4'], '8n', now);
+            synth.triggerAttackRelease(['A4', 'C5', 'E5'], '8n', now + 0.2);
+            synth.triggerAttackRelease(['G4', 'B4', 'D5'], '8n', now + 0.4);
+        }
+
+        function playCountdownSound(count) {
+            const notes = {
+                3: 'G4',
+                2: 'F4',
+                1: 'D4'
+            };
+            if (notes[count]) {
+                synth.triggerAttackRelease(notes[count], '4n');
+            }
+        }
 
         // Initialize game board
         function createBoard() {
@@ -353,13 +506,23 @@
                         if (!isPreview) {
                             const cell = gameBoardEl.children[cellY * COLS + cellX];
                             if (cell) {
-                                cell.style.backgroundColor = COLORS[piece.type];
+                                // Convert hex to RGBA to make bricks semi-transparent
+                                const hex = COLORS[piece.type];
+                                const r = parseInt(hex.substring(1, 3), 16);
+                                const g = parseInt(hex.substring(3, 5), 16);
+                                const b = parseInt(hex.substring(5, 7), 16);
+                                cell.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
                                 cell.classList.add('block');
                             }
                         } else {
                             const cell = boardEl.children[y * piece.matrix[0].length + x];
                             if (cell) {
-                                cell.style.backgroundColor = COLORS[piece.type];
+                                // Convert hex to RGBA for preview piece
+                                const hex = COLORS[piece.type];
+                                const r = parseInt(hex.substring(1, 3), 16);
+                                const g = parseInt(hex.substring(3, 5), 16);
+                                const b = parseInt(hex.substring(5, 7), 16);
+                                cell.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
                                 cell.classList.add('block');
                             }
                         }
@@ -436,7 +599,10 @@
             }
             if (linesRemoved > 0) {
                 updateScore(linesRemoved);
-                if (difficulty === 'easy') {
+                if (audioContextStarted) {
+                    playLineClearSound();
+                }
+                if (difficulty === 'easy' && lines >= 1) {
                     gameWon = true;
                     showWin();
                 }
@@ -460,7 +626,11 @@
                 row.forEach((value, x) => {
                     const cell = gameBoardEl.children[y * COLS + x];
                     if (value !== 0) {
-                        cell.style.backgroundColor = COLORS[value];
+                        const hex = COLORS[value];
+                        const r = parseInt(hex.substring(1, 3), 16);
+                        const g = parseInt(hex.substring(3, 5), 16);
+                        const b = parseInt(hex.substring(5, 7), 16);
+                        cell.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
                         cell.classList.add('block');
                     } else {
                         cell.style.backgroundColor = '';
@@ -503,6 +673,9 @@
             if (collide(currentPiece, board)) {
                 currentPiece.pos.y--;
                 merge(currentPiece, board);
+                if (audioContextStarted) {
+                    playDropSound();
+                }
                 removeLines();
                 newPiece();
                 if (collide(currentPiece, board)) {
@@ -521,6 +694,9 @@
             }
             currentPiece.pos.y--;
             merge(currentPiece, board);
+            if (audioContextStarted) {
+                playDropSound();
+            }
             removeLines();
             newPiece();
             if (collide(currentPiece, board)) {
@@ -535,6 +711,10 @@
             currentPiece.pos.x += dir;
             if (collide(currentPiece, board)) {
                 currentPiece.pos.x -= dir;
+            } else {
+                if (audioContextStarted) {
+                    playMoveSound();
+                }
             }
             draw(currentPiece);
         }
@@ -558,6 +738,9 @@
             messageTextEl.textContent = 'Game Over!';
             messageScoreEl.textContent = `Final Score: ${score}`;
             messageBoxEl.style.display = 'block';
+            if (audioContextStarted) {
+                playGameOverSound();
+            }
         }
 
         // Show game won message
@@ -566,12 +749,51 @@
             messageTextEl.textContent = 'Congratulations YB Hannah Yeo, you are an awesome gamer! Let\'s launch this event!';
             messageScoreEl.textContent = `Final Score: ${score}`;
             messageBoxEl.style.display = 'block';
+            if (audioContextStarted) {
+                playWinSound();
+            }
+            // After showing the message, start the countdown
+            setTimeout(() => {
+                hideMessage(); // Hide the winning message box
+                startCountdown();
+            }, 3000); // 3 seconds before starting countdown
+        }
+        
+        // Start the countdown
+        function startCountdown() {
+            gameContainerEl.style.display = 'none'; // Hide the game board
+            document.body.style.backgroundColor = 'black';
+            countdownDisplayEl.style.display = 'block';
+            
+            let count = 3;
+            countdownDisplayEl.textContent = count;
+            if (audioContextStarted) {
+                playCountdownSound(count);
+            }
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownDisplayEl.textContent = count;
+                    if (audioContextStarted) {
+                        playCountdownSound(count);
+                    }
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownDisplayEl.style.display = 'none';
+                    // Pause on black screen for 5 seconds
+                    setTimeout(() => {
+                        document.body.style.backgroundColor = '#0d0d0d'; // Revert background
+                        gameContainerEl.style.display = 'flex'; // Show game board again
+                        resetGame(); // Reset the game after the pause
+                    }, 5000);
+                }
+            }, 1000);
         }
 
         // Hide message box and reset game
         function hideMessage() {
             messageBoxEl.style.display = 'none';
-            resetGame();
         }
 
         // Reset game state
@@ -587,6 +809,8 @@
             createBoard();
             nextPiece = createPiece();
             newPiece();
+            undraw(currentPiece);
+            updateNextPieceDisplay();
             update();
         }
 
@@ -609,7 +833,12 @@
                     const cell = document.createElement('div');
                     cell.classList.add('next-cell');
                     if (nextPiece.matrix[y][x]) {
-                        cell.style.backgroundColor = COLORS[nextPiece.type];
+                        // Convert hex to RGBA for preview piece
+                        const hex = COLORS[nextPiece.type];
+                        const r = parseInt(hex.substring(1, 3), 16);
+                        const g = parseInt(hex.substring(3, 5), 16);
+                        const b = parseInt(hex.substring(5, 7), 16);
+                        cell.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
                         cell.classList.add('block');
                     }
                     nextPieceEl.appendChild(cell);
@@ -627,6 +856,9 @@
             } else if (e.key === 'ArrowDown') {
                 dropPiece();
             } else if (e.key === 'ArrowUp') {
+                if (audioContextStarted) {
+                    playRotateSound();
+                }
                 undraw(currentPiece);
                 rotate(currentPiece);
                 if (collide(currentPiece, board)) {
@@ -640,7 +872,39 @@
             }
         });
 
-        startButton.addEventListener('click', () => {
+        // Mobile controls
+        document.getElementById('move-left').addEventListener('click', () => {
+            if (gameOver || gameWon || isPaused) return;
+            movePiece(-1);
+        });
+        document.getElementById('move-right').addEventListener('click', () => {
+            if (gameOver || gameWon || isPaused) return;
+            movePiece(1);
+        });
+        document.getElementById('rotate').addEventListener('click', () => {
+            if (gameOver || gameWon || isPaused) return;
+            if (audioContextStarted) {
+                playRotateSound();
+            }
+            undraw(currentPiece);
+            rotate(currentPiece);
+            if (collide(currentPiece, board)) {
+                // Simple wall kick
+                currentPiece.pos.x = Math.max(0, Math.min(COLS - currentPiece.matrix[0].length, currentPiece.pos.x));
+            }
+            draw(currentPiece);
+        });
+        document.getElementById('soft-drop').addEventListener('click', () => {
+            if (gameOver || gameWon || isPaused) return;
+            dropPiece();
+        });
+        document.getElementById('hard-drop').addEventListener('click', () => {
+            if (gameOver || gameWon || isPaused) return;
+            hardDrop();
+        });
+
+        startButton.addEventListener('click', async () => {
+            await startAudioContext();
             difficulty = difficultySelect.value;
             resetGame();
         });
