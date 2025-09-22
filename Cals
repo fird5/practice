@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sports Revenue Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #d1d5db;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="container mx-auto">
+        <h1 class="text-3xl md:text-5xl font-black text-center gradient-text uppercase tracking-tight">AI Sports Revenue Predictor</h1>
+        <p class="mt-4 text-center text-gray-400">
+            Based on your strategy for Year 3, this model projects your total annual revenue.
+        </p>
+
+        <div class="mt-12 bg-gray-900 rounded-xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-white mb-6">Input Your Assumptions</h2>
+
+            <!-- Top Companies -->
+            <div class="mb-6">
+                <label for="topCoPenetration" class="block text-gray-400 font-medium mb-2">
+                    Top 10 Companies Penetration Rate (%)
+                </label>
+                <input type="range" id="topCoPenetration" min="0" max="100" value="20" class="w-full">
+                <div class="flex justify-between text-gray-500 mt-2">
+                    <span>0%</span>
+                    <span id="topCoPenetrationValue">20%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="topCoEmployees" class="block text-gray-400 font-medium mb-2">
+                    Total Employees in Top 10 Companies
+                </label>
+                <input type="number" id="topCoEmployees" value="300000" class="w-full p-2 rounded bg-gray-800 text-white">
+            </div>
+
+            <!-- SME Market -->
+            <div class="mb-6">
+                <label for="smePenetration" class="block text-gray-400 font-medium mb-2">
+                    SME Market Penetration Rate (%)
+                </label>
+                <input type="range" id="smePenetration" min="0" max="10" step="0.1" value="1" class="w-full">
+                <div class="flex justify-between text-gray-500 mt-2">
+                    <span>0%</span>
+                    <span id="smePenetrationValue">1.0%</span>
+                    <span>10%</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="smeEmployees" class="block text-gray-400 font-medium mb-2">
+                    Total Employees in SME Market
+                </label>
+                <input type="number" id="smeEmployees" value="8100000" class="w-full p-2 rounded bg-gray-800 text-white">
+            </div>
+
+            <!-- Subscription Fee -->
+            <div class="mb-6">
+                <label for="subscriptionFee" class="block text-gray-400 font-medium mb-2">
+                    Annual Subscription Fee (MYR)
+                </label>
+                <input type="number" id="subscriptionFee" value="500" class="w-full p-2 rounded bg-gray-800 text-white">
+            </div>
+        </div>
+
+        <div class="mt-12 bg-gray-900 rounded-xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-white mb-6">Predicted Revenue (Year 3)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-400 font-medium">Top Companies Revenue</p>
+                    <p id="topCoRevenue" class="text-4xl font-black text-white mt-2">MYR 30,000,000</p>
+                </div>
+                <div>
+                    <p class="text-gray-400 font-medium">SME Revenue</p>
+                    <p id="smeRevenue" class="text-4xl font-black text-white mt-2">MYR 40,500,000</p>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="text-gray-400 font-medium">Total Projected Revenue</p>
+                <p id="totalRevenue" class="text-5xl md:text-6xl font-black gradient-text mt-2">MYR 70,500,000</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topCoPenetration = document.getElementById('topCoPenetration');
+        const topCoPenetrationValue = document.getElementById('topCoPenetrationValue');
+        const topCoEmployees = document.getElementById('topCoEmployees');
+        const topCoRevenue = document.getElementById('topCoRevenue');
+
+        const smePenetration = document.getElementById('smePenetration');
+        const smePenetrationValue = document.getElementById('smePenetrationValue');
+        const smeEmployees = document.getElementById('smeEmployees');
+        const smeRevenue = document.getElementById('smeRevenue');
+
+        const subscriptionFee = document.getElementById('subscriptionFee');
+        const totalRevenue = document.getElementById('totalRevenue');
+
+        function calculateRevenue() {
+            const topCoRate = topCoPenetration.value / 100;
+            const topCoEmp = parseInt(topCoEmployees.value);
+            const smeRate = smePenetration.value / 100;
+            const smeEmp = parseInt(smeEmployees.value);
+            const fee = parseInt(subscriptionFee.value);
+
+            const topCoRev = Math.round(topCoRate * topCoEmp * fee);
+            const smeRev = Math.round(smeRate * smeEmp * fee);
+            const total = topCoRev + smeRev;
+
+            topCoRevenue.textContent = `MYR ${topCoRev.toLocaleString()}`;
+            smeRevenue.textContent = `MYR ${smeRev.toLocaleString()}`;
+            totalRevenue.textContent = `MYR ${total.toLocaleString()}`;
+        }
+
+        topCoPenetration.addEventListener('input', () => {
+            topCoPenetrationValue.textContent = `${topCoPenetration.value}%`;
+            calculateRevenue();
+        });
+
+        smePenetration.addEventListener('input', () => {
+            smePenetrationValue.textContent = `${smePenetration.value}%`;
+            calculateRevenue();
+        });
+
+        topCoEmployees.addEventListener('input', calculateRevenue);
+        smeEmployees.addEventListener('input', calculateRevenue);
+        subscriptionFee.addEventListener('input', calculateRevenue);
+
+        calculateRevenue();
+    </script>
+</body>
+</html>
+
