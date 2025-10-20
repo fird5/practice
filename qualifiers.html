@@ -1,0 +1,186 @@
+My apologies. You are correct. I provided the full HTML website structure for the individual components but failed to deliver the final, complete code due to the preceding formatting requests.
+
+Here is the **complete and functional HTML code** that combines the competitive structure, the scoring logic, and the detailed breakdown for **Challenge 15** and **Challenge 18**, using the approved dark esports template.
+
+-----
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Esports Malaysia Varsity Challenge 2025 - Duel Focus</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e; /* Dark esports background */
+            color: #e4e4e4;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: #0f0f1d;
+            padding: 30px 0;
+            border-bottom: 5px solid #ff416c; /* Vibrant accent color */
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        .section-title {
+            color: #77b3d4;
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px solid #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        .intro-box {
+            background: #2b2a47;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .intro-box h3 {
+            color: #f9c74f;
+            margin-top: 0;
+        }
+        .asset-spec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .asset-box {
+            background: #0f0f1d;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #77b3d4;
+        }
+        .asset-box h4 {
+            color: #77b3d4;
+            margin-top: 0;
+        }
+        .challenge-card {
+            background: #2b2a47;
+            border: 1px solid #ff416c;
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        .challenge-card h3 {
+            color: #ff416c;
+            border-bottom: 1px dashed #4a4a6b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .criteria-box {
+            background: #0f0f1d;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border: 1px solid #4a4a6b;
+        }
+        .criteria-box h4 {
+            color: #f9c74f;
+            margin-top: 0;
+        }
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Simplified for easier reading of criteria */
+            gap: 15px;
+        }
+        .score-40 { color: #f9c74f; font-weight: bold; }
+        .score-35 { color: #ff416c; font-weight: bold; }
+        .score-25 { color: #77b3d4; font-weight: bold; }
+        .logic-detail {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #4a4a6b;
+        }
+        .criteria-item {
+            border-bottom: 1px dotted #4a4a6b;
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AI Esports Malaysia Varsity Challenge 2025</h1>
+    </header>
+
+    <div class="container">
+
+        <h2 class="section-title">The Duel Structure: Focus and Execution</h2>
+
+        <div class="intro-box">
+            <h3>🎯 Your Challenge Assignment: 1V1 Duel</h3>
+            <p>Your challenge for the 60-minute solo duel will be **Challenge 15: The "Smartphone Focus Hub" OR Challenge 18: The "Community Connection Broker"**. You will receive your specific assignment at the start of the match.</p>
+            <p>The competition prioritizes **Conceptual Cohesion (Creativity)** and **Articulative Ingenuity (Solution Quality)** over pure visual polish. This is a test of strategic, effective problem-solving.</p>
+        </div>
+
+        <h3 class="section-title">Mandatory Visual Output Specifications (The Evidence)</h3>
+        
+        <div class="asset-spec-grid">
+            <div class="asset-box">
+                <h4>1. The Live-Generated Visual</h4>
+                <p>The single, high-quality image that **encapsulates your core concept** and serves as the visual "first move" in the duel.</p>
+            </div>
+            <div class="asset-box">
+                <h4>2. The Live-Animated 12-Second Loop</h4>
+                <p>A short, animated video that **visually explains a key feature** of the concept, demonstrating dynamic narrative ability.</p>
+            </div>
+            <div class="asset-box">
+                <h4>3. The Vibe-Coded Presentation Deck (or Site Mockup)</h4>
+                <p>A single image output that defines the brand's emotional tone and provides **3-5 concise, core explanation points** of the solution's benefit.</p>
+            </div>
+        </div>
+
+        <div class="challenge-card">
+            <h3>Challenge 15: The "Smartphone Focus Hub"</h3>
+            <p class="logic-detail"><strong>Problem Narrative:</strong> Uncontrolled smartphone use and app addiction contribute to poor mental health and lack of focus. The challenge is to use the device itself to encourage concentration, not distraction.</p>
+            <p class="logic-detail"><strong>Lateral Thinking Input:</strong> **Design Rule: The 'Empty Stage' Rule** — The phone's screen must be designed like a theater stage where every background element is stripped away to focus solely on the primary task.</p>
+            
+            <div class="criteria-box">
+                <h4>Scoring Breakdown (Total: 100 Points)</h4>
+                <div class="criteria-grid">
+                    <p class="score-40 criteria-item">**Conceptual Cohesion (40 pts):** How creatively is the **'Empty Stage' Rule** translated into a functional design that encourages focus without being punitive or restrictive?</p>
+                    <p class="score-35 criteria-item">**Articulative Ingenuity (35 pts):** How well does the explanation justify the **effectiveness and quality** of this digital environment in preventing distraction and encouraging genuine focus?</p>
+                    <p class="score-25 criteria-item">**Visual Impact (25 pts):** Is the digital minimalist aesthetic compelling and visually distinct from standard 'Do Not Disturb' modes?</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="challenge-card">
+            <h3>Challenge 18: The "Community Connection Broker"</h3>
+            <p class="logic-detail"><strong>Problem Narrative:</strong> Social anxiety prevents youth from engaging in local community activities, leading to isolation. Design a system that removes the anxiety of the "first step" and the fear of judgment.</p>
+            <p class="logic-detail"><strong>Lateral Thinking Input:</strong> **Design Rule: The 'Jigsaw Puzzle' Rule** — The community and the user must be framed as a large **jigsaw puzzle**, where the app visually matches the user's "shape/skills" to the exact empty "piece/need" in their local area.</p>
+            
+            <div class="criteria-box">
+                <h4>Scoring Breakdown (Total: 100 Points)</h4>
+                <div class="criteria-grid">
+                    <p class="score-40 criteria-item">**Conceptual Cohesion (40 pts):** How effectively is the **'Jigsaw Puzzle' Rule** used to break down the psychological barrier of social anxiety and shame?</p>
+                    <p class="score-35 criteria-item">**Articulative Ingenuity (35 pts):** How well does the explanation justify the **effectiveness and quality** of the system in providing enough structure and safety to overcome the user's fear of judgment?</p>
+                    <p class="score-25 criteria-item">**Visual Impact (25 pts):** Is the visual design of the puzzle effective in conveying the sense of purpose and belonging, rather than just a simple task list?</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+```
