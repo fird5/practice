@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Esports & Learning Hub</title>
+    
+    <!-- Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AI Hub">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ecfdf5"> <!-- Light emerald for the app theme -->
+
+    <!-- Inline Web App Manifest -->
+    <link rel="manifest" href="data:application/manifest+json,{
+        &quot;name&quot;: &quot;AI Esports & Learning Hub&quot;,
+        &quot;short_name&quot;: &quot;AI Hub&quot;,
+        &quot;start_url&quot;: &quot;.&quot;,
+        &quot;display&quot;: &quot;standalone&quot;,
+        &quot;background_color&quot;: &quot;#ecfdf5&quot;,
+        &quot;theme_color&quot;: &quot;#10b981&quot;,
+        &quot;description&quot;: &quot;Learn, play, and get AI help.&quot;,
+        &quot;icons&quot;: [{
+            &quot;src&quot;: &quot;https://placehold.co/192x192/10b981/white?text=AI&amp;font=inter&quot;,
+            &quot;sizes&quot;: &quot;192x192&quot;,
+            &quot;type&quot;: &quot;image/png&quot;
+        }, {
+            &quot;src&quot;: &quot;https://placehold.co/512x512/10b981/white?text=AI&amp;font=inter&quot;,
+            &quot;sizes&quot;: &quot;512x512&quot;,
+            &quot;type&quot;: &quot;image/png&quot;
+        }]
+    }">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Font for Esports Page -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            overscroll-behavior: none; /* Prevents pull-to-refresh */
+        }
+
+        /* Hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        /* Styles for the Esports page */
+        .esports-page {
+            font-family: 'Chakra Petch', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #f3f4f6; /* bg-gray-100 */
+        }
+        .esports-page .esports-accent {
+            color: #facc15; /* yellow-400 */
+        }
+        .esports-page .esports-accent-bg {
+            background-color: #facc15;
+            color: #111827;
+        }
+        .esports-page .esports-accent-border {
+            border-color: #facc15;
+        }
+        .esports-page .esports-card-bg {
+            background-color: #1f2937; /* bg-gray-800 */
+        }
+
+        /* Default (Learn/Doc Zam) styles */
+        .default-page {
+            background-color: #f9fafb; /* bg-slate-50 */
+            color: #1f2937; /* bg-gray-800 */
+        }
+    </style>
+</head>
+
+<body class="h-[100dvh] w-full flex flex-col no-scrollbar default-page">
+
+    <!-- 
+        Main Content Area
+        This area will swap content based on the active tab.
+    -->
+    <main class_="flex-1 overflow-y-auto no-scrollbar pb-20"> <!-- Padding-bottom to avoid nav overlap -->
+
+        <!-- 
+            PAGE 1: LEARNING HUB 
+        -->
+        <div id="page-learn" class="p-6">
+            <h1 class="text-4xl font-bold text-gray-900">Learning Hub</h1>
+            <p class="text-lg text-gray-600 mt-2 mb-8">Complete modules to clock your attendance.</p>
+
+            <div id="video-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Module 1 -->
+                <div id="module-1" class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                    <img src="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/d1fae5/1f2937?text=Module+1&font=inter';" 
+                         alt="Abstract data and code on a screen" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h2 class="text-2xl font-bold text-gray-900">Future of AI in Malaysia</h2>
+                        <p class="text-gray-600 mt-2 mb-4">By YB Dato' Seri Diraja Dr. Zambry Abdul Kadir</p>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-emerald-600 transition-all">
+                            Start Learning
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div id="module-2" class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/d1fae5/1f2937?text=Module+2&font=inter';" 
+                         alt="Close-up of code on a computer screen" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h2 class="text-2xl font-bold text-gray-900">Intro to Prompt Engineering</h2>
+                        <p class="text-gray-600 mt-2 mb-4">By Prof. Madya Dr. Siti Khadijah (UM)</p>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-emerald-600 transition-all">
+                            Start Learning
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div id="module-3" class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/d1fae5/1f2937?text=Module+3&font=inter';" 
+                         alt="Team collaborating in a strategy meeting" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h2 class="text-2xl font-bold text-gray-900">Gen AI for Game Dev</h2>
+                        <p class="text-gray-600 mt-2 mb-4">By Dr. Amirul Hafiz (APU)</p>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-emerald-600 transition-all">
+                            Start Learning
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Module 4 -->
+                <div id="module-4" class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                    <img src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                         onerror="this.onerror=null;this.src='https.com/images.unsplash.com/photo-1529007196341-35b6c561858c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600';this.src='https://placehold.co/600x400/d1fae5/1f2937?text=Module+4&font=inter';" 
+                         alt="Digital lock icon representing security and ethics" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h2 class="text-2xl font-bold text-gray-900">Ethics in AI Gaming</h2>
+                        <p class="text-gray-600 mt-2 mb-4">By Prof. Dr. Rahman (USM)</p>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-emerald-600 transition-all">
+                            Start Learning
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 
+            PAGE 2: ESPORTS HUB (Hidden by default)
+        -->
+        <div id="page-esports" class="hidden">
+            
+            <!-- This container handles the dark theme -->
+            <div class="esports-page min-h-full p-6">
+                <h1 class="text-4xl font-bold esports-accent">Esports Hub</h1>
+                <p class="text-lg text-gray-300 mt-2 mb-8">Scores, News & Team Registration</p>
+
+                <!-- Esports Tab Navigation -->
+                <div class="flex space-x-2 border-b-2 border-gray-700 mb-6">
+                    <button id="tab-scores" class="esports-tab-btn flex-1 text-lg font-semibold border-b-4 esports-accent-border esports-accent pb-3">
+                        Scores
+                    </button>
+                    <button id="tab-news" class="esports-tab-btn flex-1 text-lg font-semibold border-b-4 border-transparent text-gray-500 pb-3">
+                        News
+                    </button>
+                    <button id="tab-register" class="esports-tab-btn flex-1 text-lg font-semibold border-b-4 border-transparent text-gray-500 pb-3">
+                        Register
+                    </button>
+                </div>
+
+                <!-- Esports Tab Content -->
+                <div>
+                    <!-- Scores Content -->
+                    <div id="content-scores">
+                        <h2 class="text-2xl font-semibold esports-accent mb-4">Live Standings</h2>
+                        <div class="space-y-4">
+                            <!-- Score Card 1 -->
+                            <div class="esports-card-bg rounded-lg p-4 flex items-center justify-between shadow-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-2xl font-bold esports-accent w-6 text-center">1</div>
+                                    <img src="https://placehold.co/40x40/facc15/111827?text=V&font=chakra+petch" alt="Team Logo" class="w-10 h-10 rounded-full border-2 esports-accent-border">
+                                    <span class="text-xl font-semibold text-white">Viperion Alpha</span>
+                                </div>
+                                <div class="text-2xl font-bold esports-accent">1280 <span class="text-sm text-gray-400">PTS</span></div>
+                            </div>
+                            <!-- Score Card 2 -->
+                            <div class="esports-card-bg rounded-lg p-4 flex items-center justify-between shadow-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-2xl font-bold text-gray-400 w-6 text-center">2</div>
+                                    <img src="https://placehold.co/40x40/f87171/111827?text=G&font=chakra+petch" alt="Team Logo" class="w-10 h-10 rounded-full border-2 border-gray-700">
+                                    <span class="text-xl font-semibold text-white">GigaTech Raptors</span>
+                                </div>
+                                <div class="text-2xl font-bold text-white">1150 <span class="text-sm text-gray-400">PTS</span></div>
+                            </div>
+                            <!-- Score Card 3 -->
+                            <div class="esports-card-bg rounded-lg p-4 flex items-center justify-between shadow-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-2xl font-bold text-gray-400 w-6 text-center">3</div>
+                                    <img src="https://placehold.co/40x40/34d399/111827?text=N&font=chakra+petch" alt="Team Logo" class="w-10 h-10 rounded-full border-2 border-gray-700">
+                                    <span class="text-xl font-semibold text-white">Neon Strikers</span>
+                                </div>
+                                <div class="text-2xl font-bold text-white">970 <span class="text-sm text-gray-400">PTS</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Content (Hidden) -->
+                    <div id="content-news" class="hidden space-y-4">
+                        <div class="esports-card-bg rounded-lg p-5 shadow-lg">
+                            <h3 class="text-xl font-bold esports-accent mb-2">Qualifier Week 1 Results</h3>
+                            <p class="text-gray-300">Viperion Alpha takes a commanding lead, but the Raptors are close behind. Read the full recap of this weekend's intense matches.</p>
+                            <span class="text-sm text-gray-500 mt-3 block">Posted 2 hours ago</span>
+                        </div>
+                        <div class="esports-card-bg rounded-lg p-5 shadow-lg">
+                            <h3 class="text-xl font-bold esports-accent mb-2">Team Registration Closes Friday!</h3>
+                            <p class="text-gray-300">Don't miss your chance to compete for the RM 50,000 prize pool. Get your team registered before the deadline!</p>
+                            <span class="text-sm text-gray-500 mt-3 block">Posted 1 day ago</span>
+                        </div>
+                    </div>
+
+                    <!-- Register Content (Hidden) -->
+                    <div id="content-register" class="hidden">
+                        <div class="esports-card-bg rounded-lg p-6 shadow-lg">
+                            <h3 class="text-2xl font-bold esports-accent mb-4">Register Your Team</h3>
+                            <form class="space-y-4">
+                                <div>
+                                    <label class="text-lg font-semibold text-gray-300" for="team-name">Team Name</label>
+                                    <input type="text" id="team-name" class="w-full p-3 rounded-md bg-gray-700 border-2 border-gray-600 text-white focus:border-yellow-400 outline-none transition-all mt-2" placeholder="e.g., Cyber Harimau">
+                                </div>
+                                <div>
+                                    <label class="text-lg font-semibold text-gray-300" for="captain-email">Captain's Email</label>
+                                    <input type="email" id="captain-email" class="w-full p-3 rounded-md bg-gray-700 border-2 border-gray-600 text-white focus:border-yellow-400 outline-none transition-all mt-2" placeholder="captain@email.com">
+                                </div>
+                                <button type="submit" class="w-full esports-accent-bg font-bold py-3 rounded-lg shadow-md hover:bg-yellow-500 transition-all text-lg">
+                                    Submit Registration
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 
+            PAGE 3: DOC ZAM CHATBOT (Hidden by default)
+        -->
+        <div id="page-doc-zam" class="hidden h-full flex flex-col">
+            <!-- Chatbot Header -->
+            <div class="bg-white shadow-md p-4 flex items-center space-x-4 sticky top-0">
+                <div class="w-14 h-14 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center shadow-lg">
+                    <!-- Futuristic Avatar SVG -->
+                    <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" fill="url(#grad1)" stroke="#fff" stroke-width="0.5"/>
+                        <path d="M12 17C14.761 17 17 14.761 17 12C17 9.239 14.761 7 12 7C9.239 7 7 9.239 7 12C7 14.761 9.239 17 12 17Z" fill="url(#grad2)"/>
+                        <path d="M12 14.5C13.381 14.5 14.5 13.381 14.5 12C14.5 10.619 13.381 9.5 12 9.5C10.619 9.5 9.5 10.619 9.5 12C9.5 13.381 10.619 14.5 12 14.5Z" fill="#fff"/>
+                        <line x1="9" y1="10" x2="8" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="15" y1="10" x2="16" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M9 15C9 15 10 16 12 16C14 16 15 15 15 15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#10b981"/>
+                                <stop offset="1" stop-color="#059669"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="12" y1="7" x2="12" y2="17" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#6ee7b7"/>
+                                <stop offset="1" stop-color="#34d399"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Doc Zam</h1>
+                    <p class="text-md text-gray-600">Your AI guide to Higher Education in Malaysia and lifehacks to get the best of your university life</p>
+                </div>
+            </div>
+
+            <!-- Chat Message Area -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+                
+                <!-- Initial Bot Welcome Message -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center shadow-md">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" fill="#10b981"/><path d="M12 14.5C13.381 14.5 14.5 13.381 14.5 12C14.5 10.619 13.381 9.5 12 9.5C10.619 9.5 9.5 10.619 9.5 12C9.5 13.381 10.619 14.5 12 14.5Z" fill="#fff"/><line x1="9" y1="10" x2="8" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="10" x2="16" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M9 15C9 15 10 16 12 16C14 16 15 15 15 15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl rounded-tl-none shadow-lg border border-gray-100 max-w-xs md:max-w-md">
+                        <p class="text-gray-800">Hi there! I'm Doc Zam. Ask me anything about university life or higher education in Malaysia. For example: "What are the top engineering universities?" or "How can I get a PTPTN loan?"</p>
+                    </div>
+                </div>
+
+                <!-- Chat messages will be added here dynamically -->
+
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="bg-white p-4 border-t border-gray-200 sticky bottom-0">
+                <div class="flex items-center space-x-3">
+                    <input type="text" id="chat-input" class="flex-1 w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Type your question...">
+                    <button id="chat-send-btn" class="w-12 h-12 bg-emerald-500 text-white rounded-full flex-shrink-0 flex items-center justify-center shadow-lg hover:bg-emerald-600 transition-all">
+                        <!-- Send Icon -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 
+        Bottom Navigation Bar
+    -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.05)] border-t border-gray-200 flex justify-around">
+        
+        <!-- Nav Item: Learn (Active by default) -->
+        <button id="nav-learn" class="nav-btn flex-1 flex flex-col items-center justify-center pt-3 pb-2 text-emerald-500" data-page="page-learn">
+            <!-- Learn Icon (Solid) -->
+            <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M1.5 12c0-5.798 4.702-10.5 10.5-10.5s10.5 4.702 10.5 10.5-4.702 10.5-10.5 10.5S1.5 17.798 1.5 12zm10.5-9A9 9 0 1012 21 9 9 0 0012 3z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-xs font-semibold mt-1">Learn</span>
+        </button>
+
+        <!-- Nav Item: Esports -->
+        <button id="nav-esports" class="nav-btn flex-1 flex flex-col items-center justify-center pt-3 pb-2 text-gray-400" data-page="page-esports">
+            <!-- Esports Icon (Outline) -->
+            <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3.75v3.75m3.75-3.75v3.75m-7.5-3.75L3 16.5m18 0l-3.75 3.75M3 16.5l3.75-3.75m10.5 3.75L21 16.5m-18 0l3.75 3.75m10.5-3.75l3.75 3.75M9 13.5l3 3m3-3l-3 3" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a8.25 8.25 0 006.205-3.088 8.25 8.25 0 00-12.41 0A8.25 8.25 0 0012 21zM12 3.75c-2.4 0-4.6.802-6.205 2.162a8.25 8.25 0 0012.41 0C16.6 4.552 14.4 3.75 12 3.75z" />
+            </svg>
+            <span class="text-xs font-semibold mt-1">Esports</span>
+        </button>
+
+        <!-- Nav Item: Doc Zam -->
+        <button id="nav-doc-zam" class="nav-btn flex-1 flex flex-col items-center justify-center pt-3 pb-2 text-gray-400" data-page="page-doc-zam">
+            <!-- Doc Zam Icon (Outline) -->
+            <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.12 2.898 2.508 3.209a5.998 5.998 0 01-1.152 2.628.75.75 0 00.518 1.12c.382.079.78.038 1.118-.12L8.25 18.061a1 1 0 01.62-.22c.28.08.564.14.856.18a5.998 5.998 0 003.549 0c.292-.04.576-.1.856-.18a1 1 0 01.62.22l1.63 1.09c.338.158.736.199 1.118.12a.75.75 0 00.518-1.12 5.998 5.998 0 01-1.152-2.628C19.38 15.658 20.5 14.36 20.5 12.76V6.75a2.25 2.25 0 00-2.25-2.25H5.75A2.25 2.25 0 003.5 6.75v6.01zM5 6.75h14v6.01c0 .984-.627 1.808-1.5 2.12v-1.213a.75.75 0 00-.5- .707A4.48 4.48 0 0012 12.75a4.48 4.48 0 00-5.5 1.213.75.75 0 00-.5.707v1.213C5.627 14.568 5 13.744 5 12.76V6.75z" />
+            </svg>
+            <span class="text-xs font-semibold mt-1">Doc Zam</span>
+        </button>
+
+    </nav>
+
+
+    <script>
+        // --- API Configuration ---
+        const API_KEY = ""; // Kept as empty string.
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + API_KEY;
+        
+        // --- System Instruction for Doc Zam ---
+        const SYSTEM_INSTRUCTION = {
+            parts: [{
+                text: "You are Doc Zam, an expert AI guide for Malaysian university students. " +
+                      "Your persona is friendly, knowledgeable, and slightly informal, like a helpful senior student or a young lecturer. " +
+                      "You MUST answer questions related to: " +
+                      "1. Higher education in Malaysia (e.g., 'What are the best universities for computer science?', 'How do I apply for PTPTN?'). " +
+                      "2. University lifehacks (e.g., 'What are good study tips for exams?', 'How to save money as a student?'). " +
+                      "You MUST use the Google Search tool to find the most current and relevant information. " +
+                      "You MUST cite your sources by providing the URL and title of the source website at the end of your answer. " +
+                      "If a question is outside your scope (e.g., medical advice, complex financial trading), politely decline and state that your expertise is limited to Malaysian education and student life."
+            }]
+        };
+
+        // --- DOM Elements ---
+        const mainPages = {
+            "page-learn": document.getElementById("page-learn"),
+            "page-esports": document.getElementById("page-esports"),
+            "page-doc-zam": document.getElementById("page-doc-zam")
+        };
+
+        const navButtons = {
+            "nav-learn": document.getElementById("nav-learn"),
+            "nav-esports": document.getElementById("nav-esports"),
+            "nav-doc-zam": document.getElementById("nav-doc-zam")
+        };
+        
+        const esportsTabButtons = {
+            "tab-scores": document.getElementById("tab-scores"),
+            "tab-news": document.getElementById("tab-news"),
+            "tab-register": document.getElementById("tab-register")
+        };
+        
+        const esportsTabContent = {
+            "content-scores": document.getElementById("content-scores"),
+            "content-news": document.getElementById("content-news"),
+            "content-register": document.getElementById("content-register")
+        };
+
+        const chatMessages = document.getElementById("chat-messages");
+        const chatInput = document.getElementById("chat-input");
+        const chatSendBtn = document.getElementById("chat-send-btn");
+        const appBody = document.body;
+
+        // --- Icon Templates ---
+        const icons = {
+            learn: {
+                outline: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /><path fill-rule="evenodd" d="M1.5 12c0-5.798 4.702-10.5 10.5-10.5s10.5 4.702 10.5 10.5-4.702 10.5-10.5 10.5S1.5 17.798 1.5 12zm10.5-9A9 9 0 1012 21 9 9 0 0012 3z" clip-rule="evenodd" /></svg>`,
+                solid: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M1.5 12c0-5.798 4.702-10.5 10.5-10.5s10.5 4.702 10.5 10.5-4.702 10.5-10.5 10.5S1.5 17.798 1.5 12zm10.5-9A9 9 0 1012 21 9 9 0 0012 3z" clip-rule="evenodd" /></svg>`
+            },
+            esports: {
+                outline: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3.75v3.75m3.75-3.75v3.75m-7.5-3.75L3 16.5m18 0l-3.75 3.75M3 16.5l3.75-3.75m10.5 3.75L21 16.5m-18 0l3.75 3.75m10.5-3.75l3.75 3.75M9 13.5l3 3m3-3l-3 3" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a8.25 8.25 0 006.205-3.088 8.25 8.25 0 00-12.41 0A8.25 8.25 0 0012 21zM12 3.75c-2.4 0-4.6.802-6.205 2.162a8.25 8.25 0 0012.41 0C16.6 4.552 14.4 3.75 12 3.75z" /></svg>`,
+                solid: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3.75v3.75m3.75-3.75v3.75m-7.5-3.75L3 16.5m18 0l-3.75 3.75M3 16.5l3.75-3.75m10.5 3.75L21 16.5m-18 0l3.75 3.75m10.5-3.75l3.75 3.75M9 13.5l3 3m3-3l-3 3" /><path d="M12 21a8.25 8.25 0 006.205-3.088 8.25 8.25 0 00-12.41 0A8.25 8.25 0 0012 21zM12 3.75c-2.4 0-4.6.802-6.205 2.162a8.25 8.25 0 0012.41 0C16.6 4.552 14.4 3.75 12 3.75z" /></svg>`
+            },
+            'doc-zam': {
+                outline: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.12 2.898 2.508 3.209a5.998 5.998 0 01-1.152 2.628.75.75 0 00.518 1.12c.382.079.78.038 1.118-.12L8.25 18.061a1 1 0 01.62-.22c.28.08.564.14.856.18a5.998 5.998 0 003.549 0c.292-.04.576-.1.856-.18a1 1 0 01.62.22l1.63 1.09c.338.158.736.199 1.118.12a.75.75 0 00.518-1.12 5.998 5.998 0 01-1.152-2.628C19.38 15.658 20.5 14.36 20.5 12.76V6.75a2.25 2.25 0 00-2.25-2.25H5.75A2.25 2.25 0 003.5 6.75v6.01zM5 6.75h14v6.01c0 .984-.627 1.808-1.5 2.12v-1.213a.75.75 0 00-.5- .707A4.48 4.48 0 0012 12.75a4.48 4.48 0 00-5.5 1.213.75.75 0 00-.5.707v1.213C5.627 14.568 5 13.744 5 12.76V6.75z" /></svg>`,
+                solid: `<svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.707 6.707 0 001.196-.0.75.75 0 01.547 1.052A8.23 8.23 0 018.34 24a8.23 8.23 0 01-4.24-1.02a.75.75 0 01.547-1.052c.28.07.568.12.857.146zM19.196 21.644c.288-.026.577-.076.857-.146a.75.75 0 01.547 1.052A8.23 8.23 0 0115.66 24a8.23 8.23 0 01-4.24-1.02a.75.75 0 01.547-1.052c.28.07.568.12.857.146A6.707 6.707 0 0018 21.75a6.707 6.707 0 001.196-.0z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M5.023 4.28C5.39 3.545 6.16 3 7 3h10c.84 0 1.61.545 1.977 1.28l.003.005c.368.734.368 1.608 0 2.342l-.003.005A2.25 2.25 0 0117 8.25H7a2.25 2.25 0 01-1.98-1.62l-.003-.005c-.368-.734-.368-1.608 0-2.342l.003-.005zM7 6.75h10a.75.75 0 00.744-.636l.003-.005c.122-.245.122-.54 0-.784l-.003-.005A.75.75 0 0017 4.5H7a.75.75 0 00-.744.62l-.003.005c-.122.245-.122.54 0 .784l.003.005A.75.75 0 007 6.75z" clip-rule="evenodd" /><path d="M3.5 10.865v-.015c0-1.6 1.12-2.898 2.508-3.209A5.998 5.998 0 015 5.25H7v1.5h10v-1.5h2a5.998 5.998 0 01-.008 2.39c1.388.31 2.508 1.608 2.508 3.209v.015c0 .984-.627 1.808-1.5 2.12v-1.214a.75.75 0 00-.5-.707A4.48 4.48 0 0012 9.75a4.48 4.48 0 00-5.5 1.214.75.75 0 00-.5.707v1.214C5.627 12.673 5 11.849 5 10.865z" /></svg>`
+            }
+        };
+
+        // --- Main Navigation Logic ---
+        function switchPage(pageId) {
+            // Hide all pages
+            Object.values(mainPages).forEach(page => page.classList.add('hidden'));
+            
+            // Show the selected page
+            if (mainPages[pageId]) {
+                mainPages[pageId].classList.remove('hidden');
+            }
+
+            // Update nav button styles
+            Object.keys(navButtons).forEach(key => {
+                const btn = navButtons[key];
+                const iconName = key.replace('nav-', '');
+                const isActive = btn.id === `nav-${pageId.replace('page-', '')}`;
+                
+                // Clear existing icons
+                btn.innerHTML = ''; 
+                
+                // Set icon
+                btn.innerHTML = isActive ? icons[iconName].solid : icons[iconName].outline;
+                
+                // Set text color
+                if (isActive) {
+                    if (pageId === 'page-esports') {
+                        // Special high-contrast style for esports
+                        btn.classList.add('esports-accent');
+                        btn.classList.remove('text-gray-400', 'text-emerald-500');
+                    } else {
+                        // Default pastel style
+                        btn.classList.add('text-emerald-500');
+                        btn.classList.remove('text-gray-400', 'esports-accent');
+                    }
+                } else {
+                    btn.classList.add('text-gray-400');
+                    btn.classList.remove('text-emerald-500', 'esports-accent');
+                }
+                
+                // Add label
+                const label = document.createElement('span');
+                label.className = 'text-xs font-semibold mt-1';
+                label.textContent = btn.id.replace('nav-', '').charAt(0).toUpperCase() + btn.id.slice(5);
+                if (label.textContent === 'Doc-zam') label.textContent = 'Doc Zam';
+                btn.appendChild(label);
+            });
+            
+            // Update body class for page-specific theme
+            if (pageId === 'page-esports') {
+                appBody.classList.add('esports-page');
+                appBody.classList.remove('default-page');
+            } else {
+                appBody.classList.add('default-page');
+                appBody.classList.remove('esports-page');
+            }
+        }
+        
+        // --- Esports Tab Navigation Logic ---
+        function switchEsportsTab(tabId) {
+            // Update button styles
+            Object.keys(esportsTabButtons).forEach(key => {
+                const btn = esportsTabButtons[key];
+                const isActive = btn.id === tabId;
+                if (isActive) {
+                    btn.classList.add('esports-accent-border', 'esports-accent');
+                    btn.classList.remove('border-transparent', 'text-gray-500');
+                } else {
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                    btn.classList.remove('esports-accent-border', 'esports-accent');
+                }
+            });
+            
+            // Show/hide content
+            const contentId = tabId.replace('tab-', 'content-');
+            Object.keys(esportsTabContent).forEach(key => {
+                const content = esportsTabContent[key];
+                if (key === contentId) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- Chatbot Logic ---
+        let chatHistory = [{
+            role: "user",
+            parts: [{ text: "Initial context setting. Not a user message." }] // Priming
+        },{
+            role: "model",
+            parts: [{ text: "Hi there! I'm Doc Zam. Ask me anything about university life or higher education in Malaysia. For example: \"What are the top engineering universities?\" or \"How can I get a PTPTN loan?\"" }]
+        }];
+
+        // Function to add a message to the chat UI
+        function addChatMessage(role, text) {
+            const messageDiv = document.createElement('div');
+            let content = '';
+
+            if (role === 'user') {
+                messageDiv.className = 'flex justify-end';
+                content = `
+                    <div class="bg-emerald-500 text-white p-4 rounded-xl rounded-br-none shadow-lg max-w-xs md:max-w-md">
+                        <p>${text}</p>
+                    </div>
+                `;
+            } else { // 'model' or 'bot'
+                messageDiv.className = 'flex items-start space-x-3';
+                content = `
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center shadow-md">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" fill="#10b981"/><path d="M12 14.5C13.381 14.5 14.5 13.381 14.5 12C14.5 10.619 13.381 9.5 12 9.5C10.619 9.5 9.5 10.619 9.5 12C9.5 13.381 10.619 14.5 12 14.5Z" fill="#fff"/><line x1="9" y1="10" x2="8" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="10" x2="16" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M9 15C9 15 10 16 12 16C14 16 15 15 15 15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl rounded-tl-none shadow-lg border border-gray-100 max-w-xs md:max-w-md">
+                        <p class="text-gray-800">${text}</p>
+                    </div>
+                `;
+            }
+            
+            messageDiv.innerHTML = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Function to add a typing indicator
+        function addTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'flex items-start space-x-3';
+            typingDiv.innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center shadow-md">
+                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" fill="#10b981"/><path d="M12 14.5C13.381 14.5 14.5 13.381 14.5 12C14.5 10.619 13.381 9.5 12 9.5C10.619 9.5 9.5 10.619 9.5 12C9.5 13.381 10.619 14.5 12 14.5Z" fill="#fff"/><line x1="9" y1="10" x2="8" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="10" x2="16" y2="9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M9 15C9 15 10 16 12 16C14 16 15 15 15 15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div class="bg-white p-4 rounded-xl rounded-tl-none shadow-lg border border-gray-100">
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to remove typing indicator
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+        
+        // Function to format bot response (e.g., Markdown)
+        function formatText(text) {
+            // Basic Markdown to HTML
+            // Bold: **text** -> <strong>text</strong>
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Italics: *text* -> <em>text</em>
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // Newlines: \n -> <br>
+            text = text.replace(/\n/g, '<br>');
+            return text;
+        }
+
+        // Function to handle chat submission
+        async function handleChatSubmit() {
+            const userQuery = chatInput.value.trim();
+            if (userQuery === "") return;
+
+            // Add user message to UI and history
+            addChatMessage('user', userQuery);
+            chatHistory.push({ role: "user", parts: [{ text: userQuery }] });
+            chatInput.value = "";
+            chatSendBtn.disabled = true;
+
+            // Show typing indicator
+            addTypingIndicator();
+
+            // --- Call Gemini API ---
+            try {
+                const payload = {
+                    contents: chatHistory,
+                    systemInstruction: SYSTEM_INSTRUCTION,
+                    tools: [{ "google_search": {} }] // Enable Google Search
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                removeTypingIndicator();
+
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    let botResponse = candidate.content.parts[0].text;
+                    
+                    // --- Handle Citations ---
+                    const groundingMetadata = candidate.groundingMetadata;
+                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                        const sources = groundingMetadata.groundingAttributions
+                            .map(attr => ({ uri: attr.web?.uri, title: attr.web?.title }))
+                            .filter(src => src.uri && src.title);
+                            
+                        if (sources.length > 0) {
+                            botResponse += "\n\n<hr class='my-2'><strong>Sources:</strong><ul>";
+                            sources.forEach(src => {
+                                botResponse += `<li><a href="${src.uri}" target="_blank" class="text-emerald-600 hover:underline">${src.title}</a></li>`;
+                            });
+                            botResponse += "</ul>";
+                        }
+                    }
+
+                    // Add bot message to UI and history
+                    addChatMessage('bot', formatText(botResponse));
+                    chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+                } else {
+                    addChatMessage('bot', "I'm sorry, I couldn't find an answer for that. Please try rephrasing your question.");
+                }
+
+            } catch (error) {
+                removeTypingIndicator();
+                addChatMessage('bot', `I'm having a little trouble right now. Please try again later. (Error: ${error.message})`);
+            }
+            
+            chatSendBtn.disabled = false;
+        }
+
+        // --- Event Listeners ---
+
+        // Main Navigation
+        Object.values(navButtons).forEach(button => {
+            button.addEventListener('click', () => {
+                switchPage(button.dataset.page);
+            });
+        });
+
+        // Esports Tab Navigation
+        Object.values(esportsTabButtons).forEach(button => {
+            button.addEventListener('click', () => {
+                switchEsportsTab(button.id);
+            });
+        });
+
+        // Chat Input
+        chatSendBtn.addEventListener('click', handleChatSubmit);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleChatSubmit();
+            }
+        });
+
+        // Initialize the app on the "Learn" page
+        document.addEventListener('DOMContentLoaded', () => {
+            switchPage('page-learn');
+        });
+        
+    </script>
+
+</body>
+
+</html>
