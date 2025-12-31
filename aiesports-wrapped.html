@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ESPORTS | 2025-2026 Mission Report</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #09090b;
+            color: white;
+            scroll-behavior: smooth;
+        }
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+        .crt-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 118, 0.06));
+            background-size: 100% 3px, 3px 100%;
+        }
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.15;
+            background-image: linear-gradient(#444 1px, transparent 1px), 
+                              linear-gradient(90deg, #444 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite;
+        }
+    </style>
+</head>
+<body class="selection:bg-cyan-500 selection:text-white">
+
+    <div class="crt-overlay"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex flex-col items-center justify-center p-6 text-center border-b-8 border-zinc-900 bg-gradient-to-b from-zinc-950 to-zinc-900 overflow-hidden">
+        <div class="absolute top-12 left-12 opacity-30 hidden md:block text-[12px] pixel-font">
+            RUNTIME_v2.6
+        </div>
+        
+        <div class="mb-8 inline-flex items-center gap-3 px-5 py-2 border-2 border-cyan-500/50 bg-cyan-500/10 text-cyan-400 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest pixel-font">
+            <i data-lucide="zap" class="w-4 h-4 fill-current"></i> MISSION REPORT
+        </div>
+
+        <h1 class="text-4xl md:text-8xl font-black mb-8 tracking-tighter leading-none pixel-font">
+            AI ESPORTS<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-red-500 glow-text">
+                2025-2026
+            </span>
+        </h1>
+
+        <p class="max-w-3xl text-zinc-400 text-xl md:text-3xl font-light leading-relaxed mb-16 px-4">
+            Through Gamification <span class="text-white font-semibold">We Catalyse AI Literacy </span> and develop <span class="text-white font-semibold">Next Gen AI Talents in SEA</span>.
+        </p>
+
+        <a href="#milestones" class="animate-bounce p-5 bg-zinc-900 border-2 border-zinc-800 rounded-full hover:border-cyan-500 transition-all hover:bg-cyan-500/10">
+            <i data-lucide="chevron-down" class="w-8 h-8 text-cyan-500"></i>
+        </a>
+    </section>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-6 py-32 space-y-48">
+        
+        <!-- 2025 Achievements -->
+        <section id="milestones">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-l-8 border-cyan-500 pl-8">
+                <div>
+                    <h2 class="text-2xl md:text-5xl font-bold mb-4 uppercase tracking-tighter pixel-font">2025 IMPACT</h2>
+                    <p class="text-zinc-500 uppercase tracking-[0.3em] text-sm md:text-lg font-medium">Successful Mission Clear</p>
+                </div>
+                <div class="text-cyan-500 font-bold text-lg md:text-3xl pixel-font">COMPLETE</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Regional Expansion -->
+                <div class="p-10 bg-zinc-900/40 border-2 border-blue-500/50 backdrop-blur-md hover:bg-zinc-800/80 transition-all group rounded-2xl">
+                    <div class="mb-8 p-4 bg-zinc-800 w-fit rounded-2xl group-hover:scale-110 transition-transform group-hover:bg-zinc-700">
+                        <i data-lucide="globe" class="w-8 h-8 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">Regional Expansion</h3>
+                    <p class="text-zinc-400 mb-10 text-lg md:text-xl leading-relaxed font-light">Successfully established operations in 4 key Southeast Asian markets, laying the groundwork for regional dominance.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">Singapore (HQ)</span>
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">Philippines</span>
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">Malaysia</span>
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">Vietnam</span>
+                    </div>
+                </div>
+
+                <!-- Education & Literacy -->
+                <div class="p-10 bg-zinc-900/40 border-2 border-purple-500/50 backdrop-blur-md hover:bg-zinc-800/80 transition-all group rounded-2xl">
+                    <div class="mb-8 p-4 bg-zinc-800 w-fit rounded-2xl group-hover:scale-110 transition-transform group-hover:bg-zinc-700">
+                        <i data-lucide="cpu" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">Education & Literacy</h3>
+                    <p class="text-zinc-400 mb-10 text-lg md:text-xl leading-relaxed font-light">Partnered with leading institutions to drive AI and gaming education for the next generation of digital leaders.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">17 Universities</span>
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">1,000+ Students</span>
+                    </div>
+                </div>
+
+                <!-- Community Growth -->
+                <div class="p-10 bg-zinc-900/40 border-2 border-cyan-500/50 backdrop-blur-md hover:bg-zinc-800/80 transition-all group rounded-2xl">
+                    <div class="mb-8 p-4 bg-zinc-800 w-fit rounded-2xl group-hover:scale-110 transition-transform group-hover:bg-zinc-700">
+                        <i data-lucide="users" class="w-8 h-8 text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">Community Growth</h3>
+                    <p class="text-zinc-400 mb-10 text-lg md:text-xl leading-relaxed font-light">Built a robust digital ecosystem and social media presence, fostering an active and engaged community.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">10k+ FB Followers</span>
+                        <span class="text-[10px] md:text-[12px] px-3 py-2 bg-zinc-800 text-cyan-400 border border-zinc-700 rounded-lg font-bold uppercase pixel-font">High Engagement</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2026 Tasks/Roadmap -->
+        <section>
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-l-8 border-red-600 pl-8">
+                <div>
+                    <h2 class="text-2xl md:text-5xl font-bold mb-4 uppercase tracking-tighter pixel-font">2026 ROADMAP</h2>
+                    <p class="text-zinc-500 uppercase tracking-[0.3em] text-sm md:text-lg font-medium">Future Strategic Initiatives</p>
+                </div>
+                <div class="text-red-500 font-bold text-lg md:text-3xl animate-pulse pixel-font">LOADING...</div>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Malaysia Scale-up -->
+                <div class="flex flex-col md:flex-row gap-8 p-10 bg-zinc-900/80 border-2 border-zinc-800 hover:border-red-600/50 transition-all relative overflow-hidden group rounded-3xl items-center">
+                    <div class="flex-shrink-0 w-24 h-24 bg-red-600/10 flex items-center justify-center rounded-2xl border-2 border-red-600/20 group-hover:bg-red-600/20 group-hover:border-red-600/40 transition-all">
+                        <i data-lucide="rocket" class="w-10 h-10 text-red-500"></i>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 mb-4">
+                            <h3 class="text-2xl md:text-4xl font-bold text-white tracking-tight">National Scale-up (Malaysia)</h3>
+                            <span class="text-[10px] md:text-[12px] px-3 py-1 bg-red-600 text-white rounded-md font-bold pixel-font">Priority</span>
+                        </div>
+                        <p class="text-zinc-400 max-w-4xl leading-relaxed text-lg md:text-2xl font-light">
+                            Strategic partnership with Ministry of Higher Education (MOHE) to reach over 500,000 university students through the AI Esports Malaysia Challenge.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- NGO Launch -->
+                <div class="flex flex-col md:flex-row gap-8 p-10 bg-zinc-900/80 border-2 border-zinc-800 hover:border-red-600/50 transition-all relative overflow-hidden group rounded-3xl items-center">
+                    <div class="flex-shrink-0 w-24 h-24 bg-red-600/10 flex items-center justify-center rounded-2xl border-2 border-red-600/20 group-hover:bg-red-600/20 group-hover:border-red-600/40 transition-all">
+                        <i data-lucide="handshake" class="w-10 h-10 text-blue-500"></i>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 mb-4">
+                            <h3 class="text-2xl md:text-4xl font-bold text-white tracking-tight">Asymmetric Intelligence Org</h3>
+                            <span class="text-[10px] md:text-[12px] px-3 py-1 bg-red-600 text-white rounded-md font-bold pixel-font">NGO Launch</span>
+                        </div>
+                        <p class="text-zinc-400 max-w-4xl leading-relaxed text-lg md:text-2xl font-light">
+                            Launching an ASEAN-based NGO to promote AI literacy and human-to-human collaboration in AI across Southeast Asia.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Corporate Esports -->
+                <div class="flex flex-col md:flex-row gap-8 p-10 bg-zinc-900/80 border-2 border-zinc-800 hover:border-red-600/50 transition-all relative overflow-hidden group rounded-3xl items-center">
+                    <div class="flex-shrink-0 w-24 h-24 bg-red-600/10 flex items-center justify-center rounded-2xl border-2 border-red-600/20 group-hover:bg-red-600/20 group-hover:border-red-600/40 transition-all">
+                        <i data-lucide="sword" class="w-10 h-10 text-orange-500"></i>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 mb-4">
+                            <h3 class="text-2xl md:text-4xl font-bold text-white tracking-tight">Corporate Esports</h3>
+                            <span class="text-[10px] md:text-[12px] px-3 py-1 bg-red-600 text-white rounded-md font-bold pixel-font">New Market</span>
+                        </div>
+                        <p class="text-zinc-400 max-w-4xl leading-relaxed text-lg md:text-2xl font-light">
+                            Launching dedicated competitive platforms for Government-Linked Companies (GLCs) and corporate teams to foster tech adoption.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Singapore ITE -->
+                <div class="flex flex-col md:flex-row gap-8 p-10 bg-zinc-900/80 border-2 border-zinc-800 hover:border-red-600/50 transition-all relative overflow-hidden group rounded-3xl items-center">
+                    <div class="flex-shrink-0 w-24 h-24 bg-red-600/10 flex items-center justify-center rounded-2xl border-2 border-red-600/20 group-hover:bg-red-600/20 group-hover:border-red-600/40 transition-all">
+                        <i data-lucide="shield" class="w-10 h-10 text-emerald-500"></i>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 mb-4">
+                            <h3 class="text-2xl md:text-4xl font-bold text-white tracking-tight">AI Literacy (Singapore)</h3>
+                            <span class="text-[10px] md:text-[12px] px-3 py-1 bg-red-600 text-white rounded-md font-bold pixel-font">Innovation</span>
+                        </div>
+                        <p class="text-zinc-400 max-w-4xl leading-relaxed text-lg md:text-2xl font-light">
+                            The Singapore ITE AI Esports Games 2026: Driving tech skills through competitive gaming and experiential learning.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Closing Section -->
+    <footer class="bg-zinc-900 border-t-8 border-zinc-800 py-32 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col items-center text-center space-y-16">
+          
+          <div class="space-y-6">
+            <h2 class="text-2xl md:text-4xl font-bold uppercase text-white tracking-widest pixel-font">MISSION CONTINUES</h2>
+            <div class="w-32 h-2 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div class="max-w-4xl py-16 px-10 border-y-2 border-zinc-800 bg-zinc-950/30 rounded-3xl">
+            <p class="text-2xl md:text-5xl font-bold leading-tight uppercase tracking-tight text-white mb-10 pixel-font">
+              AI ESPORTS WISHES YOU A <span class="text-cyan-400 glow-text">FANTASTIC 2026</span>.
+            </p>
+            <p class="text-xl md:text-3xl text-zinc-300 font-light leading-relaxed">
+              Looking forward to <span class="text-white font-bold border-b-4 border-cyan-500">teaming up</span> to go <span class="text-white font-bold italic underline decoration-purple-500 underline-offset-8">further together</span>.
+            </p>
+          </div>
+
+          <div class="flex flex-col items-center gap-6">
+            <i data-lucide="heart" class="w-12 h-12 text-red-500 fill-current animate-pulse-slow"></i>
+            <div class="space-y-4">
+              <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-[0.2em] text-zinc-100 pixel-font">AI ESPORTS</h3>
+              <p class="text-zinc-600 text-xs md:text-sm uppercase tracking-[0.5em] font-medium">SEA REGIONAL HQ • ESTABLISHED 2025</p>
+            </div>
+          </div>
+
+          <div class="pt-16 border-t border-zinc-800 w-full flex flex-col md:flex-row justify-between items-center gap-6 text-zinc-700 text-[10px] md:text-[12px] uppercase tracking-widest font-bold pixel-font">
+            <span>© 2025-2026 AI ESPORTS. ALL RIGHTS RESERVED.</span>
+            <span class="text-zinc-500">SYST_LOG: SYNC_COMPLETE</span>
+          </div>
+        </div>
+    </footer>
+
+    <!-- Retro Status Bar -->
+    <div class="fixed bottom-0 left-0 w-full p-3 bg-zinc-950/90 backdrop-blur-md border-t-2 border-zinc-800 z-40 flex justify-between px-10 text-[10px] text-zinc-500 font-bold tracking-widest pixel-font">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></div>
+          LOCATION: SE_ASIA_REGION
+        </div>
+        <div class="hidden md:block">ENCRYPTION: AES_256_ACTIVE</div>
+        <div class="text-cyan-500">v2.0.26_READY</div>
+    </div>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
