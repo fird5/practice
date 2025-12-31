@@ -51,6 +51,14 @@
         .animate-pulse-slow {
             animation: pulse-slow 3s infinite;
         }
+        .audio-playing {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.6);
+            border-color: rgba(34, 211, 238, 1);
+        }
+        .loading-dot {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body class="selection:bg-cyan-500 selection:text-white">
@@ -58,10 +66,21 @@
     <div class="crt-overlay"></div>
     <div class="bg-grid"></div>
 
+    <!-- Audio Control Toggle -->
+    <div class="fixed top-6 right-6 z-[60] flex items-center gap-4">
+        <button id="musicToggle" class="p-4 bg-zinc-900/90 backdrop-blur-xl border-2 border-zinc-700 rounded-2xl hover:border-cyan-500 transition-all group flex items-center gap-3">
+            <i id="musicIcon" data-lucide="play-circle" class="w-6 h-6 text-zinc-500 group-hover:text-cyan-400"></i>
+            <div class="flex flex-col items-start leading-none hidden md:flex">
+                <span class="text-[8px] pixel-font text-zinc-500 group-hover:text-cyan-400" id="musicStatus">SYSTEM AUDIO: OFF</span>
+                <span class="text-[7px] text-zinc-400 mt-1 uppercase" id="audioSubText">Click to start dynamic mission beat</span>
+            </div>
+        </button>
+    </div>
+
     <!-- Hero Section -->
     <section class="relative h-screen flex flex-col items-center justify-center p-6 text-center border-b-8 border-zinc-900 bg-gradient-to-b from-zinc-950 to-zinc-900 overflow-hidden">
         <div class="absolute top-12 left-12 opacity-30 hidden md:block text-[12px] pixel-font">
-            RUNTIME_v2.6
+            D_OS: v2.6.ACCEL
         </div>
         
         <div class="mb-8 inline-flex items-center gap-3 px-5 py-2 border-2 border-cyan-500/50 bg-cyan-500/10 text-cyan-400 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest pixel-font">
@@ -76,7 +95,7 @@
         </h1>
 
         <p class="max-w-3xl text-zinc-400 text-xl md:text-3xl font-light leading-relaxed mb-16 px-4">
-            Through Gamification <span class="text-white font-semibold">We Catalyse AI Literacy </span> and develop <span class="text-white font-semibold">Next Gen AI Talents in SEA</span>.
+            Driving regional growth through <span class="text-white font-semibold">Artificial Intelligence</span> and <span class="text-white font-semibold">Digital Literacy</span>.
         </p>
 
         <a href="#milestones" class="animate-bounce p-5 bg-zinc-900 border-2 border-zinc-800 rounded-full hover:border-cyan-500 transition-all hover:bg-cyan-500/10">
@@ -93,7 +112,7 @@
                     <h2 class="text-2xl md:text-5xl font-bold mb-4 uppercase tracking-tighter pixel-font">2025 IMPACT</h2>
                     <p class="text-zinc-500 uppercase tracking-[0.3em] text-sm md:text-lg font-medium">Successful Mission Clear</p>
                 </div>
-                <div class="text-cyan-500 font-bold text-lg md:text-3xl pixel-font">COMPLETE</div>
+                <div class="text-cyan-500 font-bold text-lg md:text-3xl pixel-font tracking-widest">100% COMPLETE</div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -147,7 +166,7 @@
                     <h2 class="text-2xl md:text-5xl font-bold mb-4 uppercase tracking-tighter pixel-font">2026 ROADMAP</h2>
                     <p class="text-zinc-500 uppercase tracking-[0.3em] text-sm md:text-lg font-medium">Future Strategic Initiatives</p>
                 </div>
-                <div class="text-red-500 font-bold text-lg md:text-3xl animate-pulse pixel-font">LOADING...</div>
+                <div class="text-red-500 font-bold text-lg md:text-3xl animate-pulse pixel-font uppercase">Loading<span class="loading-dot">.</span><span class="loading-dot" style="animation-delay: 0.2s">.</span><span class="loading-dot" style="animation-delay: 0.4s">.</span></div>
             </div>
 
             <div class="space-y-8">
@@ -257,13 +276,191 @@
           <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></div>
           LOCATION: SE_ASIA_REGION
         </div>
-        <div class="hidden md:block">ENCRYPTION: AES_256_ACTIVE</div>
+        <div class="hidden md:block">BPM_LEVEL: <span id="bpmDisplay">0</span></div>
         <div class="text-cyan-500">v2.0.26_READY</div>
     </div>
 
-    <!-- Initialize Icons -->
+    <!-- Scripts -->
     <script>
         lucide.createIcons();
+
+        // --- DYNAMIC ESCALATION AUDIO ENGINE ---
+        let audioCtx;
+        let isPlaying = false;
+        let step = 0;
+        let schedulerId;
+        let startTime = 0;
+        let nextNoteTime = 0;
+        let mainFilter;
+        let currentTempo = 92;
+
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            mainFilter = audioCtx.createBiquadFilter();
+            mainFilter.type = 'lowpass';
+            mainFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
+            mainFilter.connect(audioCtx.destination);
+        }
+
+        // --- Drum Generators ---
+        function playKick(time, phase) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(phase > 1 ? 160 : 120, time);
+            osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.15);
+            gain.gain.setValueAtTime(phase > 3 ? 0.7 : 0.4, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+            osc.connect(gain); gain.connect(mainFilter);
+            osc.start(time); osc.stop(time + 0.15);
+        }
+
+        function playSnare(time, phase) {
+            if (phase < 1) return;
+            const noise = audioCtx.createBufferSource();
+            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.1, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            noise.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass'; filter.frequency.setValueAtTime(phase > 3 ? 2000 : 1000, time);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(phase > 4 ? 0.3 : 0.15, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+            noise.connect(filter); filter.connect(gain); gain.connect(mainFilter);
+            noise.start(time); noise.stop(time + 0.1);
+        }
+
+        function playHat(time, phase, volume = 0.05) {
+            if (phase < 1) return;
+            const noise = audioCtx.createBufferSource();
+            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.02, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            noise.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'highpass'; filter.frequency.setValueAtTime(6000, time);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(volume, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.02);
+            noise.connect(filter); filter.connect(gain); gain.connect(mainFilter);
+            noise.start(time); noise.stop(time + 0.02);
+        }
+
+        // --- Synth Generators ---
+        function playBass(freq, time, phase) {
+            if (phase < 2) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(freq, time);
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass'; filter.frequency.setValueAtTime(300, time);
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.08, time + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
+            osc.connect(filter); filter.connect(gain); gain.connect(mainFilter);
+            osc.start(time); osc.stop(time + 0.2);
+        }
+
+        function playArp(freq, time, phase) {
+            if (phase < 3) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, time);
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.04, time + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+            osc.connect(gain); gain.connect(mainFilter);
+            osc.start(time); osc.stop(time + 0.1);
+        }
+
+        function scheduler() {
+            while (nextNoteTime < audioCtx.currentTime + 0.1) {
+                const elapsed = audioCtx.currentTime - startTime;
+                
+                // --- PROGRESSION LOGIC (Every 5 Seconds) ---
+                let phase = Math.floor(elapsed / 5);
+                currentTempo = 92 + (phase * 8); // Increase BPM by 8 every 5 seconds
+                if (currentTempo > 160) currentTempo = 160; // Speed cap
+                
+                document.getElementById('bpmDisplay').innerText = Math.round(currentTempo);
+
+                // Filter opening logic
+                if (elapsed < 6) {
+                    mainFilter.frequency.setTargetAtTime(15000, audioCtx.currentTime, 2.5);
+                }
+
+                scheduleNote(step, nextNoteTime, phase);
+                
+                // Recalculate timing based on dynamic tempo
+                const secondsPerStep = (60 / currentTempo) / 4;
+                nextNoteTime += secondsPerStep;
+                step = (step + 1) % 16;
+            }
+            schedulerId = setTimeout(scheduler, 25);
+        }
+
+        function scheduleNote(step, time, phase) {
+            // Drums
+            if (step === 0 || step === 10) playKick(time, phase);
+            if (step === 4 || step === 12) playSnare(time, phase);
+            if (step % 2 === 0) playHat(time, phase);
+            
+            // Fast percussion in high phases
+            if (phase >= 4 && step % 1 === 0) playHat(time, phase, 0.02);
+
+            // Chords / Bass
+            const root = 130.81; // C3
+            const scale = [1, 1.25, 1.5, 1.875]; // Major triad vibes
+            
+            if (step === 0) playBass(root, time, phase);
+            if (step === 8) playBass(root * 0.75, time, phase);
+
+            // Arpeggio (Only Phase 3+)
+            if (phase >= 3) {
+                const notes = [root*2, root*2.5, root*3, root*3.75];
+                const note = notes[step % notes.length];
+                playArp(note, time, phase);
+            }
+        }
+
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicStatus = document.getElementById('musicStatus');
+        const audioSubText = document.getElementById('audioSubText');
+
+        musicToggle.addEventListener('click', () => {
+            if (!audioCtx) initAudio();
+
+            if (!isPlaying) {
+                audioCtx.resume();
+                startTime = audioCtx.currentTime;
+                nextNoteTime = audioCtx.currentTime;
+                step = 0;
+                mainFilter.frequency.setValueAtTime(200, startTime);
+                scheduler();
+                
+                musicIcon.setAttribute('data-lucide', 'pause-circle');
+                musicIcon.classList.remove('text-zinc-500');
+                musicIcon.classList.add('text-cyan-400');
+                musicToggle.classList.add('audio-playing');
+                musicStatus.innerText = "ACCELERATOR: ACTIVE";
+                audioSubText.innerText = "Tempo climbing every 5s...";
+                isPlaying = true;
+            } else {
+                clearTimeout(schedulerId);
+                audioCtx.suspend();
+                musicIcon.setAttribute('data-lucide', 'play-circle');
+                musicIcon.classList.remove('text-cyan-400');
+                musicIcon.classList.add('text-zinc-500');
+                musicToggle.classList.remove('audio-playing');
+                musicStatus.innerText = "SYSTEM AUDIO: OFF";
+                audioSubText.innerText = "Click to resume escalation";
+                isPlaying = false;
+            }
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>
