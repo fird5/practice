@@ -1,84 +1,251 @@
-<div id="result-box" class="hidden fade-in text-center">
-    <div class="text-5xl mb-4">🚀</div>
-    <h2 class="text-2xl font-bold mb-2 text-slate-800">Your Profile:</h2>
-    <h3 id="profile-name" class="text-xl font-bold text-blue-600 mb-4 uppercase tracking-wide"></h3>
-    <p id="profile-desc" class="text-slate-600 mb-6"></p>
-    
-    <div class="bg-blue-50 p-4 rounded-lg mb-6 text-left">
-        <h4 class="font-bold text-blue-800 mb-2">Recommended Careers:</h4>
-        <ul id="career-list" class="list-disc list-inside text-sm space-y-1 text-slate-700"></ul>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Discovery Tool | SkillsFuture 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
 
-    <div class="border-t border-slate-200 pt-6 mt-6">
-        <p class="text-sm font-semibold text-slate-500 mb-4 uppercase">Save or Share Your Results</p>
-        <div class="grid grid-cols-2 gap-3">
-            <a id="email-btn" href="#" class="flex items-center justify-center gap-2 bg-slate-800 text-white py-3 px-4 rounded-xl text-sm font-medium hover:bg-slate-700 transition-all">
-                <span>📧 Email Me</span>
-            </a>
-            <a id="whatsapp-btn" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-green-500 text-white py-3 px-4 rounded-xl text-sm font-medium hover:bg-green-600 transition-all">
-                <span>💬 WhatsApp</span>
-            </a>
-        </div>
-        <button id="copy-btn" onclick="copyResults()" class="w-full mt-3 flex items-center justify-center gap-2 bg-white border-2 border-slate-200 text-slate-700 py-3 px-4 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all">
-            <span id="copy-text">📋 Copy Results to Clipboard</span>
-        </button>
-    </div>
-
-    <button onclick="location.reload()" class="w-full py-3 mt-4 text-slate-400 text-xs font-medium underline uppercase tracking-widest">Restart Survey</button>
-</div>
-
-<script>
-    // ... (Keep existing questions and resultsData from the previous version) ...
-
-    let currentStep = 0;
-    let scores = { tech: 0, care: 0, business: 0, creative: 0 };
-
-    // ... (Keep loadQuestion and handleAnswer functions from previous version) ...
-
-    function showResults() {
-        document.getElementById("question-box").classList.add("hidden");
-        document.getElementById("result-box").classList.remove("hidden");
-        document.getElementById("progress").parentElement.classList.add("hidden");
-
-        const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-        const result = resultsData[winner];
-
-        document.getElementById("profile-name").innerText = result.name;
-        document.getElementById("profile-desc").innerText = result.desc;
-
-        const list = document.getElementById("career-list");
-        list.innerHTML = ""; // Clear list
-        result.careers.forEach(c => {
-            const li = document.createElement("li");
-            li.innerText = c;
-            list.appendChild(li);
-        });
-
-        setupShareButtons(result);
-    }
-
-    function setupShareButtons(result) {
-        const shareText = `My Career Match: ${result.name}. Suggested Careers: ${result.careers.join(', ')}. Check it out at the Skills Upskilling Event!`;
-        const emailSubject = encodeURIComponent("My Career Upskilling Results");
-        const emailBody = encodeURIComponent(`Hi! Here are my results from the Career Matcher:\n\nProfile: ${result.name}\n\nDescription: ${result.desc}\n\nRecommended Careers:\n- ${result.careers.join('\n- ')}\n\nNext Step: ${result.training}`);
-
-        // Email Link
-        document.getElementById("email-btn").href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
-
-        // WhatsApp Link
-        document.getElementById("whatsapp-btn").href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    <div class="max-w-xl mx-auto px-4 py-8 md:py-12">
         
-        // Store for Clipboard
-        window.currentResultText = `CAREER MATCH: ${result.name}\n\nCareers: ${result.careers.join(', ')}\n\nTraining: ${result.training}`;
-    }
+        <div class="glass shadow-2xl rounded-3xl overflow-hidden border border-white">
+            
+            <div class="bg-blue-600 p-6 text-white text-center">
+                <h1 class="text-2xl font-bold tracking-tight">Career Matcher 2026</h1>
+                <p class="text-blue-100 text-sm mt-1">Discover your next career move in 60 seconds</p>
+            </div>
 
-    function copyResults() {
-        navigator.clipboard.writeText(window.currentResultText).then(() => {
-            const btnText = document.getElementById("copy-text");
-            btnText.innerText = "✅ Copied!";
-            setTimeout(() => { btnText.innerText = "📋 Copy Results to Clipboard"; }, 2000);
-        });
-    }
+            <div id="progress-container" class="w-full bg-blue-100 h-1.5">
+                <div id="progress-bar" class="bg-orange-400 h-1.5 transition-all duration-500" style="width: 0%"></div>
+            </div>
 
-    loadQuestion();
-</script>
+            <div class="p-8">
+                
+                <div id="start-screen" class="text-center py-6">
+                    <div class="text-6xl mb-6">🎯</div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Ready to find your path?</h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed">Answer 5 quick questions about your preferences to see which Singapore growth sectors suit you best.</p>
+                    <button onclick="startQuiz()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl">
+                        Start My Career Survey
+                    </button>
+                </div>
+
+                <div id="quiz-screen" class="hidden fade-in">
+                    <h2 id="question-text" class="text-xl font-bold text-slate-800 mb-6 min-h-[3.5rem]"></h2>
+                    <div id="options-container" class="space-y-4">
+                        </div>
+                </div>
+
+                <div id="results-screen" class="hidden fade-in">
+                    <div class="text-center mb-6">
+                        <span class="inline-block bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2">Your Career Match</span>
+                        <h2 id="result-name" class="text-3xl font-bold text-slate-900 mb-2"></h2>
+                        <p id="result-desc" class="text-slate-600 leading-relaxed"></p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-6">
+                        <h3 class="font-bold text-slate-800 mb-3 flex items-center">
+                            <span class="mr-2">💼</span> Recommended Roles
+                        </h3>
+                        <ul id="career-list" class="space-y-2 text-slate-700 text-sm">
+                            </ul>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8">
+                        <h3 class="font-bold text-blue-800 mb-1 flex items-center">
+                            <span class="mr-2">🎓</span> Suggested Upskilling
+                        </h3>
+                        <p id="training-advice" class="text-blue-700 text-sm"></p>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-6">
+                        <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Save your results</p>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <a id="share-email" href="#" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-black text-white py-3.5 px-4 rounded-xl text-sm font-semibold transition-all">
+                                <span>📧 Email Me</span>
+                            </a>
+                            <a id="share-whatsapp" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3.5 px-4 rounded-xl text-sm font-semibold transition-all">
+                                <span>💬 WhatsApp</span>
+                            </a>
+                        </div>
+                        
+                        <button onclick="copyToClipboard()" class="w-full flex items-center justify-center gap-2 bg-white border-2 border-slate-200 text-slate-600 py-3.5 px-4 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-all active:scale-95">
+                            <span id="copy-btn-text">📋 Copy Result to Clipboard</span>
+                        </button>
+                    </div>
+
+                    <button onclick="location.reload()" class="w-full mt-8 text-slate-400 text-xs font-medium hover:text-blue-600 transition-colors uppercase tracking-widest">
+                        Take Survey Again
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="text-center mt-8 text-slate-500 text-xs">
+            &copy; 2026 Skills Discovery Event • Supporting Your Career Growth
+        </p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "1. Which of these activities sounds like a productive afternoon?",
+                options: [
+                    { text: "Troubleshooting a software bug or fixing a gadget", type: "tech" },
+                    { text: "Mentoring a colleague or helping a patient", type: "care" }
+                ]
+            },
+            {
+                q: "2. Which type of environment do you thrive in?",
+                options: [
+                    { text: "Structured, data-driven, and technical", type: "tech" },
+                    { text: "Creative, collaborative, and fast-paced", type: "creative" }
+                ]
+            },
+            {
+                q: "3. If you were to learn a new skill today, it would be:",
+                options: [
+                    { text: "Data Analytics or Green Technology", type: "tech" },
+                    { text: "Public Speaking or Business Strategy", type: "business" }
+                ]
+            },
+            {
+                q: "4. What is your 'Work Superpower'?",
+                options: [
+                    { text: "I can find a solution to any complex problem", type: "business" },
+                    { text: "I can understand and empathize with anyone", type: "care" }
+                ]
+            },
+            {
+                q: "5. What excites you most about the future of Singapore?",
+                options: [
+                    { text: "Smart City tech and sustainability", type: "tech" },
+                    { text: "Better healthcare and community support", type: "care" }
+                ]
+            }
+        ];
+
+        const resultsData = {
+            tech: {
+                name: "The Digital Architect",
+                desc: "You have a natural affinity for systems, data, and technical problem-solving. You are essential for Singapore's Smart Nation goals.",
+                careers: ["Data Analyst", "Sustainability Consultant", "Cybersecurity Engineer", "Full Stack Developer"],
+                training: "Check out SCTP (SkillsFuture Career Transition) programs for Digital & Green Tech at Booth 12."
+            },
+            care: {
+                name: "The Human Connection",
+                desc: "Your strengths lie in empathy, communication, and supporting others. You are the heart of the Care Economy.",
+                careers: ["Healthcare Coordinator", "Learning & Development Manager", "Social Service Officer", "Patient Service Specialist"],
+                training: "Visit the Healthcare & Social Service booths (Booth 5-7) for professional conversion programs."
+            },
+            business: {
+                name: "The Strategic Driver",
+                desc: "You are focused on growth, efficiency, and leadership. You have the mindset of a future business leader.",
+                careers: ["Business Development Manager", "Digital Transformation Lead", "Supply Chain Planner", "Fintech Specialist"],
+                training: "Look for IBF-accredited courses or Digital Business Diplomas at Booth 9."
+            },
+            creative: {
+                name: "The Experience Creator",
+                desc: "You see the world through a lens of design, engagement, and innovation. You make the future intuitive.",
+                careers: ["UX/UI Designer", "Content Strategist", "Digital Marketer", "E-commerce Specialist"],
+                training: "Explore Creative Arts & Digital Marketing modular courses at Booth 15."
+            }
+        };
+
+        let currentStep = 0;
+        let scores = { tech: 0, care: 0, business: 0, creative: 0 };
+        let finalResult = null;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentStep];
+            document.getElementById("question-text").innerText = q.q;
+            const container = document.getElementById("options-container");
+            container.innerHTML = "";
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-5 rounded-2xl border-2 border-slate-100 bg-white hover:border-blue-500 hover:bg-blue-50 transition-all font-semibold text-slate-700 shadow-sm";
+                btn.innerText = opt.text;
+                btn.onclick = () => handleAnswer(opt.type);
+                container.appendChild(btn);
+            });
+
+            const progress = ((currentStep) / questions.length) * 100;
+            document.getElementById("progress-bar").style.width = progress + "%";
+        }
+
+        function handleAnswer(type) {
+            scores[type]++;
+            currentStep++;
+            if (currentStep < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById("quiz-screen").classList.add("hidden");
+            document.getElementById("results-screen").classList.remove("hidden");
+            document.getElementById("progress-bar").style.width = "100%";
+
+            // Determine winner
+            const winnerKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            finalResult = resultsData[winnerKey];
+
+            // Update UI
+            document.getElementById("result-name").innerText = finalResult.name;
+            document.getElementById("result-desc").innerText = finalResult.desc;
+            document.getElementById("training-advice").innerText = finalResult.training;
+
+            const list = document.getElementById("career-list");
+            list.innerHTML = "";
+            finalResult.careers.forEach(c => {
+                const li = document.createElement("li");
+                li.className = "flex items-center gap-2";
+                li.innerHTML = `<span class="text-blue-500">•</span> ${c}`;
+                list.appendChild(li);
+            });
+
+            // Set up share links
+            const summaryText = `My Career Profile: ${finalResult.name}\nRecommended Roles: ${finalResult.careers.join(', ')}`;
+            const encodedText = encodeURIComponent(summaryText + "\nCheck your match at the Skills Discovery Event!");
+            
+            // Email link
+            const emailSubject = encodeURIComponent("My Career Discovery Results");
+            const emailBody = encodeURIComponent(`I took the Career Matcher survey!\n\nMy Profile: ${finalResult.name}\n\n${finalResult.desc}\n\nRecommended Roles:\n- ${finalResult.careers.join('\n- ')}\n\nNext Steps: ${finalResult.training}`);
+            document.getElementById("share-email").href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+
+            // WhatsApp link
+            document.getElementById("share-whatsapp").href = `https://wa.me/?text=${encodedText}`;
+        }
+
+        function copyToClipboard() {
+            const text = `CAREER MATCH: ${finalResult.name}\n\nRecommended Roles: ${finalResult.careers.join(', ')}\n\nTraining: ${finalResult.training}`;
+            navigator.clipboard.writeText(text).then(() => {
+                const btnText = document.getElementById("copy-btn-text");
+                btnText.innerText = "✅ Result Copied!";
+                setTimeout(() => { btnText.innerText = "📋 Copy Result to Clipboard"; }, 2500);
+            });
+        }
+    </script>
+</body>
+</html>
