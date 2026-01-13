@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Matcher 2026 | PDF Export</title>
+    <title>Career Matcher 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <style>
         .hidden { display: none !important; }
-        #pdf-template { width: 700px; padding: 40px; background: white; }
+        #qrcode img { margin: 0 auto; border: 8px solid white; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen p-4">
+<body class="bg-slate-50 min-h-screen p-4 font-sans">
 
-    <div id="main-container" class="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-4">
+    <div id="app-card" class="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-6">
         
-        <div class="bg-blue-700 p-6 text-white text-center no-print">
-            <h1 class="text-2xl font-bold">Skills Discovery 2026</h1>
-            <p class="text-blue-100 text-sm">Find your career path and export results</p>
+        <div class="bg-blue-700 p-6 text-white text-center">
+            <h1 class="text-2xl font-bold uppercase tracking-tight">Skills Discovery 2026</h1>
+            <p class="text-blue-100 text-sm">Employment & Career Guidance (ECG) Tool</p>
         </div>
 
         <div class="p-8">
-
             <div id="view-start" class="text-center py-10">
                 <div class="text-6xl mb-6">🎯</div>
-                <h2 class="text-2xl font-bold mb-4">Start Your Discovery</h2>
-                <input type="text" id="input-name" placeholder="Enter Your Full Name" class="w-full p-4 border-2 border-slate-200 rounded-xl mb-6 text-center text-lg outline-none focus:border-blue-500">
-                <button onclick="handleStart()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-all">
-                    Start Now
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Ready to begin?</h2>
+                <input type="text" id="input-name" placeholder="Enter Your Name" 
+                       class="w-full p-4 border-2 border-slate-200 rounded-xl mb-6 text-center text-lg outline-none focus:border-blue-600">
+                <button onclick="handleStart()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 active:scale-95 transition-all">
+                    Start My Survey
                 </button>
             </div>
 
@@ -42,80 +39,81 @@
             </div>
 
             <div id="view-results" class="hidden text-center">
-                <p class="text-blue-600 font-bold uppercase text-xs tracking-widest">Results Prepared For</p>
-                <h2 id="result-user-name" class="text-3xl font-bold text-slate-900 mb-6"></h2>
+                <p class="text-blue-600 font-bold uppercase text-xs tracking-widest mb-1">Results For</p>
+                <h2 id="res-name" class="text-3xl font-bold text-slate-900 mb-6 underline decoration-blue-200"></h2>
                 
-                <div id="qr-section" class="bg-white p-4 border-2 border-dashed border-slate-200 rounded-2xl mb-8 flex flex-col items-center">
-                    <p class="text-xs font-bold text-slate-400 mb-4 uppercase">Scan Result Summary to Phone</p>
-                    <div id="qrcode"></div>
+                <div id="qr-container" class="bg-slate-100 p-6 rounded-2xl mb-8 flex flex-col items-center border border-slate-200">
+                    <p class="text-xs font-bold text-slate-500 mb-4 uppercase">Scan to save results to phone</p>
+                    <div id="qrcode" class="bg-white p-2 min-h-[160px] min-w-[160px] flex items-center justify-center border">
+                         <span class="text-slate-400 text-xs">QR Loading...</span>
+                    </div>
                 </div>
 
-                <div class="space-y-4">
-                    <button onclick="exportToPDF()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-blue-700 active:scale-95 transition-all">
-                        📄 Export as PDF
+                <div class="space-y-3">
+                    <button onclick="exportPDF()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg">
+                        📄 Export Official PDF
                     </button>
-                    <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-medium uppercase tracking-widest py-2">
-                        Take Survey Again
+                    <button onclick="window.location.reload()" class="w-full text-slate-400 text-xs font-medium uppercase mt-4 underline">
+                        Restart New Survey
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="pdf-export-container" class="hidden">
-        <div id="pdf-content" style="padding: 50px; font-family: sans-serif; color: #333;">
-            <div style="border-bottom: 4px solid #1d4ed8; padding-bottom: 20px; margin-bottom: 30px; text-align: center;">
+    <div id="pdf-template" class="hidden">
+        <div id="pdf-inner" style="padding: 40px; font-family: sans-serif; color: #333;">
+            <div style="border-bottom: 5px solid #1d4ed8; padding-bottom: 20px; margin-bottom: 30px; text-align: center;">
                 <h1 style="color: #1d4ed8; margin: 0; font-size: 28px;">CAREER DISCOVERY REPORT</h1>
-                <p style="color: #666; font-size: 14px; margin-top: 5px;">Singapore SkillsFuture Event 2026</p>
+                <p style="color: #64748b; font-size: 14px;">Employment & Career Guidance (ECG) 2026</p>
             </div>
-            
-            <p style="font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Report For:</p>
-            <h2 id="pdf-name" style="margin: 0 0 30px 0; font-size: 24px; color: #000;"></h2>
-
-            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
-                <h3 id="pdf-title" style="color: #1d4ed8; text-transform: uppercase; margin: 0 0 10px 0;"></h3>
-                <p id="pdf-desc" style="line-height: 1.6; color: #475569;"></p>
+            <h2 id="pdf-user-name" style="margin: 0 0 20px 0; font-size: 22px; border-bottom: 1px solid #eee; padding-bottom: 10px;"></h2>
+            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                <h3 id="pdf-profile-title" style="color: #1d4ed8; margin: 0 0 10px 0; font-size: 18px; text-transform: uppercase;"></h3>
+                <p id="pdf-profile-desc" style="margin: 0; line-height: 1.6;"></p>
             </div>
-
-            <div style="margin-bottom: 30px;">
-                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">Recommended Careers</h4>
-                <ul id="pdf-careers" style="list-style: none; padding: 0;"></ul>
-            </div>
-
-            <div style="background: #fff7ed; padding: 20px; border-radius: 10px; border: 1px solid #ffedd5;">
-                <h4 style="color: #9a3412; margin: 0 0 5px 0;">📍 Your Next Step</h4>
-                <p id="pdf-advice" style="margin: 0; font-size: 14px; color: #c2410c;"></p>
-            </div>
-
-            <div style="margin-top: 50px; text-align: center; border-top: 1px solid #eee; pt: 20px;">
-                <p style="font-size: 10px; color: #aaa;">This report was generated during the 2026 Career Upskilling Fair. Values are based on personal preference mapping.</p>
-            </div>
+            <h4 style="color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9;">Recommended Roles</h4>
+            <ul id="pdf-career-list" style="padding: 0; list-style: none; margin-bottom: 30px;"></ul>
+            <div style="text-align: center; font-size: 10px; color: #94a3b8; margin-top: 40px;">Generated via 2026 Skills Discovery Tool</div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script>
-        const quizData = [
-            { q: "1. Which activity interests you most?", options: [{ t: "Analyzing data and trends", s: "tech" }, { t: "Helping people or teaching", s: "care" }] },
-            { q: "2. Your ideal work environment is...", options: [{ t: "Structured/Predictable", s: "business" }, { t: "Creative/Dynamic", s: "creative" }] },
-            { q: "3. If you had to pick a hobby, it would be:", options: [{ t: "Coding or DIY electronics", s: "tech" }, { t: "Volunteering or coaching", s: "care" }] },
-            { q: "4. What is your 'Superpower'?", options: [{ t: "Leadership & Strategy", s: "business" }, { t: "Design & Content", s: "creative" }] },
-            { q: "5. Focus for 2026?", options: [{ t: "Digital Tech & AI", s: "tech" }, { t: "Healthcare & Wellness", s: "care" }] }
-        ];
-
+        // --- SURVEY LOGIC ---
         const profiles = {
-            tech: { title: "The Tech Innovator", desc: "You have a natural affinity for logic and technical systems.", careers: ["Data Analyst", "Cybersecurity Specialist", "Software Engineer"], advice: "Visit Booth 12 (Digital Tech)." },
-            care: { title: "The Care Specialist", desc: "Your empathy and communication skills are your greatest assets.", careers: ["Healthcare Lead", "Social Service Executive", "HR Manager"], advice: "Visit Booth 5 (Care Sector)." },
-            business: { title: "The Strategic Leader", desc: "You are organized and driven by results and growth.", careers: ["Project Manager", "Business Analyst", "Operations Lead"], advice: "Visit Booth 9 (Finance & Growth)." },
-            creative: { title: "The Creative Maker", desc: "You see the world through a lens of design and innovation.", careers: ["UX/UI Designer", "Digital Marketer", "Content Strategist"], advice: "Visit Booth 15 (Creative Arts)." }
+            tech: { title: "The Tech Innovator", desc: "You thrive on logic, analytical problem solving, and building digital systems.", careers: ["Data Scientist", "Cybersecurity Analyst", "Software Engineer"] },
+            care: { title: "The Care Specialist", desc: "Your empathy and ability to connect with people make you a pillar of the community.", careers: ["Healthcare Lead", "Social Impact Officer", "Learning Consultant"] },
+            business: { title: "The Strategic Leader", desc: "You are focused on organizational growth, results, and driving effective operations.", careers: ["Project Manager", "Operations Lead", "Business Consultant"] },
+            creative: { title: "The Creative Maker", desc: "You see the world through a lens of design, innovation, and engaging content.", careers: ["UX Designer", "Digital Marketer", "Content Strategist"] }
         };
 
-        let currentQ = 0;
-        let score = { tech: 0, care: 0, business: 0, creative: 0 };
-        let userName = "";
+        const quizData = [
+            { q: "1. Which task do you find most fulfilling?", options: [{ t: "Analyzing data for insights", s: "tech" }, { t: "Helping someone solve a life problem", s: "care" }] },
+            { q: "2. Your ideal workspace is...", options: [{ t: "Structured and task-oriented", s: "business" }, { t: "Creative and collaborative", s: "creative" }] },
+            { q: "3. If you had to pick a hobby, it would be:", options: [{ t: "Learning a new programming language", s: "tech" }, { t: "Volunteering for a local charity", s: "care" }] },
+            { q: "4. What is your 'Work Superpower'?", options: [{ t: "Directing teams to reach a goal", s: "business" }, { t: "Designing visual stories", s: "creative" }] },
+            { q: "5. Focus for Singapore 2026?", options: [{ t: "Smart Nation & AI Economy", s: "tech" }, { t: "Silver Economy & Community Care", s: "care" }] }
+        ];
 
+        let currentQ = 0, score = { tech: 0, care: 0, business: 0, creative: 0 }, userName = "";
+
+        // CHECK IF ALREADY SHARED VIA URL (Option A)
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('name') && params.has('profile')) {
+            userName = params.get('name');
+            window.onload = () => showResults(params.get('profile'), true);
+        }
+
+        // START BUTTON HANDLER
         function handleStart() {
             userName = document.getElementById('input-name').value;
-            if (!userName) return alert("Please enter your name.");
+            if (!userName || userName.trim() === "") {
+                alert("Please enter your name to start.");
+                return;
+            }
             document.getElementById('view-start').classList.add('hidden');
             document.getElementById('view-quiz').classList.remove('hidden');
             loadQuestion();
@@ -126,68 +124,77 @@
             document.getElementById("question-text").innerText = q.q;
             const container = document.getElementById("options-container");
             container.innerHTML = "";
+
             q.options.forEach(opt => {
                 const btn = document.createElement("button");
-                btn.className = "w-full text-left p-5 rounded-xl border-2 border-slate-100 bg-white font-semibold hover:border-blue-500 transition-all";
+                btn.className = "w-full text-left p-5 rounded-xl border-2 border-slate-100 bg-white font-semibold hover:border-blue-500 transition-all shadow-sm active:bg-blue-50";
                 btn.innerText = opt.t;
                 btn.onclick = () => {
                     score[opt.s]++;
                     currentQ++;
-                    if (currentQ < quizData.length) loadQuestion();
-                    else showResults();
+                    if (currentQ < quizData.length) {
+                        loadQuestion();
+                    } else {
+                        const winner = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
+                        showResults(winner, false);
+                    }
                 };
                 container.appendChild(btn);
             });
             document.getElementById("progress-bar").style.width = (currentQ / quizData.length * 100) + "%";
         }
 
-        function showResults() {
+        function showResults(pKey, isShared) {
+            document.getElementById('view-start').classList.add('hidden');
             document.getElementById('view-quiz').classList.add('hidden');
             document.getElementById('view-results').classList.remove('hidden');
-            
-            const winner = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
-            const res = profiles[winner];
 
-            // Fill On-Screen Results
-            document.getElementById("result-user-name").innerText = userName;
-            document.getElementById("result-title").innerText = res.title;
-            document.getElementById("result-desc").innerText = res.desc;
+            const res = profiles[pKey];
+            document.getElementById("res-name").innerText = userName;
 
-            // Fill Hidden PDF Template
-            document.getElementById("pdf-name").innerText = userName;
-            document.getElementById("pdf-title").innerText = res.title;
-            document.getElementById("pdf-desc").innerText = res.desc;
-            document.getElementById("pdf-advice").innerText = res.advice;
+            // Fill PDF Template
+            document.getElementById("pdf-user-name").innerText = "Participant: " + userName;
+            document.getElementById("pdf-profile-title").innerText = res.title;
+            document.getElementById("pdf-profile-desc").innerText = res.desc;
             
-            const pdfList = document.getElementById("pdf-careers");
-            pdfList.innerHTML = "";
+            const list = document.getElementById("pdf-career-list");
+            list.innerHTML = "";
             res.careers.forEach(c => {
                 const li = document.createElement("li");
-                li.style.padding = "8px 0";
-                li.style.borderBottom = "1px solid #f1f5f9";
-                li.innerHTML = `<strong style="color: #1d4ed8;">•</strong> ${c}`;
-                pdfList.appendChild(li);
+                li.style.padding = "10px 0"; li.style.borderBottom = "1px solid #f1f5f9";
+                li.innerHTML = `<span style="color:#1d4ed8; font-weight:bold; margin-right:8px;">✔</span> ${c}`;
+                list.appendChild(li);
             });
 
-            // Generate QR Code with summary data
-            const summary = `NAME: ${userName}\nMATCH: ${res.title}\nCAREERS: ${res.careers.join(', ')}`;
-            new QRCode(document.getElementById("qrcode"), {
-                text: summary,
-                width: 160,
-                height: 160
-            });
+            if (!isShared) {
+                // Generate QR Link pointing back to this page (Option A)
+                setTimeout(() => {
+                    if (typeof QRCode !== 'undefined') {
+                        const baseUrl = window.location.origin + window.location.pathname;
+                        const shareUrl = `${baseUrl}?name=${encodeURIComponent(userName)}&profile=${pKey}`;
+                        document.getElementById("qrcode").innerHTML = "";
+                        new QRCode(document.getElementById("qrcode"), { text: shareUrl, width: 160, height: 160 });
+                    } else {
+                        document.getElementById("qrcode").innerHTML = "<p class='text-xs text-red-500'>QR Library Error</p>";
+                    }
+                }, 500);
+            } else {
+                document.getElementById('qr-container').classList.add('hidden');
+            }
         }
 
-        function exportToPDF() {
-            const element = document.getElementById('pdf-content');
-            const opt = {
-                margin:       10,
-                filename:     `Career_Report_${userName}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
+        function exportPDF() {
+            if (typeof html2pdf === 'undefined') {
+                alert("PDF Library is still loading or failed. Please check internet connection.");
+                return;
+            }
+            const element = document.getElementById('pdf-inner');
+            html2pdf().from(element).set({
+                margin: 10,
+                filename: `${userName}_CareerMatch.pdf`,
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
         }
     </script>
 </body>
