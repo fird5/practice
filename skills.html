@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Matcher 2026</title>
+    <title>Career Discovery 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         .hidden { display: none !important; }
-        #qrcode img { margin: 0 auto; border: 8px solid white; }
+        #qrcode img { margin: 0 auto; border: 10px solid white; border-radius: 8px; }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen p-4 font-sans">
 
-    <div id="app-card" class="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-6">
+    <div id="main-card" class="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-6">
         
-        <div class="bg-blue-700 p-6 text-white text-center">
+        <div class="bg-blue-700 p-6 text-white text-center no-print">
             <h1 class="text-2xl font-bold uppercase tracking-tight">Skills Discovery 2026</h1>
-            <p class="text-blue-100 text-sm">Employment & Career Guidance (ECG) Tool</p>
+            <p class="text-blue-100 text-sm">Find your path & export results</p>
         </div>
 
         <div class="p-8">
             <div id="view-start" class="text-center py-10">
                 <div class="text-6xl mb-6">🎯</div>
-                <h2 class="text-2xl font-bold mb-4 text-slate-800">Ready to begin?</h2>
+                <h2 class="text-2xl font-bold mb-4">Ready to start?</h2>
                 <input type="text" id="input-name" placeholder="Enter Your Name" 
                        class="w-full p-4 border-2 border-slate-200 rounded-xl mb-6 text-center text-lg outline-none focus:border-blue-600">
-                <button onclick="handleStart()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 active:scale-95 transition-all">
+                <button onclick="handleStart()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-all">
                     Start My Survey
                 </button>
             </div>
@@ -40,20 +43,20 @@
 
             <div id="view-results" class="hidden text-center">
                 <p class="text-blue-600 font-bold uppercase text-xs tracking-widest mb-1">Results For</p>
-                <h2 id="res-name" class="text-3xl font-bold text-slate-900 mb-6 underline decoration-blue-200"></h2>
+                <h2 id="res-name" class="text-3xl font-bold text-slate-900 mb-6 underline decoration-blue-100"></h2>
                 
-                <div id="qr-container" class="bg-slate-100 p-6 rounded-2xl mb-8 flex flex-col items-center border border-slate-200">
-                    <p class="text-xs font-bold text-slate-500 mb-4 uppercase">Scan to save results to phone</p>
-                    <div id="qrcode" class="bg-white p-2 min-h-[160px] min-w-[160px] flex items-center justify-center border">
-                         <span class="text-slate-400 text-xs">QR Loading...</span>
+                <div id="qr-section" class="bg-slate-50 p-6 rounded-2xl mb-8 flex flex-col items-center border border-slate-200">
+                    <p class="text-xs font-bold text-slate-500 mb-4 uppercase">Scan to Download PDF on Phone</p>
+                    <div id="qrcode" class="bg-white p-2 min-h-[160px] flex items-center justify-center">
+                        <span class="text-slate-300 text-xs italic">Loading QR Code...</span>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <button onclick="exportPDF()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg">
+                    <button onclick="exportPDF()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg">
                         📄 Export Official PDF
                     </button>
-                    <button onclick="window.location.reload()" class="w-full text-slate-400 text-xs font-medium uppercase mt-4 underline">
+                    <button onclick="window.location.href=window.location.origin + window.location.pathname" class="w-full text-slate-400 text-xs font-medium uppercase mt-4">
                         Restart New Survey
                     </button>
                 </div>
@@ -67,53 +70,46 @@
                 <h1 style="color: #1d4ed8; margin: 0; font-size: 28px;">CAREER DISCOVERY REPORT</h1>
                 <p style="color: #64748b; font-size: 14px;">Employment & Career Guidance (ECG) 2026</p>
             </div>
-            <h2 id="pdf-user-name" style="margin: 0 0 20px 0; font-size: 22px; border-bottom: 1px solid #eee; padding-bottom: 10px;"></h2>
+            <h2 id="pdf-user-name" style="margin: 0 0 20px 0; font-size: 22px;"></h2>
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
-                <h3 id="pdf-profile-title" style="color: #1d4ed8; margin: 0 0 10px 0; font-size: 18px; text-transform: uppercase;"></h3>
+                <h3 id="pdf-profile-title" style="color: #1d4ed8; margin: 0 0 5px 0; font-size: 18px;"></h3>
                 <p id="pdf-profile-desc" style="margin: 0; line-height: 1.6;"></p>
             </div>
-            <h4 style="color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9;">Recommended Roles</h4>
-            <ul id="pdf-career-list" style="padding: 0; list-style: none; margin-bottom: 30px;"></ul>
-            <div style="text-align: center; font-size: 10px; color: #94a3b8; margin-top: 40px;">Generated via 2026 Skills Discovery Tool</div>
+            <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; margin-bottom: 10px;">Recommended Career Roles:</h4>
+            <ul id="pdf-career-list" style="padding: 0; list-style: none;"></ul>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <script>
-        // --- SURVEY LOGIC ---
         const profiles = {
-            tech: { title: "The Tech Innovator", desc: "You thrive on logic, analytical problem solving, and building digital systems.", careers: ["Data Scientist", "Cybersecurity Analyst", "Software Engineer"] },
-            care: { title: "The Care Specialist", desc: "Your empathy and ability to connect with people make you a pillar of the community.", careers: ["Healthcare Lead", "Social Impact Officer", "Learning Consultant"] },
-            business: { title: "The Strategic Leader", desc: "You are focused on organizational growth, results, and driving effective operations.", careers: ["Project Manager", "Operations Lead", "Business Consultant"] },
-            creative: { title: "The Creative Maker", desc: "You see the world through a lens of design, innovation, and engaging content.", careers: ["UX Designer", "Digital Marketer", "Content Strategist"] }
+            tech: { title: "The Tech Innovator", desc: "You thrive in logic, data, and digital systems.", careers: ["Data Analyst", "Cybersecurity", "Software Engineer"] },
+            care: { title: "The Care Specialist", desc: "You have strong empathy and interpersonal skills.", careers: ["Healthcare Lead", "Social Impact", "HR Manager"] },
+            business: { title: "The Strategic Leader", desc: "You are focused on organizational growth and results.", careers: ["Project Manager", "Biz Dev", "Fintech Analyst"] },
+            creative: { title: "The Creative Maker", desc: "You see the world through a lens of design.", careers: ["UX Designer", "Digital Marketer", "Content Strategist"] }
         };
 
         const quizData = [
-            { q: "1. Which task do you find most fulfilling?", options: [{ t: "Analyzing data for insights", s: "tech" }, { t: "Helping someone solve a life problem", s: "care" }] },
-            { q: "2. Your ideal workspace is...", options: [{ t: "Structured and task-oriented", s: "business" }, { t: "Creative and collaborative", s: "creative" }] },
-            { q: "3. If you had to pick a hobby, it would be:", options: [{ t: "Learning a new programming language", s: "tech" }, { t: "Volunteering for a local charity", s: "care" }] },
-            { q: "4. What is your 'Work Superpower'?", options: [{ t: "Directing teams to reach a goal", s: "business" }, { t: "Designing visual stories", s: "creative" }] },
-            { q: "5. Focus for Singapore 2026?", options: [{ t: "Smart Nation & AI Economy", s: "tech" }, { t: "Silver Economy & Community Care", s: "care" }] }
+            { q: "1. Preferred activity?", options: [{ t: "Analyzing data and coding", s: "tech" }, { t: "Helping people and community", s: "care" }] },
+            { q: "2. Working style?", options: [{ t: "Structured/Organized", s: "business" }, { t: "Creative/Flexible", s: "creative" }] },
+            { q: "3. Choice of hobby?", options: [{ t: "Building gadgets/Software", s: "tech" }, { t: "Volunteering/Coaching", s: "care" }] },
+            { q: "4. Your Superpower?", options: [{ t: "Leading teams/Operations", s: "business" }, { t: "Designing/Visuals", s: "creative" }] },
+            { q: "5. Focus for 2026?", options: [{ t: "Digital Smart Nation", s: "tech" }, { t: "Community & Silver Care", s: "care" }] }
         ];
 
         let currentQ = 0, score = { tech: 0, care: 0, business: 0, creative: 0 }, userName = "";
 
-        // CHECK IF ALREADY SHARED VIA URL (Option A)
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('name') && params.has('profile')) {
-            userName = params.get('name');
-            window.onload = () => showResults(params.get('profile'), true);
-        }
+        // INITIALIZE: CHECK URL PARAMS
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('name') && params.has('profile')) {
+                userName = params.get('name');
+                showResults(params.get('profile'), true);
+            }
+        };
 
-        // START BUTTON HANDLER
         function handleStart() {
             userName = document.getElementById('input-name').value;
-            if (!userName || userName.trim() === "") {
-                alert("Please enter your name to start.");
-                return;
-            }
+            if (!userName || userName.trim() === "") return alert("Please enter your name.");
             document.getElementById('view-start').classList.add('hidden');
             document.getElementById('view-quiz').classList.remove('hidden');
             loadQuestion();
@@ -124,17 +120,14 @@
             document.getElementById("question-text").innerText = q.q;
             const container = document.getElementById("options-container");
             container.innerHTML = "";
-
             q.options.forEach(opt => {
                 const btn = document.createElement("button");
-                btn.className = "w-full text-left p-5 rounded-xl border-2 border-slate-100 bg-white font-semibold hover:border-blue-500 transition-all shadow-sm active:bg-blue-50";
+                btn.className = "w-full text-left p-5 rounded-xl border-2 border-slate-100 bg-white font-semibold hover:border-blue-500 shadow-sm";
                 btn.innerText = opt.t;
                 btn.onclick = () => {
-                    score[opt.s]++;
-                    currentQ++;
-                    if (currentQ < quizData.length) {
-                        loadQuestion();
-                    } else {
+                    score[opt.s]++; currentQ++;
+                    if (currentQ < quizData.length) loadQuestion();
+                    else {
                         const winner = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
                         showResults(winner, false);
                     }
@@ -148,11 +141,11 @@
             document.getElementById('view-start').classList.add('hidden');
             document.getElementById('view-quiz').classList.add('hidden');
             document.getElementById('view-results').classList.remove('hidden');
-
+            
             const res = profiles[pKey];
             document.getElementById("res-name").innerText = userName;
 
-            // Fill PDF Template
+            // Fill PDF template data
             document.getElementById("pdf-user-name").innerText = "Participant: " + userName;
             document.getElementById("pdf-profile-title").innerText = res.title;
             document.getElementById("pdf-profile-desc").innerText = res.desc;
@@ -161,37 +154,41 @@
             list.innerHTML = "";
             res.careers.forEach(c => {
                 const li = document.createElement("li");
-                li.style.padding = "10px 0"; li.style.borderBottom = "1px solid #f1f5f9";
-                li.innerHTML = `<span style="color:#1d4ed8; font-weight:bold; margin-right:8px;">✔</span> ${c}`;
+                li.style.padding = "8px 0"; li.style.borderBottom = "1px solid #eee";
+                li.innerHTML = `✔ ${c}`;
                 list.appendChild(li);
             });
 
-            if (!isShared) {
-                // Generate QR Link pointing back to this page (Option A)
+            if (isShared) {
+                document.getElementById('qr-section').classList.add('hidden');
+            } else {
+                // FORCE QR GENERATION AFTER DELAY
                 setTimeout(() => {
-                    if (typeof QRCode !== 'undefined') {
-                        const baseUrl = window.location.origin + window.location.pathname;
-                        const shareUrl = `${baseUrl}?name=${encodeURIComponent(userName)}&profile=${pKey}`;
-                        document.getElementById("qrcode").innerHTML = "";
-                        new QRCode(document.getElementById("qrcode"), { text: shareUrl, width: 160, height: 160 });
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    const shareUrl = `${baseUrl}?name=${encodeURIComponent(userName)}&profile=${pKey}`;
+                    
+                    document.getElementById("qrcode").innerHTML = "";
+                    if (typeof QRCode !== "undefined") {
+                        new QRCode(document.getElementById("qrcode"), {
+                            text: shareUrl,
+                            width: 160,
+                            height: 160,
+                            colorDark : "#1d4ed8",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
                     } else {
-                        document.getElementById("qrcode").innerHTML = "<p class='text-xs text-red-500'>QR Library Error</p>";
+                        document.getElementById("qrcode").innerHTML = "QR Error: Library Missing";
                     }
                 }, 500);
-            } else {
-                document.getElementById('qr-container').classList.add('hidden');
             }
         }
 
         function exportPDF() {
-            if (typeof html2pdf === 'undefined') {
-                alert("PDF Library is still loading or failed. Please check internet connection.");
-                return;
-            }
             const element = document.getElementById('pdf-inner');
-            html2pdf().from(element).set({
-                margin: 10,
-                filename: `${userName}_CareerMatch.pdf`,
+            html2pdf().from(element).set({ 
+                margin: 10, 
+                filename: `${userName}_Career_Match.pdf`,
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save();
