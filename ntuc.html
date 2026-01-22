@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Course Discovery 2026</title>
+    
+    <!-- Core React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Utilities -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- HubSpot Embed Script -->
+    <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Specialized container for PDF: Visible to JS, hidden to User */
+        #pdf-render-zone {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            z-index: -100;
+        }
+
+        .lucide-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
+
+        /* Dribbble-style button press effect */
+        .btn-active:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen selection:bg-blue-100">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- STABLE SVG ICONS (Wrapped in Fragments to fix Babel errors) ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                sparkles: <><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></>,
+                brain: <><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></>,
+                user: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>,
+                arrowLeft: <><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></>,
+                rocket: <><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.5-1 1-4c1.5 0 3.5 1 3.5 1Z"/><path d="M15 15v5c-1 0-4-1.5-4-3.5 0 0 1-2 1-3.5Z"/><path d="m15 5 2 2"/></>,
+                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></>,
+                external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>,
+                graduation: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></>,
+                trend: <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>,
+                award: <><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>,
+                lock: <><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></>,
+                lightbulb: <><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></>
+            };
+            return (
+                <span className={`lucide-icon-wrapper ${className}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        {icons[name] || null}
+                    </svg>
+                </span>
+            );
+        };
+
+        // --- CORE DATA ---
+        const STAGES = [
+            { id: 'early', title: 'Early Career', subtitle: 'Graduates', icon: 'graduation', color: 'blue', description: 'Focus on building technical literacy and professional networks.', focusArea: 'Foundational Skills', recommendations: [{ title: 'AI Foundations', desc: 'Basics of AI.' }] },
+            { id: 'mid', title: 'Mid-Career', subtitle: 'Professionals', icon: 'trend', color: 'emerald', description: 'Upskilling to stay relevant in AI-enabled industries.', focusArea: 'Domain Specialization', recommendations: [{ title: 'Applied AI', desc: 'Efficiency tools.' }] },
+            { id: 'senior', title: 'Late Career', subtitle: 'Seasoned', icon: 'award', color: 'purple', description: 'Focus on strategic leadership, AI ethics, and policy.', focusArea: 'Governance & Strategy', recommendations: [{ title: 'AI Ethics', desc: 'Governance basics.' }] }
+        ];
+
+        const QUESTIONS = [
+            { id: 0, text: "What interests you most about AI?", options: [ { id: 'A', text: "Building or training AI systems" }, { id: 'B', text: "Using AI to improve business decisions" }, { id: 'C', text: "Exploring AI impacts on society" }, { id: 'D', text: "Using AI to enhance marketing/sales" } ] },
+            { id: 1, text: "How comfortable are you with technical concepts?", options: [ { id: 'A', text: "Very comfortable – enjoy coding/data" }, { id: 'B', text: "Practical basics are okay" }, { id: 'C', text: "Prefer non-technical learning" }, { id: 'D', text: "Confident using tools for sales" } ] },
+            { id: 2, text: "How do you see yourself using AI in the future?", options: [ { id: 'A', text: "Developing AI models/apps" }, { id: 'B', text: "Applying tools in my daily job" }, { id: 'C', text: "Managing AI use responsibly" }, { id: 'D', text: "Personalising marketing content" } ] },
+            { id: 3, text: "Which task sounds most appealing to you?", options: [ { id: 'A', text: "Analysing data patterns" }, { id: 'B', text: "Solving operational problems" }, { id: 'C', text: "Designing policies/strategies" }, { id: 'D', text: "Personalising customer journeys" } ] },
+            { id: 4, text: "What is your primary career goal related to AI?", options: [ { id: 'A', text: "Become an AI Engineer/Specialist" }, { id: 'B', text: "Upskill my current role" }, { id: 'C', text: "Work in Ethics, Governance or Strategy" }, { id: 'D', text: "Optimising revenue or content growth" } ] }
+        ];
+
+        const PATHS = {
+            A: { 
+                name: "Technical AI / Data & Engineering", 
+                desc: "For learners who want to build, analyse, or develop AI systems.", 
+                courses: [
+                    { name: "Microsoft Azure AI Fundamentals", url: "https://www.ntuclearninghub.com/en-gb/-/course/microsoft-azure-ai-fundamentals-sf" },
+                    { name: "Advanced Analytics and Machine Learning (Python)", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-analytics-and-machine-learning-using-python-sf" },
+                    { name: "Deep Learning Models and AI using Python", url: "https://www.ntuclearninghub.com/en-gb/-/course/deep-learning-models-and-ai-using-python-sf" }
+                ] 
+            },
+            B: { 
+                name: "Applied AI / Business & Productivity", 
+                desc: "For professionals using AI to improve efficiency and decision-making across functions.", 
+                courses: [
+                    { name: "Generative AI for Business Professionals", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-business-professionals-chatgpt-media-synthesis-and-beyond" },
+                    { name: "AI Innovation Unleashed (Prompt Engineering)", url: "https://www.ntuclearninghub.com/en-gb/-/course/ai-innovation-unleashed-navigating-the-terrain-of-prompt-engineering" },
+                    { name: "Empower Your Workforce with Copilot for M365", url: "https://www.ntuclearninghub.com/en-gb/-/course/empower-your-workforce-with-copilot-for-microsoft-365-use-cases" },
+                    { name: "AI Applications in Industrial Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/fundamentals-of-ai-applications-in-industrial-automation" },
+                    { name: "Digital Workplace Business Process Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/digital-workplace-business-process-and-workflow-automation-design-deploy-and-manage" },
+                    { name: "Smarter Supply Chain Workflows with AI", url: "https://www.ntuclearninghub.com/en-gb/-/course/smarter-supply-chain-workflows-with-ai" }
+                ] 
+            },
+            C: { 
+                name: "AI Ethics, Strategy & Governance", 
+                desc: "For professionals focused on the responsible use, policy, and strategy of AI.", 
+                courses: [
+                    { name: "Strategic Management of AI Innovation", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-business-professionals-chatgpt-media-synthesis-and-beyond" },
+                    { name: "AI Governance and Ethics", url: "https://www.ntuclearninghub.com/en-gb/-/course/ai-innovation-unleashed-navigating-the-terrain-of-prompt-engineering" }
+                ] 
+            },
+            D: { 
+                name: "AI for Sales, Marketing & Customer Experience", 
+                desc: "For professionals focused on growth, engagement, content, and revenue impact.", 
+                courses: [
+                    { name: "Generative AI for Marketing and Design", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-marketing-and-design-text-image-and-video-sf" },
+                    { name: "Advanced Generative AI for Marketing & Sales", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-generative-ai-techniques-for-marketing-sales-sf" },
+                    { name: "Empowering Marketers with AI Tools", url: "https://www.ntuclearninghub.com/en-gb/-/course/empowering-digital-marketers-with-essential-ai-tools" },
+                    { name: "WSQ Enhancing Events with AI", url: "https://www.ntuclearninghub.com/en-gb/-/course/wsq-enhancing-events-with-ai" }
+                ] 
+            }
+        };
+
+        function App() {
+            const [view, setView] = useState('menu'); // menu, detail, identity, quiz, lead, result
+            const [selectedStage, setSelectedStage] = useState(null);
+            const [userName, setUserName] = useState('');
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [userAnswers, setUserAnswers] = useState({});
+            const [resultKey, setResultKey] = useState(null);
+            const qrRef = useRef(null);
+
+            // Option A: Link Sharing Check
+            useEffect(() => {
+                const params = new URLSearchParams(window.location.search);
+                if (params.has('name') && params.get('path')) {
+                    setUserName(decodeURIComponent(params.get('name')));
+                    setResultKey(params.get('path'));
+                    setView('result');
+                }
+            }, []);
+
+            const startQuiz = () => {
+                setCurrentIndex(0);
+                setUserAnswers({});
+                setResultKey(null);
+                setView(userName.trim() ? 'quiz' : 'identity');
+            };
+
+            const selectOption = (optionId) => {
+                const updated = { ...userAnswers, [currentIndex]: optionId };
+                setUserAnswers(updated);
+                if (currentIndex < QUESTIONS.length - 1) {
+                    setTimeout(() => setCurrentIndex(prev => prev + 1), 300);
+                } else {
+                    const counts = { A: 0, B: 0, C: 0, D: 0 };
+                    Object.values(updated).forEach(val => counts[val]++);
+                    const winner = ['A', 'B', 'D', 'C'].reduce((a, b) => (counts[a] || 0) >= (counts[b] || 0) ? a : b);
+                    setResultKey(winner);
+                    setView('lead'); 
+                }
+            };
+
+            // HubSpot Form Loader
+            useEffect(() => {
+                if (view === 'lead' && window.hbspt) {
+                    const timer = setTimeout(() => {
+                        window.hbspt.forms.create({
+                            region: "na1",
+                            portalId: "YOUR_PORTAL_ID", // TODO: CLIENT ID
+                            formId: "YOUR_FORM_ID",     // TODO: CLIENT ID
+                            target: "#hubspot-form-container",
+                            onFormSubmitted: () => setView('result')
+                        });
+                    }, 500);
+                    return () => clearTimeout(timer);
+                }
+            }, [view]);
+
+            // QR Code Generator
+            useEffect(() => {
+                if (view === 'result' && resultKey && qrRef.current) {
+                    const timer = setTimeout(() => {
+                        qrRef.current.innerHTML = "";
+                        const shareUrl = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(userName)}&path=${resultKey}`;
+                        new window.QRCode(qrRef.current, { text: shareUrl, width: 140, height: 140, colorDark: "#1e3a8a" });
+                    }, 800);
+                    return () => clearTimeout(timer);
+                }
+            }, [view, resultKey, userName]);
+
+            const exportPDF = () => {
+                const element = document.getElementById('pdf-cert');
+                const path = PATHS[resultKey] || PATHS.B;
+                
+                // POPULATE PDF TEMPLATE
+                document.getElementById('pdf-user-name-display').innerText = userName.toUpperCase();
+                document.getElementById('pdf-path-title').innerText = `MOSTLY ${resultKey}: ${path.name}`;
+                document.getElementById('pdf-path-desc').innerText = path.desc;
+                document.getElementById('pdf-courses-list').innerHTML = path.courses.map(c => `
+                    <li style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <div style="font-weight: bold; color: #1e3a8a; font-size: 14px;">${c.name}</div>
+                        <div style="font-size: 11px; color: #1d4ed8; word-break: break-all;">${c.url}</div>
+                    </li>
+                `).join('');
+
+                if (window.html2pdf) {
+                    window.html2pdf().from(element).set({
+                        margin: 10,
+                        filename: `AI_Discovery_${userName}.pdf`,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    }).save();
+                }
+            };
+
+            // Main Menu View
+            if (view === 'menu') return (
+                <div className="max-w-6xl mx-auto p-6 md:p-12 space-y-12 fade-in">
+                    <header className="text-center space-y-4 pt-8">
+                        <Icon name="sparkles" size={24} className="text-blue-600 mx-auto" />
+                        <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none uppercase">Navigate Your <br/>Future Path</h1>
+                        <p className="text-slate-500 font-medium text-lg max-w-xl mx-auto">Explore career stages or find your specialized AI upskilling roadmap in 60 seconds.</p>
+                    </header>
+                    <div className="flex justify-center">
+                        <button onClick={startQuiz} className="btn-active group flex items-center gap-6 bg-slate-900 text-white px-12 py-7 rounded-[40px] shadow-2xl hover:bg-blue-600 transition-all">
+                            <Icon name="brain" size={40} />
+                            <div className="text-left leading-tight"><p className="text-xs font-bold uppercase opacity-60">Personalised Guide</p><p className="text-2xl font-black uppercase">Start AI Quiz</p></div>
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
+                        {STAGES.map(s => (
+                            <button key={s.id} onClick={() => { setSelectedStage(s); setView('detail'); }} className="btn-active group p-8 rounded-[50px] bg-white border-4 border-slate-100 hover:border-blue-600 shadow-sm hover:shadow-2xl transition-all text-left">
+                                <div className="p-6 rounded-[30px] mb-8 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><Icon name={s.icon} size={40} /></div>
+                                <h3 className="text-2xl font-black text-slate-900 uppercase leading-none">{s.title}</h3>
+                                <p className="text-slate-400 font-bold text-sm tracking-wide mt-2">{s.subtitle}</p>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            if (view === 'identity') return (
+                <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center space-y-8 fade-in">
+                    <Icon name="user" size={80} className="text-blue-600" />
+                    <h2 className="text-3xl font-black uppercase">Who is taking the quiz?</h2>
+                    <input type="text" value={userName} onChange={e => setUserName(e.target.value)} placeholder="Full Name" className="w-full max-w-sm bg-slate-100 border-4 border-transparent focus:border-blue-600 focus:bg-white rounded-3xl py-6 px-8 text-2xl font-bold outline-none shadow-inner transition-all" />
+                    <button onClick={() => userName.trim() && setView('quiz')} className="btn-active w-full max-w-sm bg-blue-600 text-white font-black py-6 rounded-3xl text-xl shadow-xl">Start Survey</button>
+                </div>
+            );
+
+            if (view === 'quiz') {
+                const q = QUESTIONS[currentIndex];
+                return (
+                    <div className="max-w-4xl mx-auto p-8 min-h-screen flex flex-col justify-center space-y-12 fade-in">
+                        <div className="flex justify-between items-center"><button onClick={() => setView('menu')} className="text-slate-400 font-black text-xs uppercase flex items-center gap-2"><Icon name="arrowLeft" size={16} /> Exit</button><span className="text-xs font-black text-slate-300 uppercase tracking-widest">Step {currentIndex + 1}/5</span></div>
+                        <h2 className="text-3xl font-black text-slate-800 text-center uppercase tracking-tight leading-tight">{q.text}</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {q.options.map(opt => (
+                                <button key={opt.id} onClick={() => selectOption(opt.id)} className="btn-active p-7 rounded-[35px] border-4 border-slate-50 bg-white hover:border-blue-600 text-left font-bold text-lg flex items-center shadow-sm hover:shadow-md transition-all">
+                                    <span className="inline-block w-10 h-10 bg-slate-100 rounded-xl text-center leading-10 mr-4 font-black">{opt.id}</span>{opt.text}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                );
+            }
+
+            if (view === 'lead') return (
+                <div className="max-w-2xl mx-auto p-8 min-h-screen flex flex-col justify-center space-y-8 fade-in text-center">
+                    <Icon name="lock" size={48} className="text-blue-600 mx-auto" />
+                    <h2 className="text-3xl font-black uppercase tracking-tight">Unlock Your Roadmap</h2>
+                    <p className="text-slate-500 font-medium leading-relaxed">Fill in your details to see your personalized AI Career Recommendations.</p>
+                    <div id="hubspot-form-container" className="bg-white p-8 rounded-[40px] border-4 border-slate-100 shadow-2xl min-h-[350px] flex items-center justify-center italic text-slate-300">
+                        Loading Lead Form...
+                    </div>
+                    <button onClick={() => setView('result')} className="text-slate-300 text-[10px] font-black uppercase tracking-widest hover:text-blue-500 transition-colors mt-4">Bypass for testing only</button>
+                </div>
+            );
+
+            if (view === 'result') {
+                const path = resultKey ? PATHS[resultKey] : PATHS.B;
+                return (
+                    <div className="max-w-4xl mx-auto p-8 md:p-12 text-center space-y-10 min-h-screen fade-in">
+                        <header className="space-y-4">
+                            <Icon name="rocket" size={64} className="text-blue-600 mx-auto" />
+                            <h1 className="text-4xl md:text-5xl font-black uppercase">Hello, <span className="text-blue-600">{userName}</span></h1>
+                            <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">Mostly Result {resultKey}</p>
+                        </header>
+
+                        <div className="p-10 bg-slate-900 rounded-[60px] text-white space-y-8 shadow-2xl text-left border-8 border-blue-600">
+                            <div>
+                                <h2 className="text-3xl font-black uppercase leading-tight text-blue-400">{path.name}</h2>
+                                <p className="text-slate-400 text-lg mt-4 font-medium">{path.desc}</p>
+                            </div>
+                            <div className="space-y-4 pt-8 border-t border-white/10">
+                                <p className="text-xs font-black uppercase text-blue-600 bg-blue-50/10 inline-block px-3 py-1 rounded-full mb-2">Targeted NTUC Courses</p>
+                                <div className="grid gap-3">
+                                    {path.courses.map((c, i) => (
+                                        <a key={i} href={c.url} target="_blank" className="btn-active group flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-[25px] hover:bg-white/10 hover:border-blue-500 transition-all">
+                                            <span className="font-bold text-white text-sm leading-tight pr-4">{c.name}</span>
+                                            <Icon name="external" size={18} className="text-blue-400 shrink-0" />
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-10 border-t-2 border-slate-100">
+                            <div className="bg-slate-100 p-8 rounded-[40px] flex flex-col items-center border-4 border-white shadow-inner">
+                                <h4 className="font-black text-xs uppercase mb-4 tracking-widest text-slate-500">Save to Phone</h4>
+                                <div ref={qrRef} className="bg-white p-2 rounded-2xl border shadow-lg overflow-hidden"></div>
+                            </div>
+                            <div className="flex flex-col justify-center gap-4">
+                                <button onClick={exportPDF} className="btn-active bg-slate-900 text-white py-7 rounded-[30px] font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 hover:bg-blue-700 transition-all"><Icon name="download" size={24}/> Export PDF Report</button>
+                                <button onClick={() => window.location.reload()} className="text-slate-400 font-black text-xs uppercase hover:text-blue-600 transition-colors">Start New Discovery</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (view === 'detail') return (
+                <div className="max-w-4xl mx-auto p-8 md:p-12 space-y-12 min-h-screen fade-in text-center">
+                    <button onClick={() => setView('menu')} className="font-black text-xs uppercase text-slate-400 flex items-center gap-2 mx-auto hover:text-slate-900"><Icon name="arrowLeft" size={16}/> Back to Hub</button>
+                    <div className="space-y-6">
+                        <div className="inline-block p-8 rounded-[35px] bg-blue-600 text-white shadow-xl mx-auto"><Icon name={selectedStage.icon} size={50} /></div>
+                        <h2 className="text-5xl font-black uppercase leading-none tracking-tight">{selectedStage.title}</h2>
+                        <p className="text-xl text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">{selectedStage.description}</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left pt-12">
+                        <div className="bg-slate-900 p-10 rounded-[50px] text-white shadow-xl flex flex-col justify-center">
+                            <Icon name="lightbulb" size={24} className="text-blue-400 mb-4" />
+                            <h4 className="text-xs font-black uppercase opacity-40 mb-2 tracking-widest">Key Focus</h4>
+                            <p className="text-3xl font-bold leading-tight uppercase">{selectedStage.focusArea}</p>
+                        </div>
+                        <div className="space-y-4">
+                            {selectedStage.recommendations.map((r, i) => (
+                                <div key={i} className="p-8 bg-white border-4 border-slate-50 rounded-[35px] shadow-sm"><p className="font-black text-slate-900 uppercase text-lg mb-1 leading-tight">{r.title}</p><p className="text-slate-500 text-sm font-medium">{r.desc}</p></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return null;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- PDF TEMPLATE (Technically visible to library, effectively hidden from user) -->
+    <div id="pdf-render-zone">
+        <div id="pdf-cert" style="padding: 60px; background: #fff; width: 794px;">
+            <div style="border-bottom: 10px solid #1e3a8a; padding-bottom: 30px; text-align: center; margin-bottom: 40px;">
+                <h1 style="color: #1e3a8a; font-size: 38px; margin: 0; font-weight: 900; font-family: sans-serif;">AI CAREER PATHWAY REPORT</h1>
+                <p style="font-size: 16px; text-transform: uppercase; color: #666; font-weight: bold; letter-spacing: 3px; font-family: sans-serif;">Employment & Career Guidance 2026</p>
+            </div>
+            
+            <div style="margin-bottom: 40px; font-family: sans-serif;">
+                <p style="font-size: 12px; color: #999; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase;">Generated For:</p>
+                <h2 style="font-size: 30px; margin: 0; font-weight: 900; color: #000;" id="pdf-user-name-display">NAME</h2>
+            </div>
+
+            <div style="background: #f8fafc; padding: 40px; border-radius: 30px; border: 2px solid #e2e8f0; margin-bottom: 40px; font-family: sans-serif;">
+                <h3 style="color: #1e3a8a; font-size: 22px; margin: 0 0 10px 0; font-weight: 900; text-transform: uppercase;" id="pdf-path-title">Pathway</h3>
+                <p style="font-size: 16px; line-height: 1.6; color: #444; margin: 0;" id="pdf-path-desc">Description of the roadmap.</p>
+            </div>
+
+            <div style="font-family: sans-serif;">
+                <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 15px 0; text-transform: uppercase; border-bottom: 3px solid #1e3a8a; padding-bottom: 8px; color: #1e3a8a;">RECOMMENDED UPSKILLING COURSES</h4>
+                <ul id="pdf-courses-list" style="padding-left: 0; list-style: none; margin: 0;"></ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 80px; border-top: 1px solid #eee; padding-top: 30px; font-family: sans-serif;">
+                <p style="font-size: 11px; color: #888; line-height: 1.6;">This report provides high-level career guidance mapping personality traits to Singapore's AI growth clusters. For full details on enrolment and funding eligibility, please consult an advisor at the NTUC LearningHub booth.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
