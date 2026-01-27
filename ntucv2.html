@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Course Discovery 2026 | NTUC LearningHub</title>
+    
+    <!-- Core React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS with Brand Extension -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ntucRoyal: '#18355E',
+                        ntucOptimism: '#0097CE',
+                        ntucFuturism: '#004E74',
+                        ntucIntegrity: '#102935',
+                        ntucVital: '#FFCB05',
+                    },
+                    fontFamily: {
+                        sans: ['Open Sans', 'Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Utilities -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+        
+        body { font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; background-color: #FFFFFF; color: #102935; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Crisp Slider Transitions */
+        .slider-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        /* High Contrast Card Shadow */
+        .card-shadow {
+            box-shadow: 0 30px 60px -12px rgba(24, 53, 94, 0.3);
+        }
+
+        .lucide-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
+        
+        .btn-vital {
+            background-color: #FFCB05;
+            color: #102935;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+        .btn-vital:hover {
+            background-color: #e6b800;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 203, 5, 0.5);
+        }
+        .btn-active:active { transform: scale(0.96); }
+
+        /* PDF Render Zone - Off-screen but fully opaque for capture */
+        #pdf-render-zone {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            z-index: -100;
+            background: white;
+        }
+    </style>
+</head>
+<body class="selection:bg-ntucVital/50 overflow-x-hidden bg-white">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- BOLD SVG ICONS ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                sparkles: <><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></>,
+                brain: <><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></>,
+                user: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>,
+                arrowLeft: <><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></>,
+                arrowRight: <><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></>,
+                rocket: <><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.5-1 1-4c1.5 0 3.5 1 3.5 1Z"/><path d="M15 15v5c-1 0-4-1.5-4-3.5 0 0 1-2 1-3.5Z"/><path d="m15 5 2 2"/></>,
+                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></>,
+                external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>,
+                graduation: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></>,
+                trend: <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>,
+                award: <><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>,
+                lock: <><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></>
+            };
+            return (
+                <span className={`lucide-icon-wrapper ${className}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        {icons[name] || null}
+                    </svg>
+                </span>
+            );
+        };
+
+        // --- GLOBAL CONSTANTS ---
+        const STAGES = [
+            { id: 'early', title: 'Early Career', subtitle: 'Fresh Entrants & Graduates', icon: 'graduation', color: '#18355E', description: 'Transforming Fresh Entrants into high-performing professionals by building technical literacy and vital networks.', focusArea: 'Foundational Skills', recommendations: [{ title: 'AI Foundations', desc: 'Basics of Generative AI for graduates.' }, { title: 'Network Building', desc: 'Connecting with Industry mentors.' }] },
+            { id: 'mid', title: 'Mid-Career', subtitle: 'Professionals & Switchers', icon: 'trend', color: '#0097CE', description: 'Upskilling Professionals to stay resilient in high-growth AI sectors or reskilling into the digital economy.', focusArea: 'Domain Specialization', recommendations: [{ title: 'Applied AI', desc: 'Workflow integration tools.' }, { title: 'Strategic Pivot', desc: 'Transitioning into technical roles.' }] },
+            { id: 'senior', title: 'Late Career', subtitle: 'Seasoned Professionals', icon: 'award', color: '#102935', description: 'Empowering Seasoned Leaders through strategic leadership, AI ethics, and responsible governance.', focusArea: 'Governance & Strategy', recommendations: [{ title: 'AI Ethics', desc: 'Responsible policy and leadership.' }, { title: 'Executive Data Strategy', desc: 'Guiding enterprise transformations.' }] }
+        ];
+
+        const QUESTIONS = [
+            { id: 0, text: "What interests you most about AI?", options: [ { id: 'A', text: "Building or training AI systems and understanding how they work" }, { id: 'B', text: "Using AI to improve business decisions or productivity" }, { id: 'C', text: "Exploring AI impacts on society and governance" }, { id: 'D', text: "Using AI to enhance marketing or sales engagement" } ] },
+            { id: 1, text: "How comfortable are you with technical concepts?", options: [ { id: 'A', text: "Very comfortable – enjoy coding and analysis" }, { id: 'B', text: "Practical basics are okay for daily use" }, { id: 'C', text: "Prefer conceptual or non-technical learning" }, { id: 'D', text: "Confident using tools for revenue growth" } ] },
+            { id: 2, text: "How do you see yourself using AI in the future?", options: [ { id: 'A', text: "Developing AI models and custom apps" }, { id: 'B', text: "Applying AI in my job to enhance efficiency" }, { id: 'C', text: "Evaluating and managing responsible AI use" } ] },
+            { id: 3, text: "Which task sounds most appealing to you?", options: [ { id: 'A', text: "Analysing data to identify patterns" }, { id: 'B', text: "Solving operational business problems" }, { id: 'C', text: "Designing policies or high-level strategies" }, { id: 'D', text: "Personalising marketing and outreach" } ] },
+            { id: 4, text: "What is your primary career goal related to AI?", options: [ { id: 'A', text: "Become an AI Engineer or Data Specialist" }, { id: 'B', text: "Upskill my current professional role" }, { id: 'C', text: "Work in AI Ethics, Strategy or Governance" }, { id: 'D', text: "Drive business impact through AI content" } ] }
+        ];
+
+        const PATHS = {
+            A: { name: "Technical AI / Data & Engineering", desc: "For learners who want to build, analyse, or develop AI systems.", courses: [{ name: "Microsoft Azure AI Fundamentals", url: "https://www.ntuclearninghub.com/en-gb/-/course/microsoft-azure-ai-fundamentals-sf" }, { name: "Advanced Analytics and Machine Learning (Python)", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-analytics-and-machine-learning-using-python-sf" }, { name: "Deep Learning Models and AI using Python", url: "https://www.ntuclearninghub.com/en-gb/-/course/deep-learning-models-and-ai-using-python-sf" }] },
+            B: { name: "Applied AI / Business & Productivity", desc: "For professionals using AI to improve efficiency and decision-making across functions.", courses: [{ name: "Generative AI for Business Professionals", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-business-professionals-chatgpt-media-synthesis-and-beyond" }, { name: "AI Innovation Unleashed (Prompt Engineering)", url: "https://www.ntuclearninghub.com/en-gb/-/course/ai-innovation-unleashed-navigating-the-terrain-of-prompt-engineering" }, { name: "Empower Your Workforce with Copilot for M365", url: "https://www.ntuclearninghub.com/en-gb/-/course/empower-your-workforce-with-copilot-for-microsoft-365-use-cases" }, { name: "AI Applications in Industrial Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/fundamentals-of-ai-applications-in-industrial-automation" }, { name: "Digital Workplace Business Process Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/digital-workplace-business-process-and-workflow-automation-design-deploy-and-manage" }, { name: "Smarter Supply Chain Workflows with AI", url: "https://www.ntuclearninghub.com/en-gb/-/course/smarter-supply-chain-workflows-with-ai" }] },
+            C: { name: "AI Ethics, Strategy & Governance", desc: "For professionals focused on the responsible use, policy, and strategy of AI.", courses: [{ name: "AI Governance and Ethics Foundations", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-business-professionals-chatgpt-media-synthesis-and-beyond" }, { name: "Strategic Management of AI Innovation", url: "https://www.ntuclearninghub.com/en-gb/-/course/ai-innovation-unleashed-navigating-the-terrain-of-prompt-engineering" }] },
+            D: { name: "AI for Sales, Marketing & Customer Experience", desc: "For professionals focused on growth, engagement, content, and revenue impact.", courses: [{ name: "Generative AI for Marketing and Design", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-marketing-and-design-text-image-and-video-sf" }, { name: "Advanced Generative AI for Marketing & Sales", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-generative-ai-techniques-for-marketing-sales-sf" }, { name: "Empowering Marketers with Essential AI Tools", url: "https://www.ntuclearninghub.com/en-gb/-/course/empowering-digital-marketers-with-essential-ai-tools" }, { name: "WSQ Enhancing Events with AI", url: "https://www.ntuclearninghub.com/en-gb/-/course/wsq-enhancing-events-with-ai" }] }
+        };
+
+        function App() {
+            const [view, setView] = useState('menu'); // menu, detail, identity, quiz, lead, result
+            const [selectedStage, setSelectedStage] = useState(null);
+            const [userName, setUserName] = useState('');
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [userAnswers, setUserAnswers] = useState({});
+            const [resultKey, setResultKey] = useState(null);
+            const [sliderIndex, setSliderIndex] = useState(0);
+            const qrRef = useRef(null);
+
+            const startQuiz = () => {
+                setCurrentIndex(0);
+                setUserAnswers({});
+                setResultKey(null);
+                setView(userName.trim() ? 'quiz' : 'identity');
+            };
+
+            const selectOption = (optionId) => {
+                const updated = { ...userAnswers, [currentIndex]: optionId };
+                setUserAnswers(updated);
+                if (currentIndex < QUESTIONS.length - 1) {
+                    setTimeout(() => setCurrentIndex(prev => prev + 1), 300);
+                } else {
+                    const counts = { A: 0, B: 0, C: 0, D: 0 };
+                    Object.values(updated).forEach(val => counts[val]++);
+                    const winner = ['A', 'B', 'D', 'C'].reduce((a, b) => (counts[a] || 0) >= (counts[b] || 0) ? a : b);
+                    setResultKey(winner);
+                    setView('lead'); 
+                }
+            };
+
+            // HubSpot Init
+            useEffect(() => {
+                if (view === 'lead' && window.hbspt) {
+                    setTimeout(() => {
+                        const container = document.getElementById('hubspot-form-container');
+                        if (container) container.innerHTML = "";
+                        window.hbspt.forms.create({
+                            region: "na1",
+                            portalId: "YOUR_PORTAL_ID",
+                            formId: "YOUR_FORM_ID",
+                            target: "#hubspot-form-container",
+                            onFormSubmitted: () => setView('result')
+                        });
+                    }, 500);
+                }
+            }, [view]);
+
+            // QR Gen
+            useEffect(() => {
+                if (view === 'result' && resultKey && qrRef.current) {
+                    setTimeout(() => {
+                        if (!qrRef.current) return;
+                        qrRef.current.innerHTML = "";
+                        const shareUrl = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(userName)}&path=${resultKey}`;
+                        new window.QRCode(qrRef.current, { text: shareUrl, width: 140, height: 140, colorDark: "#18355E" });
+                    }, 800);
+                }
+            }, [view, resultKey, userName]);
+
+            const exportPDF = () => {
+                const element = document.getElementById('pdf-cert');
+                const path = PATHS[resultKey] || PATHS.B;
+                
+                document.getElementById('pdf-user-name-display').innerText = userName.toUpperCase();
+                document.getElementById('pdf-path-title').innerText = `MOSTLY ${resultKey}: ${path.name}`;
+                document.getElementById('pdf-path-desc').innerText = path.desc;
+                document.getElementById('pdf-courses-list').innerHTML = path.courses.map(c => `
+                    <li style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <div style="font-weight: 700; color: #18355E; font-size: 14px;">${c.name}</div>
+                        <div style="font-size: 11px; color: #0097CE; word-break: break-all; margin-top: 2px;">${c.url}</div>
+                    </li>
+                `).join('');
+
+                const opt = {
+                    margin: 10,
+                    filename: `NTUC_Discovery_${userName}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                if (window.html2pdf) {
+                    window.html2pdf().from(element).set(opt).save();
+                }
+            };
+
+            // Main Menu View
+            if (view === 'menu') return (
+                <div className="min-h-screen flex flex-col bg-white overflow-hidden fade-in">
+                    
+                    <header className="p-8 flex flex-col items-center gap-2 border-b-2 border-slate-100 bg-white sticky top-0 z-50">
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-ntucRoyal font-extrabold text-3xl italic">ntuc</span>
+                            <span className="text-ntucIntegrity font-semibold text-2xl">LearningHub</span>
+                        </div>
+                        <div className="h-1.5 w-16 bg-ntucVital rounded-full"></div>
+                    </header>
+
+                    <div className="text-center px-6 pt-10 space-y-3">
+                        <h1 className="text-5xl md:text-7xl font-extrabold text-ntucRoyal tracking-tighter uppercase leading-tight">Career Hub 2026</h1>
+                        <p className="text-ntucIntegrity font-bold tracking-widest uppercase text-sm border-y-2 border-slate-100 inline-block py-2 px-6">Empowering Your specialized AI Pathway</p>
+                    </div>
+
+                    <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+                        
+                        {/* High Contrast Navigation Arrows - No Opacity */}
+                        <div className="absolute left-6 md:left-24 z-30">
+                            <button onClick={() => setSliderIndex((p) => (p > 0 ? p - 1 : STAGES.length - 1))} className="w-16 h-16 rounded-full border-4 border-ntucRoyal bg-ntucRoyal text-white flex items-center justify-center btn-active shadow-2xl"><Icon name="arrowLeft" size={32} /></button>
+                        </div>
+                        <div className="absolute right-6 md:right-24 z-30">
+                            <button onClick={() => setSliderIndex((p) => (p < STAGES.length - 1 ? p + 1 : 0))} className="w-16 h-16 rounded-full border-4 border-ntucRoyal bg-ntucRoyal text-white flex items-center justify-center btn-active shadow-2xl"><Icon name="arrowRight" size={32} /></button>
+                        </div>
+
+                        <div className="slider-track w-full h-full items-center justify-center" style={{ transform: `translateX(calc(-${sliderIndex * 100}%))` }}>
+                            {STAGES.map((s, idx) => (
+                                <div key={idx} className="min-w-full flex flex-col items-center px-12 transition-all duration-700">
+                                    {/* Removed opacity-60, set to solid opacity-100 */}
+                                    <div className={`transition-all duration-700 transform opacity-100 ${sliderIndex === idx ? 'scale-110' : 'scale-90'}`}>
+                                        <div className="w-64 h-64 md:w-96 md:h-96 rounded-[60px] bg-white border-[10px] border-ntucRoyal flex items-center justify-center relative card-shadow" style={{ color: s.color }}>
+                                            <Icon name={s.icon} size={sliderIndex === idx ? 180 : 120} />
+                                        </div>
+                                        <div className="text-center mt-12 space-y-3">
+                                            <h3 className="text-5xl md:text-6xl font-extrabold text-ntucRoyal uppercase tracking-tighter">{s.title}</h3>
+                                            <p className="text-ntucOptimism font-black uppercase tracking-[0.3em] text-sm">{s.subtitle}</p>
+                                            {sliderIndex === idx && (
+                                                <button onClick={() => { setSelectedStage(s); setView('detail'); }} className="mt-8 btn-active px-16 py-6 bg-ntucIntegrity text-white rounded-full font-black uppercase tracking-widest text-xs hover:bg-ntucRoyal transition-all shadow-2xl border-4 border-white">View Stage Profile</button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="p-10 flex flex-col items-center gap-8 bg-white border-t-2 border-slate-100">
+                        <button onClick={startQuiz} className="btn-active btn-vital group flex items-center gap-6 px-16 py-8 rounded-2xl shadow-2xl border-4 border-ntucRoyal">
+                            <Icon name="brain" size={40} className="text-ntucIntegrity" />
+                            <div className="text-left leading-tight">
+                                <p className="text-xs font-black uppercase text-ntucIntegrity">Personalised Skills Guide</p>
+                                <p className="text-3xl font-extrabold uppercase tracking-tight text-ntucIntegrity">Start AI Discovery</p>
+                            </div>
+                        </button>
+                        <div className="flex gap-4">
+                            {STAGES.map((_, i) => (
+                                <div key={i} className={`h-3 rounded-full transition-all duration-500 ${sliderIndex === i ? 'w-14 bg-ntucRoyal' : 'w-3 bg-slate-300'}`}></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            // --- QUIZ VIEW (BOLD Slider) ---
+            if (view === 'quiz') return (
+                <div className="min-h-screen bg-white flex flex-col overflow-hidden">
+                    <header className="p-8 flex justify-between items-center border-b-4 border-slate-100 bg-white sticky top-0 z-50">
+                        <button onClick={() => setView('menu')} className="text-ntucIntegrity font-black text-sm uppercase flex items-center gap-3 hover:text-ntucRoyal transition-colors"><Icon name="arrowLeft" size={20} /> Exit Discovery</button>
+                        <div className="flex gap-3">
+                            {QUESTIONS.map((_, i) => (
+                                <div key={i} className={`h-3 rounded-full transition-all duration-500 ${i === currentIndex ? 'w-14 bg-ntucRoyal' : i < currentIndex ? 'w-3 bg-ntucOptimism' : 'w-3 bg-slate-200'}`}></div>
+                            ))}
+                        </div>
+                        <span className="text-sm font-black text-ntucRoyal uppercase tracking-widest">Question {currentIndex + 1} / 5</span>
+                    </header>
+
+                    <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+                        <div className="slider-track w-full h-full items-center" style={{ transform: `translateX(calc(-${currentIndex * 100}%))` }}>
+                            {QUESTIONS.map((q, qIdx) => (
+                                <div key={qIdx} className="min-w-full px-8 flex flex-col items-center">
+                                    <div className="max-w-5xl w-full space-y-16">
+                                        <div className="text-center space-y-4">
+                                            <p className="text-ntucOptimism font-black uppercase tracking-[0.4em] text-xs">Analysis Phase {qIdx + 1}</p>
+                                            <h2 className="text-4xl md:text-6xl font-extrabold text-ntucIntegrity uppercase tracking-tighter leading-tight">{q.text}</h2>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                            {q.options.map(opt => (
+                                                <button key={opt.id} onClick={() => selectOption(opt.id)} className="btn-active p-12 rounded-[40px] border-4 border-slate-100 bg-white hover:border-ntucRoyal hover:bg-slate-50 text-left font-bold text-2xl flex items-center transition-all group card-shadow">
+                                                    <span className="inline-block w-16 h-16 bg-ntucRoyal text-white rounded-2xl text-center leading-[64px] mr-10 font-black text-3xl transition-transform group-hover:scale-110 shadow-lg">{opt.id}</span>
+                                                    <span className="flex-1 text-ntucIntegrity leading-tight">{opt.text}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            // --- Other views updated to be solid ---
+            if (view === 'result') {
+                const path = resultKey ? PATHS[resultKey] : PATHS.B;
+                return (
+                    <div className="max-w-4xl mx-auto p-8 md:p-12 text-center space-y-10 min-h-screen fade-in bg-white">
+                        <header className="space-y-4">
+                            <Icon name="rocket" size={100} className="text-ntucOptimism mx-auto" />
+                            <h1 className="text-5xl md:text-7xl font-extrabold uppercase text-ntucRoyal tracking-tighter">Hello, {userName}</h1>
+                            <div className="h-2 w-32 bg-ntucVital mx-auto rounded-full"></div>
+                        </header>
+
+                        <div className="p-12 bg-ntucRoyal rounded-[60px] text-white space-y-10 shadow-2xl text-left relative overflow-hidden border-[12px] border-slate-100">
+                            <div>
+                                <p className="text-ntucVital font-black uppercase text-xs tracking-[0.4em] mb-6 bg-ntucIntegrity inline-block px-6 py-3 rounded-xl shadow-lg">Discovery Complete</p>
+                                <h2 className="text-5xl font-extrabold uppercase leading-tight text-white mb-8 border-l-8 border-ntucVital pl-8">{path.name}</h2>
+                                <p className="text-white text-2xl font-bold leading-relaxed">{path.desc}</p>
+                            </div>
+                            <div className="space-y-6 pt-10 border-t-4 border-white/20">
+                                <p className="text-xs font-black uppercase text-ntucVital tracking-[0.3em]">Targeted NTUC LearningHub Courses</p>
+                                <div className="grid gap-6">
+                                    {path.courses.map((c, i) => (
+                                        <a key={i} href={c.url} target="_blank" className="btn-active group flex items-center justify-between p-8 bg-ntucIntegrity border-4 border-white/20 rounded-[35px] hover:border-ntucVital transition-all">
+                                            <span className="font-bold text-white text-xl leading-tight pr-8">{c.name}</span>
+                                            <Icon name="external" size={32} className="text-ntucVital shrink-0" />
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-16 border-t-8 border-slate-100">
+                            <div className="bg-white p-12 rounded-[60px] flex flex-col items-center border-4 border-slate-200 shadow-2xl">
+                                <h4 className="font-black text-sm uppercase mb-8 tracking-[0.3em] text-ntucRoyal">Keep on Mobile</h4>
+                                <div ref={qrRef} className="bg-white p-4 rounded-[40px] border-4 border-ntucRoyal shadow-xl overflow-hidden"></div>
+                            </div>
+                            <div className="flex flex-col justify-center gap-8">
+                                <button onClick={exportPDF} className="btn-active bg-ntucIntegrity text-white py-10 rounded-[40px] font-black uppercase tracking-widest text-lg shadow-2xl flex items-center justify-center gap-6 hover:bg-ntucRoyal transition-all border-4 border-white"><Icon name="download" size={36}/> Get Full Report</button>
+                                <button onClick={() => window.location.reload()} className="text-ntucIntegrity font-black uppercase text-sm hover:text-ntucRoyal transition-colors underline decoration-ntucVital decoration-4 underline-offset-8">Restart AI Discovery</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (view === 'identity') return (
+                <div className="flex flex-col items-center justify-center min-h-screen p-12 text-center space-y-12 fade-in bg-white">
+                    <Icon name="user" size={120} className="text-ntucRoyal" />
+                    <h2 className="text-5xl font-extrabold uppercase text-ntucRoyal tracking-tighter">Your Identity</h2>
+                    <input type="text" value={userName} onChange={e => setUserName(e.target.value)} placeholder="Full Name as per NRIC" className="w-full max-w-xl bg-slate-50 border-8 border-slate-100 focus:border-ntucRoyal focus:bg-white rounded-[40px] py-10 px-12 text-4xl font-black outline-none shadow-2xl transition-all placeholder:text-slate-200" />
+                    <button onClick={() => userName.trim() && setView('quiz')} className="btn-active btn-vital w-full max-w-xl font-black py-10 rounded-[40px] text-3xl shadow-2xl border-4 border-white">Begin Discovery</button>
+                </div>
+            );
+
+            if (view === 'lead') return (
+                <div className="max-w-3xl mx-auto p-12 min-h-screen flex flex-col justify-center space-y-12 fade-in text-center bg-white">
+                    <Icon name="lock" size={80} className="text-ntucRoyal mx-auto" />
+                    <h2 className="text-5xl font-extrabold uppercase text-ntucRoyal tracking-tighter">Unlock Discovery</h2>
+                    <p className="text-slate-600 text-2xl font-bold leading-relaxed px-10">Complete the official enrolment enquiry form to view your recommended courses.</p>
+                    <div id="hubspot-form-container" className="bg-slate-50 p-12 rounded-[60px] border-8 border-slate-100 shadow-2xl min-h-[450px] flex items-center justify-center font-black italic text-4xl text-slate-200">Form Loading...</div>
+                    <button onClick={() => setView('result')} className="text-ntucRoyal text-sm font-black uppercase tracking-widest hover:underline mt-8">Admin Preview</button>
+                </div>
+            );
+
+            if (view === 'detail') return (
+                <div className="max-w-5xl mx-auto p-12 md:p-20 space-y-20 min-h-screen fade-in text-center bg-white">
+                    <button onClick={() => setView('menu')} className="font-black text-sm uppercase text-ntucIntegrity flex items-center gap-4 mx-auto hover:text-ntucRoyal bg-slate-50 px-10 py-5 rounded-full transition-all border-2 border-slate-100"><Icon name="arrowLeft" size={24}/> Back to Hub</button>
+                    <div className="space-y-10">
+                        <div className="inline-block p-14 rounded-[60px] bg-ntucRoyal text-white shadow-2xl mx-auto border-[12px] border-slate-50"><Icon name={selectedStage.icon} size={100} /></div>
+                        <h2 className="text-6xl md:text-8xl font-extrabold uppercase text-ntucRoyal tracking-tighter leading-none">{selectedStage.title}</h2>
+                        <p className="text-3xl text-slate-600 font-bold leading-relaxed max-w-4xl mx-auto italic">{selectedStage.description}</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left pt-16 border-t-8 border-slate-50">
+                        <div className="bg-ntucIntegrity p-16 rounded-[60px] text-white shadow-2xl flex flex-col justify-center border-l-[16px] border-ntucVital">
+                            <h4 className="text-sm font-black uppercase opacity-60 mb-6 tracking-[0.4em]">Primary Focus Area</h4>
+                            <p className="text-5xl font-extrabold leading-tight uppercase">{selectedStage.focusArea}</p>
+                        </div>
+                        <div className="space-y-8">
+                            {selectedStage.recommendations.map((r, i) => (
+                                <div key={i} className="p-12 bg-white border-[6px] border-slate-50 rounded-[50px] shadow-2xl"><p className="font-black text-ntucRoyal uppercase text-2xl mb-4 leading-tight">{r.title}</p><p className="text-slate-600 text-xl font-bold leading-relaxed">{r.desc}</p></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return null;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- PDF RENDER BUFFER -->
+    <div id="pdf-render-zone">
+        <div id="pdf-cert" style="padding: 60px; background: #fff; width: 794px; font-family: 'Open Sans', sans-serif; color: #102935;">
+            <div style="border-bottom: 12px solid #18355E; padding-bottom: 40px; text-align: center; margin-bottom: 60px;">
+                <h1 style="color: #18355E; font-size: 44px; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: -1px;">AI CAREER DISCOVERY REPORT</h1>
+                <p style="font-size: 20px; text-transform: uppercase; color: #0097CE; font-weight: 700; letter-spacing: 6px; margin-top: 15px;">NTUC LearningHub • 2026</p>
+            </div>
+            
+            <div style="margin-bottom: 60px; padding: 0 30px;">
+                <p style="font-size: 16px; color: #102935; font-weight: 800; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2px;">Confidential Personalised Report For:</p>
+                <h2 style="font-size: 48px; margin: 0; font-weight: 800; color: #18355E; border-left: 14px solid #FFCB05; padding-left: 30px; line-height: 1;">NAME</h2>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 50px; border-radius: 50px; margin-bottom: 50px; border: 4px solid #E2E8F0;">
+                <h3 style="color: #18355E; font-size: 32px; margin: 0 0 20px 0; font-weight: 800; text-transform: uppercase; border-bottom: 4px solid #FFCB05; display: inline-block; padding-bottom: 5px;" id="pdf-path-title">Pathway</h3>
+                <p style="font-size: 22px; line-height: 1.7; color: #334155; margin: 0; font-weight: 600;" id="pdf-path-desc">Discovery analysis.</p>
+            </div>
+
+            <div style="padding: 0 30px;">
+                <h4 style="font-size: 22px; font-weight: 800; margin: 0 0 30px 0; text-transform: uppercase; border-bottom: 5px solid #18355E; padding-bottom: 15px; color: #18355E;">RECOMMENDED UPSKILLING COURSES</h4>
+                <ul id="pdf-courses-list" style="padding-left: 0; list-style: none; margin: 0;"></ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 120px; border-top: 5px solid #EEE; padding-top: 50px;">
+                <p style="font-size: 14px; color: #64748B; line-height: 1.8; font-weight: 600;">This report provides professional career guidance mapped to Singapore's Industry 4.0 frameworks. Please consult an authorised NTUC LearningHub consultant at our event booth for funding and enrolment assistance.</p>
+                <p style="font-size: 18px; color: #18355E; font-weight: 800; margin-top: 30px; letter-spacing: 1px;">Transforming People • ntuclearninghub.com</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
