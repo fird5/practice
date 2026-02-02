@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTUC LearningHub Career Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* BRAND GUIDE PAGE 15: Open Sans for Screen Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            /* BRAND GUIDE PAGE 14: Official Color Codes */
+            --brand-royal-blue: #18355E;
+            --brand-optimism: #0097CE;
+            --brand-futurism: #004E74;
+            --brand-integrity: #102935;
+            --brand-vital: #FFCB05;
+            --brand-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #F8FAFC; 
+            color: var(--brand-integrity);
+            user-select: none;
+            overflow-x: hidden; /* Prevent scrollbar during slide */
+        }
+
+        /* Utility Classes for Brand Colors */
+        .text-royal { color: var(--brand-royal-blue); }
+        .bg-royal { background-color: var(--brand-royal-blue); }
+        .border-royal { border-color: var(--brand-royal-blue); }
+        
+        .text-optimism { color: var(--brand-optimism); }
+        .bg-optimism { background-color: var(--brand-optimism); }
+        .border-optimism { border-color: var(--brand-optimism); }
+        
+        .text-futurism { color: var(--brand-futurism); }
+        .bg-futurism { background-color: var(--brand-futurism); }
+        .border-futurism { border-color: var(--brand-futurism); }
+        
+        .bg-vital { background-color: var(--brand-vital); }
+
+        /* --- SLIDER MECHANICS --- */
+        .slider-viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 200%; /* Holds 2 screens side-by-side */
+            /* Custom Bezier for that "Retro Microcars" smooth, weighty feel */
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+            will-change: transform;
+        }
+
+        .slider-slide {
+            width: 50%; /* Each slide takes up half the track (1 screen width) */
+            flex-shrink: 0;
+            padding: 1rem;
+            opacity: 0.4;
+            transition: opacity 0.8s ease;
+            /* Center content in slide */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+        }
+
+        /* Active slide opacity */
+        .slider-track[data-active="0"] .slide-1 { opacity: 1; }
+        .slider-track[data-active="1"] .slide-2 { opacity: 1; }
+
+        /* States */
+        .slider-track[data-active="0"] { transform: translateX(0%); }
+        .slider-track[data-active="1"] { transform: translateX(-50%); }
+
+        /* Button Styling */
+        .brand-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .brand-btn:active {
+            transform: scale(0.98);
+        }
+        /* Hover Effect */
+        .brand-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            transform: skewX(-20deg) translateX(100px);
+            transition: transform 0.4s;
+        }
+        .brand-btn:hover::after {
+            transform: skewX(-20deg) translateX(-500px);
+            transition: transform 0.7s;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header / Logo Area -->
+    <header class="w-full p-6 flex justify-center border-b border-gray-200 bg-white z-10 relative shadow-sm">
+        <div class="text-center">
+            <!-- Text Logo (Page 20) -->
+            <div class="text-3xl font-extrabold tracking-tight text-royal">
+                ntuc <span class="font-bold">LearningHub</span>
+            </div>
+            <!-- Tagline (Page 8) -->
+            <div class="text-sm font-semibold text-futurism tracking-wide uppercase mt-1">
+                Transforming People
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Slider Container -->
+    <main class="flex-grow flex flex-col justify-center w-full max-w-7xl mx-auto relative mt-4 md:mt-8">
+        
+        <div class="slider-viewport">
+            <div id="track" class="slider-track" data-active="0">
+                
+                <!-- === SLIDE 1: SELECTION MENU === -->
+                <div class="slider-slide slide-1">
+                    <div class="max-w-3xl w-full flex flex-col items-center space-y-10">
+                        <h1 class="text-3xl md:text-5xl font-bold text-royal text-center mb-4 leading-tight">
+                            Where Are You In Your<br />Career Journey?
+                        </h1>
+
+                        <div class="w-full space-y-6 px-4">
+                            <!-- Button 1: Early Career -->
+                            <button onclick="selectStage('early')" 
+                                class="brand-btn w-full bg-white border-l-8 border-r-8 border-t-2 border-b-2 border-optimism
+                                       rounded-lg p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 group flex flex-col items-center justify-center gap-1">
+                                <span class="text-2xl md:text-3xl font-extrabold text-optimism group-hover:scale-105 transition-transform">First Jobber /</span>
+                                <span class="text-xl md:text-2xl font-bold text-gray-600">Early Careerist</span>
+                            </button>
+
+                            <!-- Button 2: Mid Career -->
+                            <button onclick="selectStage('mid')" 
+                                class="brand-btn w-full bg-white border-l-8 border-r-8 border-t-2 border-b-2 border-futurism 
+                                       rounded-lg p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 group flex flex-col items-center justify-center gap-1">
+                                <span class="text-2xl md:text-3xl font-extrabold text-futurism group-hover:scale-105 transition-transform">Mid-Career /</span>
+                                <span class="text-xl md:text-2xl font-bold text-gray-600">Career Switcher</span>
+                            </button>
+
+                            <!-- Button 3: Senior Leader -->
+                            <button onclick="selectStage('senior')" 
+                                class="brand-btn w-full bg-white border-l-8 border-r-8 border-t-2 border-b-2 border-royal
+                                       rounded-lg p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 group flex flex-col items-center justify-center gap-1">
+                                <span class="text-2xl md:text-3xl font-extrabold text-royal group-hover:scale-105 transition-transform">Manager /</span>
+                                <span class="text-xl md:text-2xl font-bold text-gray-600">Aspiring Senior Leader</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- === SLIDE 2: RESULTS === -->
+                <div class="slider-slide slide-2">
+                    <div class="max-w-5xl w-full pb-12 px-4">
+                        
+                        <!-- Dynamic Header -->
+                        <div class="text-center mb-8 space-y-3">
+                            <h2 id="res-title" class="text-2xl md:text-3xl text-gray-600 font-light italic transition-all duration-500"></h2>
+                            <h1 id="res-package-name" class="text-4xl md:text-5xl font-extrabold text-royal tracking-tight transition-all duration-500"></h1>
+                        </div>
+
+                        <!-- Main Table Card -->
+                        <div class="bg-white rounded-lg shadow-2xl overflow-hidden border-2 border-gray-100 mx-auto max-w-4xl">
+                            
+                            <!-- Rows (Populated by JS) -->
+                            <!-- Ideal For -->
+                            <div class="flex flex-col md:flex-row border-b border-white">
+                                <div class="w-full md:w-1/3 bg-royal p-5 flex items-center justify-center md:justify-start text-white font-bold text-center md:text-left gap-3">
+                                    <svg class="w-6 h-6 opacity-70 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                    <span class="text-lg">Ideal For</span>
+                                </div>
+                                <div id="bg-col-1" class="w-full md:w-2/3 p-5 flex flex-col items-center justify-center text-white font-semibold text-center transition-colors duration-500">
+                                    <span id="val-ideal" class="text-xl leading-tight"></span>
+                                </div>
+                            </div>
+
+                            <!-- Mentor Matching -->
+                            <div class="flex flex-col md:flex-row border-b border-white">
+                                <div class="w-full md:w-1/3 bg-royal p-5 flex items-center justify-center md:justify-start text-white font-bold text-center md:text-left gap-3">
+                                    <svg class="w-6 h-6 opacity-70 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span class="text-lg">Mentor Matching</span>
+                                </div>
+                                <div id="bg-col-2" class="w-full md:w-2/3 p-5 flex flex-col items-center justify-center text-white font-semibold text-center transition-colors duration-500">
+                                    <span id="val-mentor-type" class="text-xl leading-tight"></span>
+                                    <span id="val-mentor-desc" class="text-base opacity-90 mt-1 font-normal"></span>
+                                </div>
+                            </div>
+
+                            <!-- Mentees' Training -->
+                            <div class="flex flex-col md:flex-row border-b border-white">
+                                <div class="w-full md:w-1/3 bg-royal p-5 flex items-center justify-center md:justify-start text-white font-bold text-center md:text-left gap-3">
+                                    <svg class="w-6 h-6 opacity-70 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                    <span class="text-lg">Mentees' Training</span>
+                                </div>
+                                <div id="bg-col-3" class="w-full md:w-2/3 p-5 flex flex-col items-center justify-center text-white font-semibold text-center transition-colors duration-500">
+                                    <span id="val-training" class="text-xl leading-tight"></span>
+                                </div>
+                            </div>
+
+                            <!-- 1-to-1 Mentorship -->
+                            <div class="flex flex-col md:flex-row border-b border-white">
+                                <div class="w-full md:w-1/3 bg-royal p-5 flex items-center justify-center md:justify-start text-white font-bold text-center md:text-left gap-3">
+                                    <svg class="w-6 h-6 opacity-70 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span class="text-lg">1-to-1 Mentorship</span>
+                                </div>
+                                <div id="bg-col-4" class="w-full md:w-2/3 p-5 flex flex-col items-center justify-center text-white font-semibold text-center transition-colors duration-500">
+                                    <span id="val-mentorship" class="text-xl leading-tight"></span>
+                                </div>
+                            </div>
+
+                            <!-- LXP Subscription -->
+                            <div class="flex flex-col md:flex-row">
+                                <div class="w-full md:w-1/3 bg-royal p-5 flex items-center justify-center md:justify-start text-white font-bold text-center md:text-left gap-3">
+                                    <svg class="w-6 h-6 opacity-70 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                    <span class="text-lg">LXP Subscription*</span>
+                                </div>
+                                <div id="bg-col-5" class="w-full md:w-2/3 p-5 flex flex-col items-center justify-center text-white font-semibold text-center transition-colors duration-500">
+                                    <span id="val-sub" class="text-xl leading-tight"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer Note (Vital Yellow) -->
+                        <div class="mt-8 bg-vital text-black p-4 rounded shadow-md max-w-4xl mx-auto text-center transform transition-all duration-500 delay-100">
+                            <p class="text-sm md:text-base font-semibold">
+                                <strong>*LXP</strong> is NTUC LearningHub's one-stop, mobile-first subscription with on-the-go access to over 100,000 bite-sized courses for continuous upskilling.
+                            </p>
+                        </div>
+
+                        <!-- Back Button -->
+                        <div class="mt-10 flex justify-center">
+                            <button onclick="resetApp()" 
+                                class="group flex items-center gap-2 px-8 py-3 bg-white text-royal rounded-full shadow hover:shadow-lg transition-all font-bold text-lg border-2 border-royal active:scale-95">
+                                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                Select Another Stage
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+    
+    <footer class="p-4 text-center text-gray-400 text-xs font-medium bg-white border-t mt-auto z-10">
+        Your Trusted Partner in Lifelong Learning
+    </footer>
+
+    <script>
+        const CAREER_PACKAGES = {
+            early: {
+                title: "Awesome! Let's build your first big career win with",
+                packageName: "The Mentee Essential",
+                idealFor: "First Jobbers and Early Careerists",
+                mentorType: "Proficient Mentor",
+                mentorDesc: "(Manager, Senior Manager)",
+                training: "6 hours classroom + 4 hours LXP Learning",
+                mentorshipHours: "6 hours",
+                subscription: "1 year",
+                bgClass: "bg-optimism" // Cyan
+            },
+            mid: {
+                title: "Amazing! Let's get you clarity and momentum with",
+                packageName: "The Empowered Mentee",
+                idealFor: "Mid-Career Professionals and Career Switchers",
+                mentorType: "Accomplished Mentor",
+                mentorDesc: "(Functional Head, Directors, Head of Departments)",
+                training: "6 hours classroom + 6 hours LXP Learning",
+                mentorshipHours: "6 hours",
+                subscription: "1 year",
+                bgClass: "bg-futurism" // Teal
+            },
+            senior: {
+                title: "Great! Let's level up your leadership edge with",
+                packageName: "The Strategic Mentee",
+                idealFor: "Aspiring Senior Leaders",
+                mentorType: "Expert Mentor",
+                mentorDesc: "(C-Suite)",
+                training: "6 hours classroom + 14 hours LXP Learning",
+                mentorshipHours: "6 hours",
+                subscription: "1 year",
+                bgClass: "bg-royal" // Royal Blue
+            }
+        };
+
+        const track = document.getElementById('track');
+
+        function selectStage(key) {
+            const data = CAREER_PACKAGES[key];
+            if (!data) return;
+
+            // 1. Pre-populate data instantly (while off-screen)
+            document.getElementById('res-title').innerText = data.title;
+            document.getElementById('res-package-name').innerText = data.packageName;
+            document.getElementById('val-ideal').innerText = data.idealFor;
+            document.getElementById('val-mentor-type').innerText = `Paired with ${data.mentorType}`;
+            document.getElementById('val-mentor-desc').innerText = data.mentorDesc;
+            document.getElementById('val-training').innerText = data.training;
+            document.getElementById('val-mentorship').innerText = data.mentorshipHours;
+            document.getElementById('val-sub').innerText = data.subscription;
+
+            // 2. Update column colors based on selection
+            const bgCols = ['bg-col-1', 'bg-col-2', 'bg-col-3', 'bg-col-4', 'bg-col-5'];
+            bgCols.forEach(id => {
+                const el = document.getElementById(id);
+                // Remove all possible brand color classes
+                el.classList.remove('bg-optimism', 'bg-futurism', 'bg-royal');
+                // Add the specific one
+                el.classList.add(data.bgClass);
+            });
+
+            // 3. Trigger the Slide
+            // Slight delay to ensure DOM update is registered before slide starts
+            requestAnimationFrame(() => {
+                track.setAttribute('data-active', '1');
+                // Scroll to top of window to ensure header is seen if user scrolled down
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        function resetApp() {
+            // Slide back to index 0
+            track.setAttribute('data-active', '0');
+        }
+    </script>
+</body>
+</html>
