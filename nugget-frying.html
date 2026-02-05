@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nugget Fryer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+  }
+
+  #header {
+    width: 100%;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #16213e;
+    color: #e0c068;
+    z-index: 10;
+  }
+
+  #header h1 {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .stat {
+    font-size: 1rem;
+    color: #f0e6c0;
+  }
+
+  .stat span {
+    font-weight: bold;
+    color: #ffd700;
+  }
+
+  #game-area {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Conveyor / staging area */
+  #staging {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    min-height: 64px;
+    align-items: center;
+  }
+
+  .raw-nugget {
+    width: 56px;
+    height: 40px;
+    background: #f5cba0;
+    border: 2px solid #d4a36a;
+    border-radius: 40% 50% 45% 55%;
+    cursor: grab;
+    transition: transform 0.15s;
+    position: relative;
+  }
+
+  .raw-nugget:hover {
+    transform: scale(1.12);
+  }
+
+  .raw-nugget::after {
+    content: '';
+    position: absolute;
+    top: 6px; left: 8px;
+    width: 16px; height: 8px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+  }
+
+  /* Fryer */
+  #fryer-wrapper {
+    position: relative;
+    width: 520px;
+    height: 320px;
+  }
+
+  #fryer {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #c8940a 0%, #e0a813 30%, #d4990f 100%);
+    border-radius: 18px;
+    border: 6px solid #5c5c5c;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 4px 20px rgba(255,220,100,0.3);
+    cursor: pointer;
+  }
+
+  #fryer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(255,255,200,0.4), transparent);
+    border-radius: 12px 12px 0 0;
+  }
+
+  /* Oil bubbles */
+  .bubble {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 235, 150, 0.6);
+    border-radius: 50%;
+    animation: bubbleUp 1.2s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes bubbleUp {
+    0% { opacity: 0.8; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(0.3); }
+  }
+
+  /* Nuggets in fryer */
+  .frying-nugget {
+    position: absolute;
+    width: 60px;
+    height: 44px;
+    border-radius: 40% 50% 45% 55%;
+    cursor: pointer;
+    transition: background 0.5s, border-color 0.5s, transform 0.15s;
+    border: 2px solid;
+    z-index: 2;
+  }
+
+  .frying-nugget:hover {
+    transform: scale(1.1);
+    z-index: 3;
+  }
+
+  .frying-nugget::after {
+    content: '';
+    position: absolute;
+    top: 6px; left: 8px;
+    width: 18px; height: 9px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+  }
+
+  /* Nugget states */
+  .state-raw       { background: #f5cba0; border-color: #d4a36a; }
+  .state-light     { background: #e8b84d; border-color: #c49530; }
+  .state-golden    { background: #d4881e; border-color: #a66210; }
+  .state-perfect   { background: #c27012; border-color: #8f4e08; }
+  .state-dark      { background: #8b4513; border-color: #5c2d0a; }
+  .state-burnt     { background: #3d1c02; border-color: #1a0a00; }
+
+  /* Progress ring on nugget */
+  .cook-ring {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    pointer-events: none;
+  }
+
+  /* Plate / done area */
+  #plate-area {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 56px;
+    max-width: 540px;
+    padding: 10px;
+  }
+
+  .plated-nugget {
+    width: 48px;
+    height: 36px;
+    border-radius: 40% 50% 45% 55%;
+    border: 2px solid;
+    position: relative;
+    opacity: 0;
+    animation: plateIn 0.3s ease-out forwards;
+  }
+
+  @keyframes plateIn {
+    from { opacity: 0; transform: scale(0.5) translateY(-20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .plated-nugget .score-label {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    font-weight: bold;
+    white-space: nowrap;
+    padding: 1px 4px;
+    border-radius: 4px;
+    color: #fff;
+  }
+
+  .score-label.perfect { background: #27ae60; }
+  .score-label.good    { background: #f39c12; }
+  .score-label.ok      { background: #e67e22; }
+  .score-label.bad     { background: #c0392b; }
+
+  /* Splash effect */
+  .splash {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #e0a813;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: splashOut 0.5s ease-out forwards;
+  }
+
+  @keyframes splashOut {
+    0%   { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+  }
+
+  /* Steam */
+  .steam {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: steamRise 2s ease-out forwards;
+  }
+
+  @keyframes steamRise {
+    0%   { opacity: 0.4; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-100px) scale(2); }
+  }
+
+  /* HUD overlay */
+  #round-info {
+    position: absolute;
+    top: 80px;
+    font-size: 1rem;
+    color: #f0e6c0;
+    text-align: center;
+  }
+
+  #instructions {
+    color: #a0a0c0;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* Game over overlay */
+  #overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #f0e6c0;
+  }
+
+  #overlay.active {
+    display: flex;
+  }
+
+  #overlay h2 {
+    font-size: 2.4rem;
+    color: #ffd700;
+    margin-bottom: 12px;
+  }
+
+  #overlay .final-score {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  #overlay .breakdown {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.7;
+    color: #c0b898;
+  }
+
+  #overlay .grade {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+
+  #play-again {
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    background: #d4881e;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #play-again:hover {
+    background: #e0a813;
+  }
+
+  /* Temperature gauge */
+  #temp-gauge {
+    position: absolute;
+    right: -40px;
+    top: 10px;
+    width: 24px;
+    height: 300px;
+    background: #333;
+    border-radius: 12px;
+    border: 2px solid #555;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  #temp-fill {
+    width: 100%;
+    background: linear-gradient(0deg, #27ae60, #f1c40f, #e74c3c);
+    transition: height 0.5s;
+  }
+
+  #temp-label {
+    position: absolute;
+    right: -40px;
+    bottom: -22px;
+    color: #aaa;
+    font-size: 0.65rem;
+    width: 24px;
+    text-align: center;
+  }
+
+  /* Heat control */
+  #heat-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  #heat-control label {
+    color: #f0e6c0;
+    font-size: 0.85rem;
+  }
+
+  #heat-slider {
+    width: 200px;
+    accent-color: #e0a813;
+  }
+
+  #heat-value {
+    color: #ffd700;
+    font-size: 0.85rem;
+    width: 40px;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>Nugget Fryer</h1>
+  <div style="display:flex;gap:24px;">
+    <div class="stat">Score: <span id="score">0</span></div>
+    <div class="stat">Round: <span id="round">1</span>/5</div>
+    <div class="stat">Nuggets left: <span id="remaining">0</span></div>
+  </div>
+</div>
+
+<div id="game-area">
+  <div id="round-info"></div>
+  <p id="instructions">Click raw nuggets to drop them in the oil. Click frying nuggets to take them out.</p>
+
+  <div id="staging"></div>
+
+  <div id="fryer-wrapper">
+    <div id="fryer"></div>
+    <div id="temp-gauge"><div id="temp-fill" style="height:50%"></div></div>
+    <div id="temp-label">Heat</div>
+  </div>
+
+  <div id="heat-control">
+    <label for="heat-slider">Heat:</label>
+    <input type="range" id="heat-slider" min="1" max="10" value="5">
+    <span id="heat-value">5</span>
+  </div>
+
+  <div id="plate-area"></div>
+</div>
+
+<div id="overlay">
+  <h2>Order Complete!</h2>
+  <div class="final-score">Final Score: <span id="final-score">0</span></div>
+  <div class="breakdown" id="breakdown"></div>
+  <div class="grade" id="grade"></div>
+  <button id="play-again">Fry Again</button>
+</div>
+
+<script>
+const ROUNDS = 5;
+const NUGGETS_PER_ROUND = [3, 4, 5, 6, 7];
+const COOK_STAGES = [
+  { name: 'raw',     time: 0,    color: '#f5cba0', border: '#d4a36a', label: 'Raw',         points: 0,  cls: 'bad' },
+  { name: 'light',   time: 1.5,  color: '#e8b84d', border: '#c49530', label: 'Undercooked', points: 3,  cls: 'ok' },
+  { name: 'golden',  time: 3.0,  color: '#d4881e', border: '#a66210', label: 'Golden',      points: 8,  cls: 'good' },
+  { name: 'perfect', time: 4.5,  color: '#c27012', border: '#8f4e08', label: 'Perfect!',    points: 10, cls: 'perfect' },
+  { name: 'dark',    time: 6.5,  color: '#8b4513', border: '#5c2d0a', label: 'Overcooked',  points: 4,  cls: 'ok' },
+  { name: 'burnt',   time: 8.5,  color: '#3d1c02', border: '#1a0a00', label: 'Burnt!',      points: 0,  cls: 'bad' },
+];
+
+let score = 0;
+let currentRound = 0;
+let fryingNuggets = [];
+let platedResults = [];
+let rawLeft = 0;
+let gameActive = false;
+let heatLevel = 5;
+let lastFrame = 0;
+let bubbleTimer = 0;
+let steamTimer = 0;
+
+const scoreEl     = document.getElementById('score');
+const roundEl     = document.getElementById('round');
+const remainingEl = document.getElementById('remaining');
+const stagingEl   = document.getElementById('staging');
+const fryerEl     = document.getElementById('fryer');
+const plateEl     = document.getElementById('plate-area');
+const overlayEl   = document.getElementById('overlay');
+const finalScoreEl= document.getElementById('final-score');
+const breakdownEl = document.getElementById('breakdown');
+const gradeEl     = document.getElementById('grade');
+const roundInfoEl = document.getElementById('round-info');
+const heatSlider  = document.getElementById('heat-slider');
+const heatValueEl = document.getElementById('heat-value');
+const tempFill    = document.getElementById('temp-fill');
+
+heatSlider.addEventListener('input', () => {
+  heatLevel = parseInt(heatSlider.value);
+  heatValueEl.textContent = heatLevel;
+  tempFill.style.height = (heatLevel * 10) + '%';
+});
+
+document.getElementById('play-again').addEventListener('click', startGame);
+
+function startGame() {
+  score = 0;
+  currentRound = 0;
+  fryingNuggets = [];
+  platedResults = [];
+  scoreEl.textContent = '0';
+  overlayEl.classList.remove('active');
+  plateEl.innerHTML = '';
+  fryerEl.querySelectorAll('.frying-nugget').forEach(n => n.remove());
+  startRound();
+}
+
+function startRound() {
+  if (currentRound >= ROUNDS) {
+    endGame();
+    return;
+  }
+
+  const count = NUGGETS_PER_ROUND[currentRound];
+  rawLeft = count;
+  currentRound++;
+  roundEl.textContent = currentRound;
+  remainingEl.textContent = rawLeft + fryingNuggets.length;
+  roundInfoEl.textContent = `Round ${currentRound}: Fry ${count} nuggets!`;
+  gameActive = true;
+
+  stagingEl.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const nug = document.createElement('div');
+    nug.className = 'raw-nugget';
+    nug.addEventListener('click', () => dropNugget(nug));
+    stagingEl.appendChild(nug);
+  }
+}
+
+function dropNugget(el) {
+  if (!gameActive) return;
+  el.remove();
+  rawLeft--;
+
+  const fryer = fryerEl.getBoundingClientRect();
+  const x = 30 + Math.random() * (fryer.width - 90);
+  const y = 40 + Math.random() * (fryer.height - 100);
+
+  const nugEl = document.createElement('div');
+  nugEl.className = 'frying-nugget state-raw';
+  nugEl.style.left = x + 'px';
+  nugEl.style.top = y + 'px';
+  fryerEl.appendChild(nugEl);
+
+  // Splash effect
+  createSplash(x + 30, y + 22);
+
+  const nugData = {
+    el: nugEl,
+    cookTime: 0,
+    stageIndex: 0,
+    done: false,
+  };
+
+  nugEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    removeNugget(nugData);
+  });
+
+  fryingNuggets.push(nugData);
+  updateRemaining();
+}
+
+function removeNugget(nugData) {
+  if (nugData.done) return;
+  nugData.done = true;
+
+  const stage = COOK_STAGES[nugData.stageIndex];
+  score += stage.points;
+  scoreEl.textContent = score;
+
+  // Animate out
+  nugData.el.style.transition = 'transform 0.3s, opacity 0.3s';
+  nugData.el.style.transform = 'scale(0.5) translateY(-40px)';
+  nugData.el.style.opacity = '0';
+  setTimeout(() => nugData.el.remove(), 300);
+
+  // Add to plate
+  const plated = document.createElement('div');
+  plated.className = 'plated-nugget';
+  plated.style.background = stage.color;
+  plated.style.borderColor = stage.border;
+
+  const label = document.createElement('div');
+  label.className = 'score-label ' + stage.cls;
+  label.textContent = stage.label + ' +' + stage.points;
+  plated.appendChild(label);
+  plateEl.appendChild(plated);
+
+  platedResults.push({ stage: stage.name, points: stage.points, label: stage.label });
+
+  fryingNuggets = fryingNuggets.filter(n => n !== nugData);
+  updateRemaining();
+
+  // Check round complete
+  if (rawLeft <= 0 && fryingNuggets.length === 0) {
+    gameActive = false;
+    setTimeout(() => {
+      roundInfoEl.textContent = '';
+      startRound();
+    }, 1000);
+  }
+}
+
+function updateRemaining() {
+  remainingEl.textContent = rawLeft + fryingNuggets.length;
+}
+
+function getStageIndex(cookTime) {
+  for (let i = COOK_STAGES.length - 1; i >= 0; i--) {
+    if (cookTime >= COOK_STAGES[i].time) return i;
+  }
+  return 0;
+}
+
+function createSplash(cx, cy) {
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'splash';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 20 + Math.random() * 30;
+    s.style.left = cx + 'px';
+    s.style.top = cy + 'px';
+    s.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+    s.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+    fryerEl.appendChild(s);
+    setTimeout(() => s.remove(), 500);
+  }
+}
+
+function createBubble() {
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  b.style.left = (10 + Math.random() * (fryerEl.clientWidth - 20)) + 'px';
+  b.style.top = (fryerEl.clientHeight - 20) + 'px';
+  b.style.width = b.style.height = (4 + Math.random() * 8) + 'px';
+  b.style.animationDuration = (0.6 + Math.random() * 1.0) + 's';
+  fryerEl.appendChild(b);
+  setTimeout(() => b.remove(), 1500);
+}
+
+function createSteam() {
+  const s = document.createElement('div');
+  s.className = 'steam';
+  s.style.left = (20 + Math.random() * (fryerEl.clientWidth - 40)) + 'px';
+  s.style.top = '-10px';
+  s.style.width = s.style.height = (8 + Math.random() * 16) + 'px';
+  fryerEl.appendChild(s);
+  setTimeout(() => s.remove(), 2000);
+}
+
+function gameLoop(timestamp) {
+  if (!lastFrame) lastFrame = timestamp;
+  const dt = (timestamp - lastFrame) / 1000;
+  lastFrame = timestamp;
+
+  const speedMult = heatLevel / 5;
+
+  // Update frying nuggets
+  for (const nug of fryingNuggets) {
+    if (nug.done) continue;
+    nug.cookTime += dt * speedMult;
+
+    const newStage = getStageIndex(nug.cookTime);
+    if (newStage !== nug.stageIndex) {
+      nug.stageIndex = newStage;
+      const stage = COOK_STAGES[newStage];
+      nug.el.className = 'frying-nugget state-' + stage.name;
+    }
+
+    // Auto-remove if way past burnt (smoke phase)
+    if (nug.cookTime > 12) {
+      removeNugget(nug);
+    }
+  }
+
+  // Ambient bubbles
+  bubbleTimer += dt;
+  const bubbleInterval = 0.15 / speedMult;
+  if (bubbleTimer > bubbleInterval) {
+    bubbleTimer = 0;
+    if (fryingNuggets.length > 0 || heatLevel > 3) {
+      createBubble();
+    }
+  }
+
+  // Steam
+  steamTimer += dt;
+  if (steamTimer > 0.4) {
+    steamTimer = 0;
+    if (fryingNuggets.length > 0) {
+      createSteam();
+    }
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  const perfect = platedResults.filter(r => r.stage === 'perfect').length;
+  const golden  = platedResults.filter(r => r.stage === 'golden').length;
+  const total   = platedResults.length;
+  const maxScore = total * 10;
+  const pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+
+  finalScoreEl.textContent = score + ' / ' + maxScore;
+
+  const counts = {};
+  for (const r of platedResults) {
+    counts[r.label] = (counts[r.label] || 0) + 1;
+  }
+  let bd = '';
+  for (const [label, count] of Object.entries(counts)) {
+    bd += label + ': ' + count + '<br>';
+  }
+  breakdownEl.innerHTML = bd;
+
+  let grade, emoji;
+  if (pct >= 95) { grade = 'S'; emoji = '👨‍🍳'; }
+  else if (pct >= 85) { grade = 'A'; emoji = '🔥'; }
+  else if (pct >= 70) { grade = 'B'; emoji = '👍'; }
+  else if (pct >= 50) { grade = 'C'; emoji = '😅'; }
+  else if (pct >= 30) { grade = 'D'; emoji = '😬'; }
+  else { grade = 'F'; emoji = '🧯'; }
+
+  gradeEl.textContent = emoji + ' Grade: ' + grade + ' ' + emoji;
+
+  overlayEl.classList.add('active');
+}
+
+requestAnimationFrame(gameLoop);
+startGame();
+</script>
+</body>
+</html>
