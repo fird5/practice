@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discover Your AI Learning Pathway | NTUC LearningHub</title>
     
-    <!-- Core React & Babel -->
+    <!-- 
+      Core Technologies:
+      - React 18 for dynamic UI state management
+      - Tailwind CSS for professional, utility-first styling
+      - html2pdf.js for precision document export
+      - qrcode.js for seamless mobile connectivity
+    -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS with Strict Digital Corporate Font -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -30,14 +37,14 @@
             }
         }
     </script>
-    
-    <!-- Utilities -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
         
+        /* Standardized UI Consistency:
+          - Enforcing Open Sans for all digital interface elements
+          - Clean transitions for interactive mode
+        */
         body { 
             font-family: 'Open Sans', sans-serif; 
             -webkit-font-smoothing: antialiased; 
@@ -47,24 +54,12 @@
             padding: 0;
         }
         
-        .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .slider-track {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        
-        .card-shadow {
-            box-shadow: 0 10px 30px -5px rgba(24, 53, 94, 0.1);
-        }
-
-        .lucide-icon-wrapper {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 0;
         }
         
         .btn-active:active { transform: scale(0.96); }
@@ -82,12 +77,18 @@
             box-shadow: 0 8px 20px rgba(255, 203, 5, 0.4);
         }
 
+        /* 88px Consistent Logo height matching Landing Page */
         .brand-logo-img {
             height: 88px;
             width: auto;
             object-fit: contain;
         }
 
+        /* PDF Technical Strategy:
+          - Force Gill Sans for export only
+          - Fixed A4 resolution (794px @ 96DPI)
+          - Start content exactly 10mm (1cm) from the top/left edges
+        */
         #pdf-render-zone {
             position: fixed;
             left: 0;
@@ -99,6 +100,13 @@
             pointer-events: none;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
         }
+
+        .lucide-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
     </style>
 </head>
 <body class="selection:bg-ntucVital/50 overflow-x-hidden">
@@ -108,6 +116,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
+        // Image Retrieval URL for Cloud Logo
         const LOGO_SRC = "https://alep-p-001.sitecorecontenthub.cloud/api/public/content/d98b001bdae4438daee50179fef7dde2?v=4a2b9836&h=367&w=1188&la=en";
 
         const Icon = ({ name, size = 20, className = "" }) => {
@@ -116,9 +125,9 @@
                 brain: <><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></>,
                 user: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>,
                 rocket: <><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.5-1 1-4c1.5 0 3.5 1 3.5 1Z"/><path d="M15 15v5c-1 0-4-1.5-4-3.5 0 0 1-2 1-3.5Z"/><path d="m15 5 2 2"/></>,
-                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></>,
                 external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>,
-                message: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>
+                message: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,
+                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></>
             };
             return (
                 <span className={`lucide-icon-wrapper ${className}`}>
@@ -248,12 +257,11 @@
                     </div>
                     
                     <Icon name="sparkles" size={64} className="text-ntucRoyal mb-6 mt-24" />
-                    <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4">AI Course <br/>Discovery 2026</h1>
-                    <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+                    <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4">Discover Your AI <br/>Learning Pathway</h1>
+                    <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed text-center text-balance">
                         Not sure where to begin with AI?<br/>Take our 1-minute Quiz to find out Your AI Learning Pathway.
                     </p>
-                    <button onClick={startDiscovery} className="btn-active btn-vital group flex flex-col items-center gap-1 px-14 py-6 rounded-2xl shadow-xl">
-                        <span className="text-[10px] font-black uppercase text-ntucRoyal/70 tracking-widest">Personalised Guide</span>
+                    <button onClick={startDiscovery} className="btn-active btn-vital group px-14 py-8 rounded-2xl shadow-xl">
                         <span className="text-2xl font-black uppercase tracking-tight">GET STARTED</span>
                     </button>
                     
@@ -289,12 +297,12 @@
                         <div className="slider-track w-full h-full items-center" style={{ transform: `translateX(calc(-${currentIndex * 100}%))` }}>
                             {QUESTIONS.map((q, qIdx) => (
                                 <div key={qIdx} className="min-w-full px-6 flex flex-col items-center">
-                                    <div className="max-w-5xl w-full space-y-10">
+                                    <div className="max-w-4xl w-full space-y-10">
                                         <div className="text-center space-y-2">
                                             <p className="text-ntucOptimism font-black uppercase tracking-widest text-[10px]">Analysis Phase {qIdx + 1}</p>
                                             <h2 className="text-2xl md:text-4xl font-extrabold text-ntucIntegrity uppercase tracking-tighter leading-tight text-center">{q.text}</h2>
                                         </div>
-                                        <div className="grid grid-cols-1 gap-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {q.options.map(opt => (
                                                 <button key={opt.id} onClick={() => selectOption(opt.id)} className="btn-active p-6 rounded-2xl border-2 border-slate-100 bg-white hover:border-ntucRoyal hover:bg-slate-50 text-left font-bold text-base flex items-center group shadow-sm transition-all">
                                                     <span className="inline-block w-10 h-10 bg-ntucRoyal text-white rounded-lg text-center leading-10 mr-4 font-black text-xl shrink-0 uppercase">{opt.id}</span>
@@ -317,22 +325,22 @@
                         <div className="absolute top-8 left-8">
                             <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" />
                         </div>
-                        <header className="space-y-3 mt-16">
+                        <header className="space-y-3 mt-16 text-center">
                             <Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" />
                             <h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none">Hello, {userName}</h1>
                         </header>
 
-                        <div className="max-w-2xl mx-auto text-slate-600 font-semibold leading-relaxed">
+                        <div className="max-w-2xl mx-auto text-slate-600 font-semibold leading-relaxed text-center">
                             Thanks for exploring your AI learning pathway with us. We hope this gives you a helpful starting point in exploring AI learning options.
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-[10px] font-black uppercase text-ntucRoyal tracking-[0.3em]">Here’s a pathway you may explore</p>
+                            <p className="text-[10px] font-black uppercase text-ntucRoyal tracking-[0.3em] text-center">Here’s a pathway you may explore</p>
                             <div className="p-8 bg-white border-4 border-ntucVital rounded-[40px] text-left shadow-2xl relative overflow-hidden">
                                 <div>
                                     <p className="text-ntucRoyal font-black uppercase text-[10px] tracking-widest mb-4 bg-ntucVital/20 inline-block px-4 py-2 rounded-lg">Path Discovery Complete</p>
                                     <h2 className="text-3xl font-extrabold uppercase leading-tight text-ntucRoyal mb-4 border-l-4 border-ntucVital pl-6">{path.name}</h2>
-                                    <p className="text-slate-700 text-lg font-bold leading-relaxed">{path.desc}</p>
+                                    <p className="text-slate-700 text-lg font-bold leading-relaxed text-pretty">{path.desc}</p>
                                 </div>
                                 <div className="space-y-3 pt-6 border-t-2 border-slate-100">
                                     <p className="text-[10px] font-black uppercase text-ntucRoyal tracking-widest">Recommended Courses</p>
@@ -348,7 +356,7 @@
                             </div>
                         </div>
 
-                        <div className="pt-4">
+                        <div className="pt-4 text-center">
                             <a 
                                 href="https://share.hsforms.com/1KO-r5iqcRvqFI5ASO_hGXQ3xe6z" 
                                 target="_blank" 
@@ -361,8 +369,8 @@
 
                         <div className={`grid grid-cols-1 ${isShared ? '' : 'md:grid-cols-2'} gap-8 pt-10 border-t-2 border-slate-100`}>
                             {isShared ? (
-                                <div className="flex flex-col gap-6">
-                                    <button onClick={exportPDF} className="btn-active btn-vital w-full py-8 rounded-[30px] font-black uppercase text-xl shadow-2xl flex items-center justify-center gap-4">
+                                <div className="flex flex-col items-center gap-6">
+                                    <button onClick={exportPDF} className="btn-active btn-vital w-full max-w-md py-8 rounded-[30px] font-black uppercase text-xl shadow-2xl flex items-center justify-center gap-4">
                                         <Icon name="download" size={32}/> Save results to Phone (PDF)
                                     </button>
                                     <button onClick={() => window.location.href = window.location.origin + window.location.pathname} className="text-ntucRoyal font-black uppercase text-sm hover:underline decoration-ntucVital underline-offset-4 decoration-2">Back to Start</button>
@@ -390,7 +398,7 @@
         root.render(<App />);
     </script>
 
-    <!-- PDF RENDER BUFFER - FIXED GILL SANS FONT -->
+    <!-- PDF RENDER BUFFER -->
     <div id="pdf-render-zone">
         <div id="pdf-cert" style="padding: 10mm 12mm 10mm 12mm; background: #FFFFFF; width: 794px; min-height: 1120px; color: #102935; box-sizing: border-box; overflow: hidden; position: relative; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;">
             
@@ -424,5 +432,4 @@
         </div>
     </div>
 </body>
-
 </html>
