@@ -67,19 +67,21 @@
 
         .brand-logo-img { height: 88px; width: auto; object-fit: contain; }
 
-        /* PDF Render Zone - Precision Landscape Hard-Lock */
+        /* PDF RENDER ZONE - HARD LOCKDOWN FOR LANDSCAPE A4
+           Capturing landscape provides 30% more horizontal space, 
+           preventing skewing or clipping on mobile.
+        */
         #pdf-render-zone {
-            position: fixed;
+            position: absolute;
             left: -9999px; 
             top: 0;
-            width: 1122px; /* Standard A4 Landscape at 96DPI */
-            height: 794px;
+            width: 1122px; /* Fixed A4 Landscape width @ 96DPI */
             background: #FFFFFF;
             z-index: -9999;
             visibility: visible;
             pointer-events: auto;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
-            overflow: hidden;
+            overflow: visible;
         }
 
         #qr-container img { margin: 0 auto; }
@@ -173,13 +175,13 @@
                                 width: 140, 
                                 height: 140, 
                                 colorDark: "#18355E",
-                                correctLevel: QRCode.CorrectLevel.H
+                                correctLevel: QRCode.CorrectLevel.H 
                             });
                         } catch (e) { console.error("QR Error", e); }
                     }, 500);
                     return () => clearTimeout(timer);
                 }
-            }, [view, resultKey, isShared]);
+            }, [view, resultKey, isShared, userName]);
 
             const exportPDF = () => {
                 const element = document.getElementById('pdf-cert');
@@ -188,6 +190,7 @@
                 document.getElementById('pdf-path-title').innerText = `${path.name}`;
                 document.getElementById('pdf-path-desc').innerText = path.desc;
                 
+                // Block-level link anchors for precision PDF mapping
                 document.getElementById('pdf-courses-list').innerHTML = path.courses.map((c) => `
                     <div style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 6px; font-family: 'Gill Sans', sans-serif; display: block;">
                         <div style="font-weight: 700; color: #18355E; font-size: 14px; line-height: 1.2;">${c.name}</div>
@@ -198,7 +201,7 @@
                 const opt = {
                     margin: 0,
                     filename: `NTUC_AI_Report_${userName.replace(/\s+/g, '_')}.pdf`,
-                    image: { type: 'jpeg', quality: 1 },
+                    image: { type: 'jpeg', quality: 0.98 },
                     enableLinks: true, 
                     html2canvas: { 
                         scale: 2, 
@@ -206,7 +209,7 @@
                         letterRendering: true,
                         scrollY: 0, 
                         scrollX: 0,
-                        windowWidth: 1200 // Lock capture viewport to desktop width
+                        windowWidth: 1200 // Lock viewport to Desktop width to prevent Mobile Skewing
                     },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape', compress: true }
                 };
@@ -215,10 +218,10 @@
             };
 
             if (view === 'landing') return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white fade-in text-center relative">
+                <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white fade-in text-center relative text-balance">
                     <div className="absolute top-8 left-8"><img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" /></div>
                     <Icon name="sparkles" size={64} className="text-ntucRoyal mb-6 mt-24" />
-                    <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4 text-balance text-balance">Discover Your AI <br/>Learning Pathway</h1>
+                    <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4">Discover Your AI <br/>Learning Pathway</h1>
                     <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed text-center text-balance">Not sure where to begin with AI?<br/>Take our 1-minute Quiz to find out Your AI Learning Pathway.</p>
                     <button onClick={() => setView('identity')} className="btn-active btn-vital group px-14 py-8 rounded-2xl shadow-xl"><span className="text-2xl font-black uppercase tracking-tight">GET STARTED</span></button>
                     <div className="mt-12 max-w-sm text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose text-center">This is a general guide to help you get started.<br/>Speak with our sales consultants for more details.</div>
@@ -246,8 +249,8 @@
                         <div className="slider-track w-full h-full items-center" style={{ transform: `translateX(calc(-${currentIndex * 100}%))` }}>
                             {QUESTIONS.map((q, qIdx) => (
                                 <div key={qIdx} className="min-w-full px-6 flex flex-col items-center">
-                                    <div className="max-w-4xl w-full space-y-10">
-                                        <div className="text-center space-y-2"><p className="text-ntucOptimism font-black uppercase tracking-widest text-[10px]">Analysis Phase {qIdx + 1}</p><h2 className="text-2xl md:text-4xl font-extrabold text-ntucIntegrity uppercase tracking-tighter leading-tight text-center text-balance">{q.text}</h2></div>
+                                    <div className="max-w-4xl w-full space-y-10 text-balance">
+                                        <div className="text-center space-y-2"><p className="text-ntucOptimism font-black uppercase tracking-widest text-[10px]">Analysis Phase {qIdx + 1}</p><h2 className="text-2xl md:text-4xl font-extrabold text-ntucIntegrity uppercase tracking-tighter leading-tight text-center">{q.text}</h2></div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {q.options.map(opt => (
                                                 <button key={opt.id} onClick={() => selectOption(opt.id)} className="btn-active p-6 rounded-2xl border-2 border-slate-100 bg-white hover:border-ntucRoyal hover:bg-slate-50 text-left font-bold text-base flex items-center group shadow-sm transition-all"><span className="inline-block w-10 h-10 bg-ntucRoyal text-white rounded-lg text-center leading-10 mr-4 font-black text-xl shrink-0 uppercase">{opt.id}</span><span className="flex-1 text-ntucIntegrity leading-snug">{opt.text}</span></button>
@@ -266,11 +269,11 @@
                 return (
                     <div className="max-w-4xl mx-auto p-6 md:p-12 text-center space-y-8 min-h-screen fade-in bg-white flex flex-col justify-center relative">
                         <div className="absolute top-8 left-8"><img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" /></div>
-                        <header className="space-y-3 mt-16 text-center"><Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" /><h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none text-balance">Hello, {userName}</h1></header>
+                        <header className="space-y-3 mt-16 text-center text-balance"><Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" /><h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none text-balance">Hello, {userName}</h1></header>
                         <div className="max-w-2xl mx-auto text-slate-600 font-semibold leading-relaxed text-center text-balance">Thanks for exploring your AI learning pathway with us. We hope this gives you a helpful starting point in exploring AI learning options.</div>
                         <div className="space-y-4">
                             <div className="p-8 bg-white border-4 border-ntucVital rounded-[40px] text-left shadow-2xl relative overflow-hidden">
-                                <div><p className="text-ntucRoyal font-black uppercase text-[10px] tracking-widest mb-4 bg-ntucVital/20 inline-block px-4 py-2 rounded-lg text-center md:text-left">HERE’S A PATHWAY YOU MAY EXPLORE</p><h2 className="text-3xl font-extrabold uppercase leading-tight text-ntucRoyal mb-4 border-l-4 border-ntucVital pl-6">{path.name}</h2><p className="text-slate-700 text-lg font-bold leading-relaxed text-pretty">{path.desc}</p></div>
+                                <div><p className="text-ntucRoyal font-black uppercase text-[10px] tracking-widest mb-4 bg-ntucVital/20 inline-block px-4 py-2 rounded-lg text-center md:text-left uppercase tracking-[0.2em]">HERE’S A PATHWAY YOU MAY EXPLORE</p><h2 className="text-3xl font-extrabold uppercase leading-tight text-ntucRoyal mb-4 border-l-4 border-ntucVital pl-6">{path.name}</h2><p className="text-slate-700 text-lg font-bold leading-relaxed text-pretty">{path.desc}</p></div>
                                 <div className="space-y-3 pt-6 border-t-2 border-slate-100">
                                     <p className="text-[10px] font-black uppercase text-ntucRoyal tracking-widest">Recommended Courses</p>
                                     <div className="grid gap-3">{path.courses.map((c, i) => (<a key={i} href={c.url} target="_blank" className="btn-active group flex items-center justify-between p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl hover:border-ntucRoyal hover:bg-white transition-all"><span className="font-bold text-ntucRoyal text-sm leading-tight pr-6 text-left">{c.name}</span><Icon name="external" size={20} className="text-ntucOptimism shrink-0" /></a>))}</div>
@@ -285,7 +288,7 @@
                             ) : (
                                 <><div className="bg-white p-6 rounded-3xl flex flex-col items-center border-2 border-slate-100 shadow-inner min-h-[220px]"><h4 className="font-black text-[10px] uppercase mb-4 tracking-widest text-ntucRoyal text-center text-balance text-balance">Scan to save your results</h4><div id="qr-container" ref={qrRef} className="bg-white p-2 rounded-xl border-2 border-ntucRoyal shadow-md overflow-hidden"></div></div>
                                 <div className="flex flex-col justify-center gap-4"><button onClick={exportPDF} className="btn-active bg-ntucRoyal text-white py-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-3 hover:bg-ntucIntegrity transition-all border-2 border-white text-center"><Icon name="download" size={24}/> Download PDF Report</button>
-                                <button onClick={() => window.location.reload()} className="text-ntucRoyal font-black uppercase text-[10px] hover:underline decoration-ntucVital underline-offset-4 decoration-2 text-center">Restart quiz</button></div></>
+                                <button onClick={() => window.location.reload()} className="text-ntucRoyal font-black uppercase text-[10px] hover:underline decoration-ntucVital underline-offset-4 decoration-2 text-center text-balance">Restart quiz</button></div></>
                             )}
                         </div>
                     </div>
@@ -298,11 +301,11 @@
         root.render(<App />);
     </script>
 
-    <!-- PDF RENDER BUFFER - FIXED LANDSCAPE SCALING AND LINK INTERACTIVITY -->
+    <!-- PDF RENDER BUFFER - FIXED LANDSCAPE SCALING AND HITBOXES -->
     <div id="pdf-render-zone">
-        <div id="pdf-cert" style="padding: 12mm 15mm; background: #FFFFFF; width: 1122px; height: 794px; color: #102935; box-sizing: border-box; overflow: hidden; position: relative; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;">
+        <div id="pdf-cert" style="padding: 15mm; background: #FFFFFF; width: 1122px; height: 794px; color: #102935; box-sizing: border-box; overflow: hidden; position: relative; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;">
             
-            <div style="display: block; border-bottom: 8px solid #18355E; padding-bottom: 12px; margin-bottom: 25px; min-height: 100px;">
+            <div style="display: block; border-bottom: 8px solid #18355E; padding-bottom: 12px; margin-bottom: 30px; min-height: 100px;">
                 <img src="https://alep-p-001.sitecorecontenthub.cloud/api/public/content/d98b001bdae4438daee50179fef7dde2?v=4a2b9836&h=367&w=1188&la=en" crossOrigin="anonymous" style="height: 75px; width: auto; float: left;" />
                 <div style="text-align: right; margin-top: 10px;">
                     <h1 style="color: #18355E; font-size: 28px; margin: 0; font-weight: 800; text-transform: uppercase; line-height: 1.1; font-family: inherit;">DISCOVER YOUR AI <br/>LEARNING PATHWAY</h1>
@@ -327,11 +330,11 @@
                 </div>
             </div>
 
-            <!-- Disclaimer Footer - Precision hyperlinked 'here' -->
+            <!-- Disclaimer Container - Optimized for Link Hit-Mapping -->
             <div style="border-top: 3px solid #EEE; padding-top: 15px; position: absolute; bottom: 25mm; left: 15mm; right: 15mm; display: block; background: #fff;">
-                <p style="font-size: 12px; color: #64748B; line-height: 1.6; font-weight: 600; margin: 0; font-family: inherit; display: block;">
+                <p style="font-size: 11px; color: #64748B; line-height: 1.6; font-weight: 600; margin: 0; font-family: inherit; display: block;">
                     This is a general guide to help you get started. If you wish to find out more details on your AI learning pathways, leave your contact details 
-                    <a href="https://share.hsforms.com/1rABgRKlaTGyWhCl3K9sUBQ3xe6z" target="_blank" style="color: #0097CE; text-decoration: underline; font-weight: 800; display: inline; border-bottom: 1px solid #0097CE;">here</a> 
+                    <a href="https://share.hsforms.com/1rABgRKlaTGyWhCl3K9sUBQ3xe6z" target="_blank" style="color: #0097CE; text-decoration: underline; font-weight: 800; display: inline-block; border-bottom: 1.5px solid #0097CE;">here</a> 
                     and our Sales Consultant will be in touch with you soon.
                 </p>
             </div>
