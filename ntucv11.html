@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -79,15 +79,15 @@
             object-fit: contain;
         }
 
-        /* PDF Calibration Zone */
+        /* PDF Calibration Zone - Optimized for clickable hitbox mapping */
         #pdf-render-zone {
             position: fixed;
             left: 0;
-            top: -10000px; 
+            top: 0; 
             width: 794px; 
             background: #FFFFFF;
             z-index: -9999;
-            visibility: visible;
+            opacity: 0; /* Invisible but physically present in viewport for coordinate accuracy */
             pointer-events: none;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
         }
@@ -221,23 +221,33 @@
                 document.getElementById('pdf-path-title').innerText = `${path.name}`;
                 document.getElementById('pdf-path-desc').innerText = path.desc;
                 
-                // CRITICAL FIX: Wrapped URLs in <a> tags for PDF clickability
+                // Optimized Course URL Links for PDF clickability
                 document.getElementById('pdf-courses-list').innerHTML = path.courses.map((c, i) => `
-                    <li style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; list-style: none; font-family: 'Gill Sans', sans-serif;">
-                        <div style="font-weight: 700; color: #18355E; font-size: 13px; line-height: 1.1;">${c.name}</div>
-                        <a href="${c.url}" target="_blank" style="font-size: 10px; color: #0097CE; word-break: break-all; margin-top: 1px; text-decoration: none; display: inline-block;">${c.url}</a>
+                    <li style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 6px; list-style: none; font-family: 'Gill Sans', sans-serif;">
+                        <div style="font-weight: 700; color: #18355E; font-size: 13px; line-height: 1.2;">${c.name}</div>
+                        <a href="${c.url}" target="_blank" style="font-size: 11px; color: #0097CE; word-break: break-all; margin-top: 4px; text-decoration: none; display: block; line-height: 1.4;">${c.url}</a>
                     </li>
                 `).join('');
 
-                window.scrollTo(0,0);
                 const opt = {
                     margin: 0,
                     filename: `NTUC_AI_Report_${userName.replace(/\s+/g, '_')}.pdf`,
                     image: { type: 'jpeg', quality: 1 },
-                    enableLinks: true, // ENSURES LINKS WORK IN PDF
-                    html2canvas: { scale: 2.5, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    enableLinks: true, // Crucial for mobile PDF link mapping
+                    html2canvas: { 
+                        scale: 2, 
+                        useCORS: true, 
+                        letterRendering: true,
+                        logging: false
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: true
+                    }
                 };
+
                 if (window.html2pdf) {
                     window.html2pdf().from(element).set(opt).save();
                 }
@@ -417,8 +427,8 @@
             </div>
 
             <div style="border-top: 3px solid #EEE; padding-top: 20px; position: absolute; bottom: 20mm; left: 12mm; right: 12mm;">
-                <!-- Fixed Hyperlink for PDF disclaimer -->
-                <p style="font-size: 10px; color: #64748B; line-height: 1.5; font-weight: 600; margin-bottom: 12px; font-family: inherit;">This is a general guide to help you get started. If you wish to find out more details on your AI learning pathways, leave your contact details <a href="https://share.hsforms.com/1KO-r5iqcRvqFI5ASO_hGXQ3xe6z" target="_blank" style="color: #0097CE; text-decoration: underline; display: inline-block;">here</a> and our Sales Consultant will be in touch with you soon.</p>
+                <!-- Updated Disclaimer with high-precision hyperlink placement -->
+                <p style="font-size: 11px; color: #64748B; line-height: 1.6; font-weight: 600; margin-bottom: 12px; font-family: inherit;">This is a general guide to help you get started. If you wish to find out more details on your AI learning pathways, leave your contact details <a href="https://share.hsforms.com/1KO-r5iqcRvqFI5ASO_hGXQ3xe6z" target="_blank" style="color: #0097CE; text-decoration: underline; display: inline-block; padding: 2px 0;">here</a> and our Sales Consultant will be in touch with you soon.</p>
             </div>
 
             <div style="text-align: center; position: absolute; bottom: 10mm; left: 12mm; right: 12mm;">
