@@ -6,11 +6,9 @@
     <title>Discover Your AI Learning Pathway | NTUC LearningHub</title>
     
     <!-- 
-      Technical Stack:
-      - React 18: Core logic
-      - Tailwind CSS: Modern corporate UI
-      - html2pdf.js: Precision Landscape A4 Export
-      - qrcode.js: Mobile hand-off
+      Core Logic: React 18
+      Styling: Tailwind CSS
+      Export: html2pdf.js (Landscape Optimized)
     -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -67,21 +65,22 @@
 
         .brand-logo-img { height: 88px; width: auto; object-fit: contain; }
 
-        /* PDF RENDER ZONE - HARD LOCKDOWN FOR LANDSCAPE A4
-           Capturing landscape provides 30% more horizontal space, 
-           preventing skewing or clipping on mobile.
+        /* PDF RENDER ZONE - CROSS-DEVICE STABILITY LOCK
+           Locked to 1122px (Standard A4 Landscape @ 96DPI).
+           Positioned fixed to ensure absolute coordinate accuracy for clickable links.
         */
         #pdf-render-zone {
-            position: absolute;
-            left: -9999px; 
+            position: fixed;
+            left: -5000px; 
             top: 0;
-            width: 1122px; /* Fixed A4 Landscape width @ 96DPI */
+            width: 1122px; 
+            height: 794px;
             background: #FFFFFF;
             z-index: -9999;
             visibility: visible;
             pointer-events: auto;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
-            overflow: visible;
+            overflow: hidden;
         }
 
         #qr-container img { margin: 0 auto; }
@@ -190,11 +189,11 @@
                 document.getElementById('pdf-path-title').innerText = `${path.name}`;
                 document.getElementById('pdf-path-desc').innerText = path.desc;
                 
-                // Block-level link anchors for precision PDF mapping
+                // Optimized Course Links for PDF mapping
                 document.getElementById('pdf-courses-list').innerHTML = path.courses.map((c) => `
-                    <div style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 6px; font-family: 'Gill Sans', sans-serif; display: block;">
+                    <div style="margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 6px; font-family: 'Gill Sans', sans-serif;">
                         <div style="font-weight: 700; color: #18355E; font-size: 14px; line-height: 1.2;">${c.name}</div>
-                        <a href="${c.url}" target="_blank" style="font-size: 11px; color: #0097CE; word-break: break-all; text-decoration: none; display: block; padding-top: 2px; padding-bottom: 4px;">${c.url}</a>
+                        <a href="${c.url}" target="_blank" style="font-size: 11px; color: #0097CE; word-break: break-all; text-decoration: none; display: block; padding-top: 2px;">${c.url}</a>
                     </div>
                 `).join('');
 
@@ -209,7 +208,7 @@
                         letterRendering: true,
                         scrollY: 0, 
                         scrollX: 0,
-                        windowWidth: 1200 // Lock viewport to Desktop width to prevent Mobile Skewing
+                        windowWidth: 1122 // FORCED: Fixed width landscape context prevents skewing on laptops
                     },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape', compress: true }
                 };
@@ -222,7 +221,7 @@
                     <div className="absolute top-8 left-8"><img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" /></div>
                     <Icon name="sparkles" size={64} className="text-ntucRoyal mb-6 mt-24" />
                     <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4">Discover Your AI <br/>Learning Pathway</h1>
-                    <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed text-center text-balance">Not sure where to begin with AI?<br/>Take our 1-minute Quiz to find out Your AI Learning Pathway.</p>
+                    <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed text-center">Not sure where to begin with AI?<br/>Take our 1-minute Quiz to find out Your AI Learning Pathway.</p>
                     <button onClick={() => setView('identity')} className="btn-active btn-vital group px-14 py-8 rounded-2xl shadow-xl"><span className="text-2xl font-black uppercase tracking-tight">GET STARTED</span></button>
                     <div className="mt-12 max-w-sm text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose text-center">This is a general guide to help you get started.<br/>Speak with our sales consultants for more details.</div>
                 </div>
@@ -234,12 +233,12 @@
                     <Icon name="user" size={80} className="text-ntucRoyal" />
                     <div className="space-y-2"><h2 className="text-3xl font-black uppercase text-ntucRoyal tracking-tighter leading-tight text-balance">Before we begin...</h2><p className="font-semibold text-slate-500 text-balance">Please enter your name to continue.</p></div>
                     <input type="text" value={userName} onChange={e => setUserName(e.target.value)} placeholder="Full Name as per NRIC" className="w-full max-w-md bg-white border-2 border-slate-200 focus:border-ntucRoyal rounded-xl py-5 px-6 text-xl font-bold outline-none shadow-md transition-all text-center" />
-                    <button onClick={() => userName.trim() && setView('quiz')} className="btn-active btn-vital w-full max-w-md font-black py-5 rounded-xl text-lg shadow-lg uppercase">Next</button>
+                    <button onClick={() => userName.trim() && setView('quiz')} className="btn-active btn-vital w-full max-w-md font-black py-5 rounded-xl text-lg shadow-lg uppercase transition-all">Next</button>
                 </div>
             );
 
             if (view === 'quiz') return (
-                <div className="min-h-screen bg-white flex flex-col overflow-hidden">
+                <div className="min-h-screen bg-white flex flex-col overflow-hidden text-balance">
                     <header className="p-6 flex justify-between items-center border-b-2 border-slate-100 bg-white sticky top-0 z-50">
                         <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img !h-[40px]" />
                         <div className="flex gap-3">{QUESTIONS.map((_, i) => (<div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i === currentIndex ? 'w-14 bg-ntucRoyal' : i < currentIndex ? 'w-3 bg-ntucOptimism' : 'w-3 bg-slate-200'}`}></div>))}</div>
@@ -269,7 +268,7 @@
                 return (
                     <div className="max-w-4xl mx-auto p-6 md:p-12 text-center space-y-8 min-h-screen fade-in bg-white flex flex-col justify-center relative">
                         <div className="absolute top-8 left-8"><img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" /></div>
-                        <header className="space-y-3 mt-16 text-center text-balance"><Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" /><h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none text-balance">Hello, {userName}</h1></header>
+                        <header className="space-y-3 mt-16 text-center text-balance"><Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" /><h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none">Hello, {userName}</h1></header>
                         <div className="max-w-2xl mx-auto text-slate-600 font-semibold leading-relaxed text-center text-balance">Thanks for exploring your AI learning pathway with us. We hope this gives you a helpful starting point in exploring AI learning options.</div>
                         <div className="space-y-4">
                             <div className="p-8 bg-white border-4 border-ntucVital rounded-[40px] text-left shadow-2xl relative overflow-hidden">
@@ -286,7 +285,7 @@
                                 <div className="flex flex-col items-center gap-6"><button onClick={exportPDF} className="btn-active btn-vital w-full max-w-md py-8 rounded-[30px] font-black uppercase text-xl shadow-2xl flex items-center justify-center gap-4 text-balance"><Icon name="download" size={32}/> Save results to Phone (PDF)</button>
                                 <button onClick={() => window.location.href = window.location.origin + window.location.pathname} className="text-ntucRoyal font-black uppercase text-sm hover:underline decoration-ntucVital underline-offset-4 decoration-2">Restart quiz</button></div>
                             ) : (
-                                <><div className="bg-white p-6 rounded-3xl flex flex-col items-center border-2 border-slate-100 shadow-inner min-h-[220px]"><h4 className="font-black text-[10px] uppercase mb-4 tracking-widest text-ntucRoyal text-center text-balance text-balance">Scan to save your results</h4><div id="qr-container" ref={qrRef} className="bg-white p-2 rounded-xl border-2 border-ntucRoyal shadow-md overflow-hidden"></div></div>
+                                <><div className="bg-white p-6 rounded-3xl flex flex-col items-center border-2 border-slate-100 shadow-inner min-h-[220px]"><h4 className="font-black text-[10px] uppercase mb-4 tracking-widest text-ntucRoyal text-center text-balance">Scan to save your results</h4><div id="qr-container" ref={qrRef} className="bg-white p-2 rounded-xl border-2 border-ntucRoyal shadow-md overflow-hidden"></div></div>
                                 <div className="flex flex-col justify-center gap-4"><button onClick={exportPDF} className="btn-active bg-ntucRoyal text-white py-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-3 hover:bg-ntucIntegrity transition-all border-2 border-white text-center"><Icon name="download" size={24}/> Download PDF Report</button>
                                 <button onClick={() => window.location.reload()} className="text-ntucRoyal font-black uppercase text-[10px] hover:underline decoration-ntucVital underline-offset-4 decoration-2 text-center text-balance">Restart quiz</button></div></>
                             )}
@@ -301,7 +300,7 @@
         root.render(<App />);
     </script>
 
-    <!-- PDF RENDER BUFFER - FIXED LANDSCAPE SCALING AND HITBOXES -->
+    <!-- PDF RENDER BUFFER - FIXED LANDSCAPE SCALING FOR LAPTOP STABILITY -->
     <div id="pdf-render-zone">
         <div id="pdf-cert" style="padding: 15mm; background: #FFFFFF; width: 1122px; height: 794px; color: #102935; box-sizing: border-box; overflow: hidden; position: relative; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;">
             
@@ -330,9 +329,9 @@
                 </div>
             </div>
 
-            <!-- Disclaimer Container - Optimized for Link Hit-Mapping -->
+            <!-- Disclaimer Container - Clickable Link Fixed -->
             <div style="border-top: 3px solid #EEE; padding-top: 15px; position: absolute; bottom: 25mm; left: 15mm; right: 15mm; display: block; background: #fff;">
-                <p style="font-size: 11px; color: #64748B; line-height: 1.6; font-weight: 600; margin: 0; font-family: inherit; display: block;">
+                <p style="font-size: 12px; color: #64748B; line-height: 1.6; font-weight: 600; margin: 0; font-family: inherit; display: block;">
                     This is a general guide to help you get started. If you wish to find out more details on your AI learning pathways, leave your contact details 
                     <a href="https://share.hsforms.com/1rABgRKlaTGyWhCl3K9sUBQ3xe6z" target="_blank" style="color: #0097CE; text-decoration: underline; font-weight: 800; display: inline-block; border-bottom: 1.5px solid #0097CE;">here</a> 
                     and our Sales Consultant will be in touch with you soon.
