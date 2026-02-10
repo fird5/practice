@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -227,7 +227,7 @@
                 
                 // Added class 'pdf-link-target' and data-url to the list items for tracking positions later
                 document.getElementById('pdf-courses-list').innerHTML = path.courses.map((c, i) => `
-                    <li class="pdf-link-target" data-url="${c.url}" style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; list-style: none; font-family: 'Gill Sans', sans-serif;">
+                    <li class="pdf-link-target" data-url="${c.url}" style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; list-style: none; font-family: 'Gill Sans', sans-serif; display: block;">
                         <div style="font-weight: 700; color: #18355E; font-size: 13px; line-height: 1.1;">${c.name}</div>
                         <div style="font-size: 10px; color: #0097CE; word-break: break-all; margin-top: 1px;">${c.url}</div>
                     </li>
@@ -260,44 +260,32 @@
                         pdf.setPage(1); // Ensure we are targeting the first page for annotations
                         
                         const pxToMm = 210 / 794; 
-                        
-                        // Helper to get position relative to the container #pdf-cert
-                        // This ignores viewport zooming on mobile
-                        const getRelativePos = (child, parent) => {
-                            let node = child;
-                            let x = 0;
-                            let y = 0;
-                            while (node && node !== parent && node !== document.body) {
-                                x += node.offsetLeft;
-                                y += node.offsetTop;
-                                node = node.offsetParent;
-                            }
-                            return { x, y };
-                        };
+                        const containerRect = element.getBoundingClientRect(); // Get absolute position of container in viewport
 
-                        // 1. Links for courses
                         const linkElements = element.querySelectorAll('.pdf-link-target');
                         linkElements.forEach(el => {
-                            const pos = getRelativePos(el, element);
-                            const w = el.offsetWidth * pxToMm;
-                            const h = el.offsetHeight * pxToMm;
-                            const x = pos.x * pxToMm;
-                            const y = pos.y * pxToMm;
-                            
+                            const rect = el.getBoundingClientRect(); // Get absolute position of element in viewport
                             const url = el.getAttribute('data-url');
+                            
                             if (url) {
+                                // Calculate position by subtracting container's position from element's position
+                                // This cancels out any scroll or zoom offsets common to both
+                                const x = (rect.left - containerRect.left) * pxToMm;
+                                const y = (rect.top - containerRect.top) * pxToMm;
+                                const w = rect.width * pxToMm;
+                                const h = rect.height * pxToMm;
+                                
                                 pdf.link(x, y, w, h, { url });
                             }
                         });
 
-                        // 2. Footer Link
                         const footerLink = element.querySelector('a[href^="https://share.hsforms"]');
                         if (footerLink) {
-                            const pos = getRelativePos(footerLink, element);
-                            const w = footerLink.offsetWidth * pxToMm;
-                            const h = footerLink.offsetHeight * pxToMm;
-                            const x = pos.x * pxToMm;
-                            const y = pos.y * pxToMm;
+                            const rect = footerLink.getBoundingClientRect();
+                            const x = (rect.left - containerRect.left) * pxToMm;
+                            const y = (rect.top - containerRect.top) * pxToMm;
+                            const w = rect.width * pxToMm;
+                            const h = rect.height * pxToMm;
                             pdf.link(x, y, w, h, { url: footerLink.href });
                         }
                     }).save();
@@ -489,4 +477,3 @@
 </body>
 
 </html>
-
