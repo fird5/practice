@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Your AI Learning Pathway | NTUC LearningHub</title>
+    
+    <!-- 
+      Technical Stack:
+      - React 18: State-driven interactive quiz
+      - Tailwind CSS: Modern corporate styling
+      - html2pdf.js: Precision A4 PDF generation
+      - qrcode.js: Mobile hand-off logic
+    -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ntucRoyal: '#18355E',
+                        ntucOptimism: '#0097CE',
+                        ntucFuturism: '#004E74',
+                        ntucIntegrity: '#102935',
+                        ntucVital: '#FFCB05',
+                    },
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+        
+        /* Global Reset for Consistency across Browsers */
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #FFFFFF; /* Critical for PDF white background */
+        }
+
+        body { 
+            font-family: 'Open Sans', sans-serif; 
+            -webkit-font-smoothing: antialiased; 
+            color: #102935;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* MAIN APP CONTAINER 
+           z-index: 10 ensures this layer is always visible to the user,
+           hiding the PDF generation work happening underneath.
+        */
+        #root {
+            position: relative;
+            z-index: 10;
+            background-color: #FFFFFF;
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .btn-active:active { transform: scale(0.96); }
+
+        .btn-vital {
+            background-color: #FFCB05;
+            color: #18355E;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            border: 2px solid #18355E;
+        }
+        .btn-vital:hover {
+            background-color: #f7c300;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 203, 5, 0.4);
+        }
+
+        .brand-logo-img {
+            height: 88px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* PDF RENDER ZONE - PRODUCTION SAFEGUARDS
+           1. left: -9999px: Moves the element physically off-screen so it never distorts the UI on mobile.
+           2. JS 'onclone': We temporarily move this back to (0,0) only in the PDF generator's memory.
+        */
+        #pdf-render-zone {
+            position: absolute;
+            left: -9999px !important;
+            top: 0 !important;
+            width: 794px !important; 
+            min-height: 1123px;
+            background: #FFFFFF;
+            z-index: -9999;
+            visibility: visible;
+            pointer-events: none;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .lucide-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
+    </style>
+</head>
+<body class="selection:bg-ntucVital/50">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const LOGO_SRC = "https://alep-p-001.sitecorecontenthub.cloud/api/public/content/d98b001bdae4438daee50179fef7dde2?v=4a2b9836&h=367&w=1188&la=en";
+
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                sparkles: <><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></>,
+                brain: <><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></>,
+                user: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>,
+                rocket: <><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.5-1 1-4c1.5 0 3.5 1 3.5 1Z"/><path d="M15 15v5c-1 0-4-1.5-4-3.5 0 0 1-2 1-3.5Z"/><path d="m15 5 2 2"/></>,
+                external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>,
+                message: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,
+                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></>
+            };
+            return (
+                <span className={`lucide-icon-wrapper ${className}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        {icons[name] || null}
+                    </svg>
+                </span>
+            );
+        };
+
+        const QUESTIONS = [
+            { id: 0, text: "What interests you most about AI?", options: [ 
+                { id: 'A', text: "Building or training AI systems and understanding how they work" }, 
+                { id: 'B', text: "Using AI to improve business decisions or productivity" }, 
+                { id: 'C', text: "Using AI to build digital confidence, enhance communication and simplify everyday tasks" }
+            ] },
+            { id: 1, text: "How comfortable are you with technical concepts (e.g. coding, data, systems)?", options: [ 
+                { id: 'A', text: "Very comfortable - I enjoy learning technical tools and languages" }, 
+                { id: 'B', text: "Somewhat comfortable - I can learn basics if they are practical" }, 
+                { id: 'C', text: "Not technical, but confident using AI tools for sales, marketing, or customer-facing work" } 
+            ] },
+            { id: 2, text: "How do you see yourself using AI in the future?", options: [ 
+                { id: 'A', text: "Developing AI models, applications, or automation" }, 
+                { id: 'B', text: "Applying AI tools in my job to enhance efficiency or decision-making" }, 
+                { id: 'C', text: "Using AI to enhance sales, marketing, content creation, and customer experience outcomes" } 
+            ] },
+            { id: 3, text: "Which task sounds most appealing to you?", options: [ 
+                { id: 'A', text: "Analysing data to identify patterns or build predictions" }, 
+                { id: 'B', text: "Using AI tools to solve real-world business or operational problems" }, 
+                { id: 'C', text: "Applying AI to personalise outreach, improve campaigns, or drive revenue growth" } 
+            ] },
+            { id: 4, text: "What is your primary career goal related to AI?", options: [ 
+                { id: 'A', text: "Become an AI engineer, data scientist, or technical specialist" }, 
+                { id: 'B', text: "Upskill for my current role or transition into an AI-enabled role" }, 
+                { id: 'C', text: "Creating or optimising content, messaging, or customer journeys using AI" } 
+            ] }
+        ];
+
+        const PATHS = {
+            A: { name: "AI, Data and Machine Learning Courses", desc: "For learners who want to build, analyse or develop AI models.", courses: [{ name: "Microsoft Azure AI Fundamentals", url: "https://www.ntuclearninghub.com/en-gb/-/course/microsoft-azure-ai-fundamentals-sf" }, { name: "Advanced Analytics and Machine Learning (Python)", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-analytics-and-machine-learning-using-python-sf" }, { name: "Deep Learning Models and AI using Python", url: "https://www.ntuclearninghub.com/en-gb/-/course/deep-learning-models-and-ai-using-python-sf" }] },
+            B: { name: "Applied AI / Business & Productivity Courses", desc: "For professionals using AI to improve efficiency and decision-making across functions.", courses: [{ name: "Generative AI for Business Professionals", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-business-professionals-chatgpt-media-synthesis-and-beyond" }, { name: "AI Innovation Unleashed: Navigating The Terrain Of Prompt Engineering", url: "https://www.ntuclearninghub.com/en-gb/-/course/ai-innovation-unleashed-navigating-the-terrain-of-prompt-engineering-sf" }, { name: "Prompt Power: Elevate Your Microsoft 365 Copilot Skills", url: "https://www.ntuclearninghub.com/en-gb/-/course/craft-effective-prompts-for-microsoft-copilot-for-microsoft-365" }, { name: "Fundamentals of AI in Industrial Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/fundamentals-of-ai-applications-in-industrial-automation" }, { name: "Business Process and Workflow Automation", url: "https://www.ntuclearninghub.com/en-gb/-/course/digital-workplace-business-process-and-workflow-automation-design-deploy-and-manage" }, { name: "Smarter Supply Chain Workflows with AI", url: "https://www.ntuclearninghub.com/en-gb/-/course/smarter-supply-chain-workflows-with-ai" }] },
+            C: { name: "AI for Sales, Marketing & Customer Experience Courses", desc: "For professionals focused on growth, engagement, content, and revenue impact.", courses: [{ name: "Generative AI for Marketing and Design", url: "https://www.ntuclearninghub.com/en-gb/-/course/generative-ai-for-marketing-and-design-text-image-and-video-sf" }, { name: "Advanced Generative AI for Marketing & Sales", url: "https://www.ntuclearninghub.com/en-gb/-/course/advanced-generative-ai-techniques-for-marketing-sales-sf" }, { name: "Empowering Digital Marketers with Essential AI Tools", url: "https://www.ntuclearninghub.com/en-gb/-/course/empowering-digital-marketers-with-essential-ai-tools" }, { name: "Design Thinking Fundamentals", url: "https://www.ntuclearninghub.com/en-gb/-/course/design-thinking-fundamentals" }] }
+        };
+
+        function App() {
+            const [view, setView] = useState('landing'); 
+            const [userName, setUserName] = useState('');
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [userAnswers, setUserAnswers] = useState({});
+            const [resultKey, setResultKey] = useState(null);
+            const [isShared, setIsShared] = useState(false);
+            const qrRef = useRef(null);
+
+            useEffect(() => {
+                const params = new URLSearchParams(window.location.search);
+                if (params.has('name') && params.get('path')) {
+                    setUserName(decodeURIComponent(params.get('name')));
+                    setResultKey(params.get('path'));
+                    setIsShared(true);
+                    setView('result');
+                }
+            }, []);
+
+            const startDiscovery = () => {
+                setCurrentIndex(0);
+                setUserAnswers({});
+                setResultKey(null);
+                setView('identity');
+            };
+
+            const selectOption = (optionId) => {
+                const updated = { ...userAnswers, [currentIndex]: optionId };
+                setUserAnswers(updated);
+                if (currentIndex < QUESTIONS.length - 1) {
+                    setTimeout(() => setCurrentIndex(prev => prev + 1), 300);
+                } else {
+                    const counts = { A: 0, B: 0, C: 0 };
+                    Object.values(updated).forEach(val => counts[val]++);
+                    const winner = ['A', 'B', 'C'].reduce((a, b) => (counts[a] || 0) >= (counts[b] || 0) ? a : b);
+                    setResultKey(winner);
+                    setView('result'); 
+                }
+            };
+
+            useEffect(() => {
+                if (view === 'result' && resultKey && !isShared && qrRef.current) {
+                    const timer = setTimeout(() => {
+                        if (!qrRef.current) return;
+                        qrRef.current.innerHTML = "";
+                        const shareUrl = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(userName)}&path=${resultKey}`;
+                        new window.QRCode(qrRef.current, { text: shareUrl, width: 140, height: 140, colorDark: "#18355E" });
+                    }, 500);
+                    return () => clearTimeout(timer);
+                }
+            }, [view, resultKey, isShared]);
+
+            const exportPDF = () => {
+                const element = document.getElementById('pdf-cert');
+                const path = PATHS[resultKey] || PATHS.B;
+                document.getElementById('pdf-user-name-display').innerText = userName.toUpperCase();
+                document.getElementById('pdf-path-title').innerText = `${path.name}`;
+                document.getElementById('pdf-path-desc').innerText = path.desc;
+                
+                // Added class 'pdf-link-target' and data-url to the list items for tracking positions later
+                document.getElementById('pdf-courses-list').innerHTML = path.courses.map((c, i) => `
+                    <li class="pdf-link-target" data-url="${c.url}" style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; list-style: none; font-family: 'Gill Sans', sans-serif; display: block; position: relative;">
+                        <div style="font-weight: 700; color: #18355E; font-size: 13px; line-height: 1.1;">${c.name}</div>
+                        <div style="font-size: 10px; color: #0097CE; word-break: break-all; margin-top: 1px;">${c.url}</div>
+                    </li>
+                `).join('');
+
+                window.scrollTo(0,0);
+                
+                const opt = {
+                    margin: 0,
+                    filename: `NTUC_AI_Report_${userName.replace(/\s+/g, '_')}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2, 
+                        useCORS: true, 
+                        letterRendering: true, 
+                        width: 794, 
+                        windowWidth: 794, 
+                        height: 1123,
+                        windowHeight: 1123,
+                        scrollX: 0,
+                        scrollY: 0,
+                        x: 0,
+                        y: 0,
+                        // CRITICAL: We use 'absolute' inside onclone to allow the element to sit at 0,0 
+                        // regardless of viewport scroll, without being affected by 'fixed' behavior on mobile.
+                        onclone: (clonedDoc) => {
+                            const clonedElement = clonedDoc.getElementById('pdf-render-zone');
+                            if (clonedElement) {
+                                clonedElement.style.position = 'absolute'; // Changed from fixed to absolute
+                                clonedElement.style.left = '0px'; 
+                                clonedElement.style.top = '0px';
+                                clonedElement.style.margin = '0px';
+                                clonedElement.style.visibility = 'visible';
+                                // Ensure body has no margin in clone to prevent offsets
+                                clonedDoc.body.style.margin = '0';
+                                clonedDoc.body.style.padding = '0';
+                            }
+                        }
+                    },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                if (window.html2pdf) {
+                    window.html2pdf().from(element).set(opt).toPdf().get('pdf').then(function(pdf) {
+                        pdf.setPage(1); 
+                        
+                        const pxToMm = 210 / 794; 
+                        
+                        // NEW LOGIC: Calculate position relative to the generated PDF content (0,0)
+                        // This avoids any dependency on getBoundingClientRect viewport shifting
+                        const getInternalOffset = (el) => {
+                            let x = 0, y = 0;
+                            while(el && el.id !== 'pdf-cert') {
+                                x += el.offsetLeft;
+                                y += el.offsetTop;
+                                el = el.offsetParent;
+                            }
+                            return { x, y };
+                        };
+
+                        const linkElements = document.querySelectorAll('.pdf-link-target');
+                        linkElements.forEach(el => {
+                            // Using getBoundingClientRect Delta calculation which is robust when paired with 'absolute' positioning on clone
+                            const containerRect = element.getBoundingClientRect();
+                            const rect = el.getBoundingClientRect();
+                            
+                            const finalX = (rect.left - containerRect.left) * pxToMm;
+                            const finalY = (rect.top - containerRect.top) * pxToMm;
+                            const w = rect.width * pxToMm;
+                            const h = rect.height * pxToMm;
+                            
+                            const url = el.getAttribute('data-url');
+                            if (url) {
+                                pdf.link(finalX, finalY, w, h, { url });
+                            }
+                        });
+
+                        const footerLink = document.querySelector('#pdf-cert a[href^="https://share.hsforms"]');
+                        if (footerLink) {
+                            const containerRect = element.getBoundingClientRect();
+                            const rect = footerLink.getBoundingClientRect();
+                            
+                            const finalX = (rect.left - containerRect.left) * pxToMm;
+                            const finalY = (rect.top - containerRect.top) * pxToMm;
+                            const w = rect.width * pxToMm;
+                            const h = rect.height * pxToMm;
+                            pdf.link(finalX, finalY, w, h, { url: footerLink.href });
+                        }
+                    }).save();
+                }
+            };
+
+            if (view === 'landing') return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white fade-in text-center relative">
+                    <div className="absolute top-8 left-8">
+                        <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" />
+                    </div>
+                    
+                    <Icon name="sparkles" size={64} className="text-ntucRoyal mb-6 mt-24" />
+                    <h1 className="text-4xl md:text-5xl font-black text-ntucRoyal tracking-tighter uppercase leading-tight mb-4 text-balance">Discover Your AI <br/>Learning Pathway</h1>
+                    <p className="text-ntucIntegrity font-semibold text-lg max-w-lg mx-auto mb-10 leading-relaxed text-center text-balance text-balance">
+                        Not sure where to begin with AI?<br/>Take our 1-minute quiz to find out your AI learning pathway.
+                    </p>
+                    <button onClick={startDiscovery} className="btn-active btn-vital group px-14 py-8 rounded-2xl shadow-xl">
+                        <span className="text-2xl font-black uppercase tracking-tight">GET STARTED</span>
+                    </button>
+                    
+                    <div className="mt-12 max-w-sm text-[10px] font-bold text-slate-400 leading-loose text-center">
+                        This is a general guide to help you get started.<br/>Speak with our sales consultants for more details.
+                    </div>
+                </div>
+            );
+
+            if (view === 'identity') return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-white fade-in text-center space-y-8">
+                    <div className="absolute top-8 left-8">
+                        <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" />
+                    </div>
+                    <Icon name="user" size={80} className="text-ntucRoyal" />
+                    <div className="space-y-2">
+                        <h2 className="text-3xl font-black uppercase text-ntucRoyal tracking-tighter leading-tight">Before we begin...</h2>
+                        <p className="font-semibold text-slate-500">Please enter your name to continue.</p>
+                    </div>
+                    <input type="text" value={userName} onChange={e => setUserName(e.target.value)} placeholder="Full Name as per NRIC" className="w-full max-w-md bg-white border-2 border-slate-200 focus:border-ntucRoyal rounded-xl py-5 px-6 text-xl font-bold outline-none shadow-md transition-all text-center" />
+                    <button onClick={() => userName.trim() && setView('quiz')} className="btn-active btn-vital w-full max-w-md font-black py-8 rounded-2xl text-2xl shadow-xl uppercase tracking-tight">Next</button>
+                </div>
+            );
+
+            if (view === 'quiz') return (
+                <div className="min-h-screen bg-white flex flex-col overflow-hidden">
+                    <header className="p-6 flex justify-between items-center border-b-2 border-slate-100 bg-white sticky top-0 z-50">
+                        <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img !h-[40px]" />
+                        <div className="flex gap-3">{QUESTIONS.map((_, i) => (<div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i === currentIndex ? 'w-14 bg-ntucRoyal' : i < currentIndex ? 'w-3 bg-ntucOptimism' : 'w-3 bg-slate-200'}`}></div>))}</div>
+                        <span className="text-[10px] font-black text-ntucRoyal uppercase tracking-widest">Question {currentIndex + 1} / 5</span>
+                    </header>
+                    <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+                        <div className="slider-track w-full h-full items-center" style={{ transform: `translateX(calc(-${currentIndex * 100}%))` }}>
+                            {QUESTIONS.map((q, qIdx) => (
+                                <div key={qIdx} className="min-w-full px-6 flex flex-col items-center">
+                                    <div className="max-w-4xl w-full space-y-10">
+                                        <div className="text-center space-y-2">
+                                            <p className="text-ntucOptimism font-black uppercase tracking-widest text-[10px]">Question {qIdx + 1}</p>
+                                            <h2 className="text-2xl md:text-4xl font-extrabold text-ntucIntegrity uppercase tracking-tighter leading-tight text-center text-balance">{q.text}</h2>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {q.options.map(opt => (
+                                                <button key={opt.id} onClick={() => selectOption(opt.id)} className="btn-active p-6 rounded-2xl border-2 border-slate-100 bg-white hover:border-ntucRoyal hover:bg-slate-50 text-left font-bold text-base flex items-center group shadow-sm transition-all">
+                                                    <span className="inline-block w-10 h-10 bg-ntucRoyal text-white rounded-lg text-center leading-10 mr-4 font-black text-xl shrink-0 uppercase">{opt.id}</span>
+                                                    <span className="flex-1 text-ntucIntegrity leading-snug">{opt.text}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            if (view === 'result') {
+                const path = resultKey ? PATHS[resultKey] : PATHS.B;
+                return (
+                    <div className="max-w-4xl mx-auto p-6 md:p-12 text-center space-y-8 min-h-screen fade-in bg-white flex flex-col justify-center relative">
+                        <div className="absolute top-8 left-8">
+                            <img src={LOGO_SRC} crossOrigin="anonymous" alt="NTUC LearningHub" className="brand-logo-img" />
+                        </div>
+                        <header className="space-y-3 mt-16 text-center">
+                            <Icon name="rocket" size={64} className="text-ntucOptimism mx-auto" />
+                            <h1 className="text-3xl md:text-5xl font-black uppercase text-ntucRoyal tracking-tighter leading-none">Hello, {userName}</h1>
+                        </header>
+
+                        <div className="max-w-2xl mx-auto text-slate-600 font-semibold leading-relaxed text-center">
+                            Thanks for exploring your AI learning pathway with us. We hope this gives you a helpful starting point in exploring AI learning options.
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="p-8 bg-white border-4 border-ntucVital rounded-[40px] text-left shadow-2xl relative overflow-hidden">
+                                <div>
+                                    <p className="text-ntucRoyal font-black uppercase text-[10px] tracking-widest mb-4 bg-ntucVital/20 inline-block px-4 py-2 rounded-lg">HERE’S A PATHWAY YOU MAY EXPLORE</p>
+                                    <h2 className="text-3xl font-extrabold uppercase leading-tight text-ntucRoyal mb-4 border-l-4 border-ntucVital pl-6">{path.name}</h2>
+                                    <p className="text-slate-700 text-lg font-bold leading-relaxed text-pretty">{path.desc}</p>
+                                </div>
+                                <div className="space-y-3 pt-6 border-t-2 border-slate-100">
+                                    <p className="text-[10px] font-black uppercase text-ntucRoyal tracking-widest">Recommended Courses</p>
+                                    <div className="grid gap-3">
+                                        {path.courses.map((c, i) => (
+                                            <a key={i} href={c.url} target="_blank" className="btn-active group flex items-center justify-between p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl hover:border-ntucRoyal hover:bg-white transition-all">
+                                                <span className="font-bold text-ntucRoyal text-sm leading-tight pr-6 text-left">{c.name}</span>
+                                                <Icon name="external" size={20} className="text-ntucOptimism shrink-0" />
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pt-4 text-center">
+                            <a 
+                                href="https://share.hsforms.com/1rABgRKlaTGyWhCl3K9sUBQ3xe6z" 
+                                target="_blank" 
+                                className="group inline-flex items-center gap-3 bg-ntucRoyal hover:bg-ntucIntegrity text-white px-8 py-5 rounded-[20px] font-black uppercase tracking-tight text-lg shadow-lg transition-all hover:-translate-y-1"
+                            >
+                                <Icon name="message" size={24} />
+                                Leave Your Details to Learn More
+                            </a>
+                        </div>
+
+                        <div className={`grid grid-cols-1 ${isShared ? '' : 'md:grid-cols-2'} gap-8 pt-10 border-t-2 border-slate-100`}>
+                            {isShared ? (
+                                <div className="flex flex-col items-center gap-6">
+                                    <button onClick={exportPDF} className="btn-active btn-vital w-full max-w-md py-8 rounded-[30px] font-black uppercase text-xl shadow-2xl flex items-center justify-center gap-4">
+                                        <Icon name="download" size={32}/> Save Results
+                                    </button>
+                                    <button onClick={() => window.location.href = window.location.origin + window.location.pathname} className="text-ntucRoyal font-black uppercase text-sm hover:underline decoration-ntucVital underline-offset-4 decoration-2">Restart Quiz</button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="bg-white p-6 rounded-3xl flex flex-col items-center border-2 border-slate-100 shadow-inner">
+                                        <h4 className="font-black text-[10px] uppercase mb-4 tracking-widest text-ntucRoyal text-center">Scan to save results</h4>
+                                        <div ref={qrRef} className="bg-white p-2 rounded-xl border-2 border-ntucRoyal shadow-md overflow-hidden"></div>
+                                    </div>
+                                    <div className="flex flex-col justify-center items-center gap-4">
+                                        <div className="w-full">
+                                            <button onClick={() => window.location.href = window.location.origin + window.location.pathname} className="btn-active group w-full py-6 rounded-2xl border-2 border-slate-200 bg-white hover:border-ntucRoyal hover:bg-slate-50 transition-all shadow-md flex items-center justify-center gap-3">
+                                                <Icon name="sparkles" size={24} className="text-ntucRoyal" />
+                                                <span className="text-lg font-black uppercase tracking-tight text-ntucRoyal">RESTART QUIZ</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+            return null;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- PDF RENDER BUFFER -->
+    <div id="pdf-render-zone">
+        <div id="pdf-cert" style="padding: 10mm 12mm 10mm 12mm; background: #FFFFFF; width: 794px; min-height: 1120px; color: #102935; box-sizing: border-box; overflow: hidden; position: relative; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 8px solid #18355E; padding-bottom: 15px; margin-bottom: 25px;">
+                <img src="https://alep-p-001.sitecorecontenthub.cloud/api/public/content/d98b001bdae4438daee50179fef7dde2?v=4a2b9836&h=367&w=1188&la=en" crossOrigin="anonymous" style="height: 88px; width: auto;" />
+                <div style="text-align: right;">
+                    <h1 style="color: #18355E; font-size: 24px; margin: 0; font-weight: 800; text-transform: uppercase; line-height: 1.1; font-family: inherit;">DISCOVER YOUR AI <br/>LEARNING PATHWAY</h1>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <p style="font-size: 11px; color: #102935; font-weight: 700; margin: 0 0 5px 0; letter-spacing: 1px; font-family: inherit;">Recommended courses for:</p>
+                <h2 style="font-size: 32px; margin: 0; font-weight: 800; color: #18355E; border-left: 12px solid #FFCB05; padding-left: 20px; line-height: 1; font-family: inherit;" id="pdf-user-name-display">NAME</h2>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 30px; border-radius: 30px; margin-bottom: 25px; border: 2px solid #E2E8F0;">
+                <h3 style="color: #18355E; font-size: 20px; margin: 0 0 8px 0; font-weight: 800; text-transform: uppercase; border-bottom: 3px solid #FFCB05; display: inline-block; padding-bottom: 4px; font-family: inherit;" id="pdf-path-title">Pathway</h3>
+                <p style="font-size: 15px; line-height: 1.5; color: #334155; margin-top: 10px; font-weight: 600; font-family: inherit;" id="pdf-path-desc">Discovery analysis description text.</p>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 15px 0; text-transform: uppercase; border-bottom: 3px solid #18355E; padding-bottom: 6px; color: #18355E; font-family: inherit;">Recommended Courses</h4>
+                <ul id="pdf-courses-list" style="padding-left: 0; list-style: none; margin: 0;"></ul>
+            </div>
+
+            <div style="border-top: 3px solid #EEE; padding-top: 20px; position: absolute; bottom: 20mm; left: 12mm; right: 12mm;">
+                <p style="font-size: 10px; color: #64748B; line-height: 1.5; font-weight: 600; margin-bottom: 12px; font-family: inherit;">This is a general guide to help you get started. If you wish to find out more details on your AI learning pathways, leave your contact details <a href="https://share.hsforms.com/1rABgRKlaTGyWhCl3K9sUBQ3xe6z" style="color: #0097CE; text-decoration: underline;">here</a> and our Sales Consultant will be in touch with you soon.</p>
+            </div>
+
+            <div style="text-align: center; position: absolute; bottom: 10mm; left: 12mm; right: 12mm;">
+                <p style="font-size: 12px; color: #18355E; font-weight: 800; letter-spacing: 0.5px; margin: 0; font-family: inherit;">NTUC LearningHub Pte Ltd   |   UEN/PEI Registration No: 200409359E   |   26 Nov 2022 to 25 Nov 2026</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
