@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn AI Play AI Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-[#050505] text-white selection:bg-cyan-500 selection:text-black scroll-smooth min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 bg-black/90 backdrop-blur-md px-6 md:px-12 py-5 flex items-center justify-between border-b border-zinc-800">
+        <div class="flex items-center gap-10">
+            <div class="flex flex-col">
+                <span class="text-2xl font-black tracking-tight text-white leading-none">
+                    Learn AI Play AI <span class="text-cyan-400">Hub</span>
+                </span>
+            </div>
+            <div class="hidden lg:flex items-center gap-8 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                <a href="#home" class="hover:text-white transition-colors">Home</a>
+                <a href="#courses" class="hover:text-white transition-colors">Programmes</a>
+                <a href="#showcase" class="hover:text-white transition-colors">Portfolio</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="https://aiesports.tech" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-700 text-xs font-bold text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all">
+                <i data-lucide="globe" class="w-3.5 h-3.5"></i> aiesports.tech
+            </a>
+            <button class="bg-cyan-500 text-black px-6 py-2 rounded font-bold text-xs uppercase hover:bg-cyan-400 transition-colors shadow-lg">
+                Get In Touch
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="relative h-screen flex items-center px-6 md:px-12 pt-20 overflow-hidden" id="home">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80')] bg-cover bg-center">
+            <div class="absolute inset-0 bg-black/80"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-4xl animate-in fade-in duration-1000">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="layers" class="text-cyan-400 w-5 h-5"></i>
+                <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase">SEA Infrastructure Pioneer</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight uppercase tracking-tight">
+                Take Control Of AI. <br /><span class="text-zinc-300">In Half A Day.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl">
+                Learn how to take control of artificial intelligence through high-speed, problem-based sprints. Go from theory to deploying functional AI assets in just 3 hours.
+            </p>
+            <div class="flex flex-wrap gap-6">
+                <a href="#courses" class="px-12 py-5 bg-white text-black font-black rounded hover:bg-zinc-200 transition-all uppercase tracking-wider text-sm shadow-xl inline-block">
+                    Enter Hub
+                </a>
+                <button onclick="openAboutModal()" class="px-12 py-5 bg-transparent text-white font-bold rounded hover:bg-white/10 transition-all uppercase tracking-wider text-sm border border-zinc-600">
+                    Who We Are
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Curriculum Grid -->
+    <section class="relative z-10 -mt-20 pb-16" id="courses"></section>
+
+    <!-- Expert Faculty -->
+    <section class="px-6 md:px-12 py-16 bg-[#050505]" id="trainers">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
+            <div class="max-w-2xl">
+                <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Expert Faculty & Mentors</span>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight">The Architects</h2>
+                <p class="text-zinc-400 mt-4 text-xl">Learn directly from the engineers, directors, and industry mentors actively building the frontier of the AI economy.</p>
+            </div>
+        </div>
+        <div id="faculty-grid" class="grid md:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- Project Showcase -->
+    <section class="px-6 md:px-12 py-16 bg-[#0a0a0a] border-y border-zinc-900" id="showcase">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
+            <div class="max-w-2xl">
+                <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Proof of Concept</span>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight">Live Project Sprints</h2>
+                <p class="text-zinc-400 mt-4 text-xl">Every module includes a mandatory build phase. Here is the frontier of our current student portfolio.</p>
+            </div>
+            <button class="flex items-center gap-2 text-xs font-bold text-zinc-500 hover:text-white transition-all uppercase tracking-widest group border-b border-zinc-700 pb-1">
+                FULL PORTFOLIO <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+        <div id="showcase-grid" class="grid md:grid-cols-3 gap-8"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 md:px-12 bg-black">
+        <div class="grid md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-2">
+                <div class="flex flex-col mb-6">
+                    <span class="text-3xl font-black tracking-tight text-white leading-none">
+                        Learn AI Play AI <span class="text-cyan-400">Hub</span>
+                    </span>
+                </div>
+                <p class="text-zinc-500 text-lg max-w-md">Architecting the cognitive infrastructure for Southeast Asia's next economic surge through hands-on, problem-based learning.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-xs uppercase mb-6 tracking-widest">Navigation</h4>
+                <ul class="space-y-4 text-zinc-500 text-sm font-medium">
+                    <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="#courses" class="hover:text-white transition-colors">Programmes</a></li>
+                    <li><a href="#trainers" class="hover:text-white transition-colors">Faculty</a></li>
+                    <li><a href="#showcase" class="hover:text-white transition-colors">Portfolio</a></li>
+                    <li><a href="https://aiesports.tech" target="_blank" class="hover:text-white transition-colors">AI Esports</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-xs uppercase mb-6 tracking-widest">Corporate</h4>
+                <ul class="space-y-4 text-zinc-500 text-sm font-medium">
+                    <li class="flex items-center gap-2">AI Esports Singapore</li>
+                    <li class="flex items-center gap-2">Play AI Academy</li>
+                    <li class="flex items-center gap-2">Hub Certified</li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-zinc-900 gap-6">
+            <p class="text-zinc-600 text-xs font-bold uppercase tracking-widest">&copy; 2026 AI ESPORTS. Empowering Southeast Asia.</p>
+            <div class="flex gap-8 text-zinc-600 text-xs font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Terms</a>
+                <a href="#" class="hover:text-white">API</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals Containers -->
+    <div id="modal-container"></div>
+    <div id="about-modal-container"></div>
+
+    <!-- Data and JavaScript -->
+    <script>
+        // --- DATA ---
+        const CATEGORIES = [
+          {
+            id: 'zero-to-hero',
+            title: 'Originals: Zero to Hero Certifications',
+            description: 'Professional-grade mastery path for AI Architects.',
+            badge: 'Certification',
+            items: [
+              { id: 'zh1', title: 'The AI Whisperer', subtitle: 'SPRINT Framework & Personas', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80', color: 'border-blue-600',
+                synopsis: "Stop treating AI like a basic search engine. Master the S.P.R.I.N.T. framework to design elite AI personas that think and strategize like industry experts. You will build a custom Chief of Staff tailored to your exact workflow." },
+              { id: 'zh2', title: 'The Visionary', subtitle: 'Brand Aesthetics & Campaigns', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80', color: 'border-purple-600',
+                synopsis: "Say goodbye to stock photos. Learn to architect high-fidelity brand aesthetics and cohesive multi-modal marketing campaigns. You will generate a complete, professional visual identity from scratch." },
+              { id: 'zh3', title: 'The Fact-Checker', subtitle: 'Data Grounding & RAG', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=1200&q=80', color: 'border-cyan-600',
+                synopsis: "Tired of AI making things up? Master Retrieval-Augmented Generation (RAG) to securely connect AI to your private data. You will build an agent that only speaks the absolute truth based on your documents." },
+              { id: 'zh4', title: 'The Automator', subtitle: 'Autonomous Agents & Inboxes', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1518433278988-2b26197c9497?w=1200&q=80', color: 'border-indigo-600',
+                synopsis: "Reclaim your time. Learn to build autonomous agents that manage your inbox, schedule meetings, and handle repetitive communications. You will deploy a digital assistant that works while you sleep." },
+              { id: 'zh5', title: 'The Architect', subtitle: 'System Architecture & Logic', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80', color: 'border-emerald-600',
+                synopsis: "Move beyond single prompts. Design complex, token-efficient system architectures where multiple AI agents work together in a 'swarm' to automate entire operational pipelines." },
+              { id: 'zh6', title: 'The Guardrail', subtitle: 'Ethics, Security & Red-Teaming', duration: 'Two Days', image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&q=80', color: 'border-red-600',
+                synopsis: "Become the ultimate digital guard dog. Learn to red-team AI systems, spot deepfakes, and build ethical guardrails. You will audit a live AI model to find and fix hidden biases and security flaws." },
+            ]
+          },
+          {
+            id: 'career-horizon',
+            title: 'The Career Horizon',
+            description: 'Overviews of emergent 2026 job roles.',
+            badge: 'Career Path',
+            items: [
+              { id: 'ch1', title: 'GTM Engineer', subtitle: 'Automated Sales Engines', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80', color: 'border-orange-500',
+                synopsis: "Discover how top companies are replacing cold calls with automated, AI-led growth engines. You'll get a high-speed overview of how to build systems that find leads and draft emails autonomously." },
+              { id: 'ch2', title: 'CX Agent Architect', subtitle: 'Digital Service Design', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?w=1200&q=80', color: 'border-pink-500',
+                synopsis: "Customer service is no longer about answering tickets—it's about designing the digital 'brain' of a brand. Explore how to create empathetic, 24/7 AI concierges that delight customers." },
+              { id: 'ch3', title: 'AIOps Architect', subtitle: 'Digital Workforce Ops', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?w=1200&q=80', color: 'border-teal-500',
+                synopsis: "The role of the Operations Manager has evolved. Learn what it takes to manage a digital workforce of AI agents, orchestrating them to run office workflows seamlessly and without human error." },
+              { id: 'ch4', title: 'RAG Specialist', subtitle: 'Private Data Engineering', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=1200&q=80', color: 'border-blue-500',
+                synopsis: "Data is the new oil, and RAG is the refinery. Understand the critical role of Data Grounding Specialists who ensure enterprise AI systems are secure, accurate, and completely hallucination-free." },
+              { id: 'ch5', title: 'AI Trust Officer', subtitle: 'Ethics & Compliance', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80', color: 'border-yellow-500',
+                synopsis: "With deepfakes and AI biases on the rise, companies desperately need Trust & Safety Officers. Get an overview of how to manage compliance, ethics, and data privacy in an AI-native world." },
+              { id: 'ch6', title: 'Synthetic Director', subtitle: 'AI Media Production', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&q=80', color: 'border-violet-500',
+                synopsis: "The Marketing Director of tomorrow doesn't just manage people; they manage synthetic production. See how entire video, audio, and graphics campaigns are generated using pure AI logic at scale." },
+            ]
+          },
+          {
+            id: 'creative-suite',
+            title: 'Creative Sprints',
+            description: 'High-dopamine wins for creators.',
+            badge: 'Creative Skill',
+            items: [
+              { id: 'cs1', title: '10-Min Marketing', subtitle: 'Logos & Flyers Instantly', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1542744094-24638eff58bb?w=1200&q=80', color: 'border-yellow-400',
+                synopsis: "Need a logo, poster, or flyer yesterday? Learn to generate stunning, professional-grade marketing assets using AI in just minutes. You'll leave with a complete promo package ready to print or post." },
+              { id: 'cs2', title: 'Viral Video Sprint', subtitle: 'AI Avatars & Short-form', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80', color: 'border-red-400',
+                synopsis: "Stop spending thousands on video production. Create highly engaging, TikTok-style short-form video ads using AI avatars, automated captions, and text prompts—no camera required." },
+              { id: 'cs3', title: 'AI Storyteller', subtitle: 'Narrative & Brand Voice', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80', color: 'border-green-400',
+                synopsis: "Never stare at a blank page again. Learn to train AI to write long-form articles, blogs, or scripts perfectly matching your unique brand voice and storytelling style." },
+              { id: 'cs4', title: 'Audio Cloning', subtitle: 'Localized Voiceovers', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1478737270239-2fccd27ee086?w=1200&q=80', color: 'border-blue-400',
+                synopsis: "Produce studio-quality voiceovers without a microphone. Learn to clone voices and generate localized audio in multiple languages and dialects to give your content global reach." },
+              { id: 'cs5', title: 'Digital Designer', subtitle: '3D Mockups & Concepts', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=1200&q=80', color: 'border-indigo-400',
+                synopsis: "Bring your ideas to life in 3D. Generate stunning interior mockups, product sketches, and architectural concepts in seconds just by describing them in plain English." },
+              { id: 'cs6', title: 'AI Musician', subtitle: 'Royalty-Free Scores', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&q=80', color: 'border-purple-400',
+                synopsis: "Need the perfect beat? Learn to compose original, royalty-free background scores, jingles, and sound effects for your social media content using generative AI music tools." },
+            ]
+          },
+          {
+            id: 'ai-for-smes',
+            title: 'AI for SMEs',
+            description: 'Practical AI tools for small-medium businesses.',
+            badge: 'SME Power-Up',
+            items: [
+              { id: 'sm1', title: '24/7 Concierge', subtitle: 'Lead Gen Chatbots', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80', color: 'border-blue-700',
+                synopsis: "Stop losing customers because you can't reply at 2 AM. Build a custom AI chatbot that memorizes your menu, price list, and FAQs to capture leads and answer queries around the clock." },
+              { id: 'sm2', title: 'Zero-Budget Agency', subtitle: 'Product Photography', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80', color: 'border-orange-700',
+                synopsis: "Ditch the expensive photoshoots. Learn how to turn basic smartphone pictures of your products into high-fidelity, studio-quality lifestyle images and 15-second promo videos." },
+              { id: 'sm3', title: 'Lead-Gen Machine', subtitle: 'Automated Scout Bots', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80', color: 'border-cyan-700',
+                synopsis: "Put your lead generation on autopilot. Build an automated 'Scout Bot' that scrapes LinkedIn and Google Maps for your perfect target customers and drafts personalized introductory emails." },
+              { id: 'sm4', title: 'Admin Intern', subtitle: 'Optical Document AI', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80', color: 'border-emerald-700',
+                synopsis: "Free yourself from weekend data entry. Set up an optical AI workflow that instantly reads your physical invoices, receipts, and claims, automatically logging them into your accounting spreadsheet." },
+              { id: 'sm5', title: 'Business Detective', subtitle: 'Conversational Excel', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1454165833767-027ff33026b6?w=1200&q=80', color: 'border-indigo-700',
+                synopsis: "Stop staring at confusing Excel files. Build a conversational dashboard where you can literally 'talk' to your sales data to uncover hidden profit trends and stop cost-saving leaks." },
+              { id: 'sm6', title: 'Instant SOP Trainer', subtitle: 'Knowledge Base Ops', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80', color: 'border-violet-700',
+                synopsis: "Make onboarding a breeze. Convert your messy PDFs, old manuals, and voice notes into a searchable 'Company Brain' that instantly answers new staff questions so you don't have to." },
+            ]
+          },
+          {
+            id: 'daily-life',
+            title: 'AI for Daily Life',
+            description: 'Productivity and household hacks.',
+            badge: 'Daily Utility',
+            items: [
+              { id: 'dl1', title: 'AI Personal Tutor', subtitle: 'Safe Homework Help', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1503676260728-1c00da096a0b?w=1200&q=80', color: 'border-yellow-600',
+                synopsis: "Help your kids learn without just giving them the answers. Discover how to use AI as a safe, personalized tutor that explains complex homework concepts patiently and effectively." },
+              { id: 'dl2', title: 'Household CFO', subtitle: 'Budgeting & Meal Plans', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=1200&q=80', color: 'border-green-600',
+                synopsis: "Take control of your household finances. Use AI to automatically track expenses, plan budget-friendly weekly meals, and generate optimized grocery lists in seconds." },
+              { id: 'dl3', title: 'Career Power-Up', subtitle: 'Resume & LinkedIn AI', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80', color: 'border-blue-600',
+                synopsis: "Beat the algorithms and land that interview. Learn how to use AI to completely overhaul your Resume and LinkedIn profile to stand out to modern Applicant Tracking Systems." },
+              { id: 'dl4', title: 'Travel Planner', subtitle: 'Itinerary & Translation', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80', color: 'border-indigo-600',
+                synopsis: "Plan the perfect holiday without the stress. Generate minute-by-minute travel itineraries, find hidden gems, and use real-time voice translation to navigate overseas trips like a local." },
+              { id: 'dl5', title: 'Lifelong Learner', subtitle: 'Summaries & Briefings', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1512428559083-560df5f4b95d?w=1200&q=80', color: 'border-purple-600',
+                synopsis: "Too many books, too little time? Learn how to use AI to instantly summarize long podcasts, non-fiction books, and daily news into bite-sized, 5-minute personal briefings." },
+              { id: 'dl6', title: 'Personal Coach', subtitle: 'Nutrition & Workouts', duration: 'Half-Day', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200&q=80', color: 'border-red-600',
+                synopsis: "Achieve your fitness goals with a digital coach. Create highly customized workout routines and nutrition plans tailored precisely to your family's specific health needs and dietary restrictions." },
+            ]
+          }
+        ];
+
+        const SHOWCASE_PROJECTS = [
+          { 
+            id: 'p1', 
+            title: 'Artisan Cafe RAG Agent', 
+            author: 'Elena R.', 
+            type: 'SME Build', 
+            image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1200&q=80',
+            desc: 'Functional RAG-grounded concierge answering complex menu & sourcing queries with human-level accuracy.'
+          },
+          { 
+            id: 'p2', 
+            title: 'Synthetic City Promo', 
+            author: 'Juan D.', 
+            type: 'Creative Sprint', 
+            image: 'https://images.unsplash.com/photo-1514525253344-f814d0c9e583?w=1200&q=80',
+            desc: 'Full-scale tourism marketing trailer featuring AI avatars and synthetic voice synthesis in 3 dialects.'
+          },
+          { 
+            id: 'p3', 
+            title: 'Vision-AI Invoice Suite', 
+            author: 'Sarah Tan', 
+            type: 'AIOps Build', 
+            image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80',
+            desc: 'An automated physical-to-digital document pipeline utilizing custom vision models for instant bookkeeping.'
+          }
+        ];
+
+        const FACULTY = [
+          {
+            id: 'f1',
+            name: 'Firdaus Salim',
+            role: 'AI Esports CEO',
+            bio: 'Strategic architect of human-AI collaboration and pioneer of the "Learn AI + Play AI" model. Over 8 years advising the government on national-level skills strategies.'
+          },
+          {
+            id: 'f2',
+            name: 'Dr. Idris Murat Atakli',
+            role: 'AI Product Consultant',
+            bio: 'Results-driven Product Leader spearheading AI adoption at enterprise scale (e.g., HP). Scaled products to 120K+ users and led multi-million-dollar AI initiatives.'
+          },
+          {
+            id: 'f3',
+            name: 'Leong Han Wai',
+            role: 'Programme & Engagement Leader',
+            bio: 'Ecosystem builder with 6+ years designing AI and innovation programmes across APAC. Head of Partnerships at The AI Builders, fostering grassroots adoption.'
+          },
+          { 
+            id: 'f4', 
+            name: 'Sofia Kung', 
+            role: 'Principal AI Solutions Architect',
+            bio: 'Industry expert dedicated to bridging the gap between theoretical AI concepts and practical, enterprise-level workflow deployment.'
+          },
+          { 
+            id: 'f5', 
+            name: 'Richard Yak Sheng', 
+            role: 'Lead Machine Learning Engineer',
+            bio: 'Specialist in applied machine learning, guiding professionals in adopting AI-driven automation for business optimization.'
+          },
+          { 
+            id: 'f6', 
+            name: 'Cody Tan', 
+            role: 'Senior Autonomous Agents Developer',
+            bio: 'Focused on scaling AI solutions within modern tech stacks, mentoring builders on seamless integrations and autonomous agents.'
+          },
+          { 
+            id: 'f7', 
+            name: 'Rick Chow', 
+            role: 'Director of Digital Transformation',
+            bio: 'Veteran in digital transformation, helping organizations and students alike navigate the complexities of AI-native architecture.'
+          },
+          { 
+            id: 'f8', 
+            name: 'Bala Sivagnanam', 
+            role: 'VP of Enterprise AI Strategy',
+            bio: 'Passionate about democratizing AI capabilities, mentoring teams to build scalable, high-impact digital solutions.'
+          },
+          { 
+            id: 'f9', 
+            name: 'Arun Puri', 
+            role: 'Head of AI Governance & Data',
+            bio: 'Strategic mentor specializing in data grounding and AI governance, ensuring responsible and effective technology adoption.'
+          }
+        ];
+
+        // --- RENDER LOGIC ---
+        
+        // Render Courses
+        const coursesContainer = document.getElementById('courses');
+        coursesContainer.innerHTML = CATEGORIES.map((category, catIndex) => `
+            <div class="mb-10 group relative px-6 md:px-12">
+                <h2 class="text-xl font-bold mb-4 text-white uppercase tracking-wider">${category.title}</h2>
+                <button onclick="scrollRow('row-${category.id}', -1)" class="absolute left-0 top-[55%] -translate-y-1/2 z-20 h-[200px] w-14 bg-black/80 border-r border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black hover:text-cyan-400 backdrop-blur-sm cursor-pointer">
+                    <i data-lucide="chevron-left" class="w-8 h-8"></i>
+                </button>
+                <div id="row-${category.id}" class="flex gap-5 overflow-x-auto scrollbar-hide snap-x scroll-smooth pb-6 relative">
+                    ${category.items.map((item, itemIndex) => `
+                        <div onclick="openCourseModal(${catIndex}, ${itemIndex})" class="flex-none w-[260px] md:w-[300px] h-[160px] md:h-[190px] bg-zinc-900 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:ring-2 hover:ring-cyan-500 snap-start relative group/card shadow-xl">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover opacity-50 group-hover/card:scale-105 group-hover/card:opacity-70 transition-all duration-500" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 border-b-4 ${item.color}">
+                                <div class="text-[10px] font-bold text-cyan-400 mb-2 flex items-center gap-2 uppercase tracking-widest">
+                                    <i data-lucide="zap" class="w-3 h-3"></i> ${category.badge}
+                                </div>
+                                <h3 class="text-lg md:text-xl font-black text-white leading-tight mb-1">${item.title}</h3>
+                                <p class="text-xs text-zinc-300 font-medium">${item.subtitle}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button onclick="scrollRow('row-${category.id}', 1)" class="absolute right-0 top-[55%] -translate-y-1/2 z-20 h-[200px] w-14 bg-black/80 border-l border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black hover:text-cyan-400 backdrop-blur-sm cursor-pointer">
+                    <i data-lucide="chevron-right" class="w-8 h-8"></i>
+                </button>
+            </div>
+        `).join('');
+
+        // Render Faculty
+        const facultyGrid = document.getElementById('faculty-grid');
+        facultyGrid.innerHTML = FACULTY.map(member => `
+            <div class="group bg-zinc-900/50 p-8 rounded-xl border border-zinc-800 hover:border-cyan-500/50 hover:bg-zinc-900/80 transition-all duration-300 shadow-lg">
+                <h3 class="text-2xl font-black text-white uppercase tracking-tight mb-2">${member.name}</h3>
+                <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-6">${member.role}</p>
+                <p class="text-sm text-zinc-400 leading-relaxed border-t border-zinc-800 pt-5">${member.bio}</p>
+            </div>
+        `).join('');
+
+        // Render Showcase Projects
+        const showcaseGrid = document.getElementById('showcase-grid');
+        showcaseGrid.innerHTML = SHOWCASE_PROJECTS.map(proj => `
+            <div class="group bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-cyan-500/50 transition-all duration-300">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="${proj.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" alt="${proj.title}" />
+                    <div class="absolute bottom-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
+                        ${proj.type}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-xl font-black text-white uppercase tracking-tight">${proj.title}</h3>
+                        <i data-lucide="star" class="text-yellow-500 w-4 h-4" fill="currentColor"></i>
+                    </div>
+                    <p class="text-sm text-zinc-400 leading-relaxed mb-6">${proj.desc}</p>
+                    <div class="flex items-center gap-4 pt-4 border-t border-zinc-800">
+                        <div class="h-10 w-10 rounded bg-zinc-800 flex items-center justify-center text-sm font-bold text-white">
+                            ${proj.author[0]}
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-0.5 tracking-widest">Architect</span>
+                            <span class="text-sm text-zinc-200 font-bold">${proj.author}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Horizontal scroll logic
+        window.scrollRow = function(id, direction) {
+            const el = document.getElementById(id);
+            if (el) {
+                const scrollAmount = el.clientWidth * 0.8 * direction;
+                el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        };
+
+        // Modals Logic
+        window.openAboutModal = function() {
+            document.getElementById('about-modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300">
+                    <div class="bg-zinc-900 w-full max-w-2xl rounded-xl p-10 md:p-12 relative border border-zinc-700 shadow-2xl">
+                        <button onclick="closeAboutModal()" class="absolute top-6 right-6 text-zinc-400 hover:text-white transition-colors">
+                            <i data-lucide="x" class="w-7 h-7"></i>
+                        </button>
+                        
+                        <div class="mb-10 text-center md:text-left">
+                            <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
+                                <i data-lucide="cpu" class="text-cyan-400 w-6 h-6"></i>
+                                <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase">Architecting Mastery</span>
+                            </div>
+                            <h2 class="text-4xl font-black text-white mb-6 uppercase tracking-tight">AI ESPORTS</h2>
+                            <p class="text-zinc-300 leading-relaxed mb-8 text-lg">
+                                AI Esports is a regional leader in high-speed AI education. We specialize in fun, "build-first" curriculum that turns technical complexity into professional mastery. Our ecosystem is anchored in the top academic institutions of Southeast Asia, delivering the cognitive infrastructure for a new digital frontier.
+                            </p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                    <i data-lucide="trophy" class="text-yellow-500 mb-3 w-6 h-6"></i>
+                                    <p class="text-white font-bold text-sm uppercase tracking-wider mb-1">Arena Ready</p>
+                                    <p class="text-xs text-zinc-400">Competitive Validation</p>
+                                </div>
+                                <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                    <i data-lucide="users" class="text-cyan-500 mb-3 w-6 h-6"></i>
+                                    <p class="text-white font-bold text-sm uppercase tracking-wider mb-1">Regional Anchor</p>
+                                    <p class="text-xs text-zinc-400">Southeast Asia Reach</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="https://aiesports.tech" target="_blank" class="inline-flex items-center gap-3 px-10 py-4 bg-cyan-500 text-black font-bold rounded hover:bg-cyan-400 transition-all w-full justify-center group uppercase text-sm tracking-widest">
+                            VISIT AIESPORTS.TECH <i data-lucide="external-link" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        };
+
+        window.closeAboutModal = function() {
+            document.getElementById('about-modal-container').innerHTML = '';
+        };
+
+        window.openCourseModal = function(catIndex, itemIndex) {
+            const category = CATEGORIES[catIndex];
+            const item = category.items[itemIndex];
+
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300">
+                    <div class="bg-zinc-900 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl relative border border-zinc-700">
+                        <button onclick="closeCourseModal()" class="absolute top-6 right-6 z-10 p-2 bg-black/50 rounded-full text-white hover:bg-white/20 transition-colors">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+
+                        <div class="relative h-[250px] md:h-[400px] w-full">
+                            <img src="${item.image}" class="w-full h-full object-cover opacity-50" alt="" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent"></div>
+                            <div class="absolute bottom-10 left-10 right-10">
+                                <div class="flex items-center gap-2 mb-3 text-cyan-400 font-bold uppercase tracking-widest text-xs">
+                                    <i data-lucide="award" class="w-4 h-4"></i> ${category.badge}
+                                </div>
+                                <h1 class="text-3xl md:text-5xl font-black text-white mb-6 uppercase tracking-tight leading-tight">${item.title}</h1>
+                                <div class="flex gap-4">
+                                    <button class="px-10 py-4 bg-white text-black rounded font-black hover:bg-zinc-200 transition-all uppercase text-sm tracking-wider flex items-center gap-2">
+                                        <i data-lucide="play" class="w-4 h-4" fill="currentColor"></i> ENROLL NOW
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-8 md:p-10 grid md:grid-cols-2 gap-10 md:gap-12 text-zinc-300">
+                            <div class="space-y-8">
+                                <div>
+                                    <h3 class="text-white font-bold text-lg uppercase tracking-wider mb-4 border-l-4 border-cyan-500 pl-3">Course Synopsis</h3>
+                                    <p class="leading-relaxed text-lg">${item.synopsis}</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                        <span class="text-[10px] uppercase font-bold text-zinc-500 block mb-1 tracking-widest">Duration</span>
+                                        <span class="text-white font-bold text-sm">${item.duration}</span>
+                                    </div>
+                                    <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                        <span class="text-[10px] uppercase font-bold text-zinc-500 block mb-1 tracking-widest">Format</span>
+                                        <span class="text-white font-bold text-sm">Training + Project Sprint</span>
+                                    </div>
+                                    <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                        <span class="text-[10px] uppercase font-bold text-zinc-500 block mb-1 tracking-widest">Feedback</span>
+                                        <span class="text-emerald-400 font-bold text-sm">Post-Project Evaluation</span>
+                                    </div>
+                                    <div class="bg-black/40 p-4 rounded-lg border border-zinc-800">
+                                        <span class="text-[10px] uppercase font-bold text-zinc-500 block mb-1 tracking-widest">Outcome</span>
+                                        <span class="text-cyan-400 font-bold text-sm">Functional AI Asset</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <h3 class="text-white font-bold text-lg uppercase tracking-wider mb-4 border-l-4 border-cyan-500 pl-3">The Mandatory Sprint</h3>
+                                <p class="text-sm text-zinc-400 mb-6">
+                                    Every LAPA module goes beyond theory. To complete this course, you will participate in a mandatory Project Sprint where you build and deploy a functional asset.
+                                </p>
+                                <ul class="space-y-4">
+                                    <li class="flex gap-4 items-start bg-black/30 p-4 rounded-lg border border-zinc-800">
+                                        <i data-lucide="layers" class="text-cyan-500 mt-1 flex-none w-5 h-5"></i>
+                                        <div>
+                                            <span class="text-white font-bold block mb-1">1. Hands-On Build Phase</span>
+                                            <span class="text-sm text-zinc-400">Translate concepts into reality by constructing your project live.</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-4 items-start bg-black/30 p-4 rounded-lg border border-zinc-800">
+                                        <i data-lucide="file-text" class="text-cyan-500 mt-1 flex-none w-5 h-5"></i>
+                                        <div>
+                                            <span class="text-white font-bold block mb-1">2. Project Submission</span>
+                                            <span class="text-sm text-zinc-400">Deploy your functional AI asset for professional review.</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-4 items-start bg-black/30 p-4 rounded-lg border border-zinc-800">
+                                        <i data-lucide="check-circle" class="text-cyan-500 mt-1 flex-none w-5 h-5"></i>
+                                        <div>
+                                            <span class="text-white font-bold block mb-1">3. Instructor Feedback</span>
+                                            <span class="text-sm text-zinc-400">Receive delayed, expert evaluation to refine your architecture.</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        };
+
+        window.closeCourseModal = function() {
+            document.getElementById('modal-container').innerHTML = '';
+        };
+
+        // Initialize icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
