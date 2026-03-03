@@ -1,0 +1,365 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Play, 
+  CheckCircle, 
+  Lock, 
+  ChevronLeft, 
+  BookOpen, 
+  Award, 
+  MessageSquare,
+  ChevronRight,
+  Clock,
+  Menu,
+  X,
+  Zap,
+  Flame,
+  Target,
+  RefreshCw,
+  AlertCircle,
+  ExternalLink
+} from 'lucide-react';
+
+const App = () => {
+  // ==========================================
+  // 📊 GOOGLE SHEET CONFIGURATION
+  // ==========================================
+  // 1. Create a Google Sheet with columns: ID, Title, Duration, YouTubeID, Category, Description, Outcomes
+  // 2. Go to File > Share > Publish to Web
+  // 3. Select "Entire Document" and "CSV"
+  // 4. Paste that link below:
+  const GOOGLE_SHEET_CSV_URL = ""; 
+
+  const [activeLesson, setActiveLesson] = useState(0);
+  const [completedLessons, setCompletedLessons] = useState([0]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fallback content - Updated with your requested sample video
+  const [courseData, setCourseData] = useState({
+    title: "AI MASTERCHEF: ESSENTIALS",
+    round: "ROUND 1 - APRIL 2026",
+    lessons: [
+      {
+        id: 0,
+        title: "Case Study: Narrative Impact & Storytelling",
+        duration: "08:14",
+        youtubeId: "IEwgJfQ0MKE", // Your requested sample video
+        category: "Analysis",
+        description: "In this foundational case study, we analyze the emotional arc and narrative structure of high-impact visual storytelling. Understanding how to build tension and resolve conflict is essential for creating AI-generated content that resonates. We examine pacing, subtext, and character development as key 'ingredients' for your Round 1 submission.",
+        outcomes: ["Narrative Arc Mapping", "Visual Pacing Analysis", "Emotional Impact Design"]
+      },
+      {
+        id: 1,
+        title: "Kitchen Setup: Generative vs Agentic AI",
+        duration: "07:19",
+        youtubeId: "EDb37y_MhRw", 
+        category: "Ingredients",
+        description: "Explore the difference between standard Generative AI and advanced Agentic AI workflows. Understanding how AI agents collaborate is the 'secret sauce' to winning the competition.",
+        outcomes: ["GenAI vs Agentic Frameworks", "AI Collaboration Logic", "Goal-Oriented Prompting"]
+      },
+      {
+        id: 2,
+        title: "Knife Skills: Precision Prompt Engineering",
+        duration: "14:20",
+        youtubeId: "jNQXAC9IVRw",
+        category: "The Recipe",
+        description: "Technique is everything. Learn the LAPA structural framework for prompt engineering that ensures your outputs are consistently high-quality.",
+        outcomes: ["Zero-Shot vs Few-Shot", "Eliminating Hallucinations", "Context Window Management"]
+      }
+    ]
+  });
+
+  // ==========================================
+  // 🛠️ THE DATA ENGINE (Fetching from Sheet)
+  // ==========================================
+  useEffect(() => {
+    if (!GOOGLE_SHEET_CSV_URL) return;
+
+    const fetchSheetData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(GOOGLE_SHEET_CSV_URL);
+        const csvText = await response.text();
+        
+        const rows = csvText.split('\n').slice(1); 
+        const parsedLessons = rows.map((row, index) => {
+          const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+          if (cols.length < 5) return null;
+
+          return {
+            id: index,
+            title: cols[1]?.replace(/"/g, '') || "Untitled Lesson",
+            duration: cols[2]?.replace(/"/g, '') || "0:00",
+            youtubeId: cols[3]?.replace(/"/g, '') || "",
+            category: cols[4]?.replace(/"/g, '') || "General",
+            description: cols[5]?.replace(/"/g, '') || "",
+            outcomes: cols[6]?.replace(/"/g, '').split('|') || []
+          };
+        }).filter(Boolean);
+
+        if (parsedLessons.length > 0) {
+          setCourseData(prev => ({ ...prev, lessons: parsedLessons }));
+        }
+      } catch (err) {
+        console.error("Error fetching sheet:", err);
+        setError("Could not sync with Google Sheets. Using backup content.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSheetData();
+  }, []);
+
+  const handleComplete = (id) => {
+    if (!completedLessons.includes(id)) {
+      setCompletedLessons([...completedLessons, id]);
+    }
+  };
+
+  const currentLesson = courseData.lessons[activeLesson] || courseData.lessons[0];
+  const progressPercent = Math.round((completedLessons.length / courseData.lessons.length) * 100);
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 font-sans selection:bg-cyan-500 selection:text-white overflow-x-hidden">
+      
+      {/* --- HEADER --- */}
+      <header className="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button className="p-1 hover:bg-gray-800 rounded-lg transition-colors">
+            <ChevronLeft className="w-6 h-6 text-cyan-400" />
+          </button>
+          <div className="hidden sm:block h-8 w-[1px] bg-gray-800 mx-1"></div>
+          <div>
+            <h1 className="text-[10px] font-bold text-orange-500 tracking-widest uppercase flex items-center gap-1">
+              <Zap className="w-3 h-3 fill-orange-500" /> LAPA ACADEMY
+              {isLoading && <RefreshCw className="w-3 h-3 animate-spin text-cyan-400 ml-2" />}
+            </h1>
+            <p className="text-sm font-black text-white truncate max-w-[160px] sm:max-w-none">
+              {courseData.title}
+            </p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+            <div className="hidden md:flex flex-col items-end mr-2">
+                <p className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Course Progress</p>
+                <div className="flex items-center gap-2">
+                    <div className="w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-cyan-500" style={{ width: `${progressPercent}%` }}></div>
+                    </div>
+                    <p className="text-xs font-bold text-cyan-400">{progressPercent}%</p>
+                </div>
+            </div>
+            <button 
+                onClick={() => setSidebarOpen(true)}
+                className="bg-gray-900 p-2.5 rounded-xl border border-gray-800 hover:border-cyan-500 transition-all shadow-lg active:scale-95"
+            >
+                <Menu className="w-5 h-5 text-cyan-400" />
+            </button>
+        </div>
+      </header>
+
+      {error && (
+        <div className="bg-red-500/10 border-b border-red-500/20 p-2 flex items-center justify-center gap-2 text-[10px] text-red-400 font-bold uppercase tracking-wider">
+          <AlertCircle className="w-3 h-3" /> {error}
+        </div>
+      )}
+
+      <main className="max-w-4xl mx-auto pb-32">
+        
+        {/* --- VIDEO PLAYER SECTION --- */}
+        <section className="relative aspect-video bg-black shadow-2xl shadow-cyan-900/10 group overflow-hidden">
+          {currentLesson.youtubeId ? (
+            <iframe
+                className="w-full h-full"
+                src={`https://www.youtube-nocookie.com/embed/${currentLesson.youtubeId}?rel=0&modestbranding=1&autoplay=0&showinfo=0`}
+                title={currentLesson.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+            ></iframe>
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 bg-[#050505]">
+                <Play className="w-12 h-12 mb-2 opacity-20" />
+                <p className="text-xs uppercase font-bold tracking-widest">No Video Provided</p>
+            </div>
+          )}
+          
+          {/* Progress Overlay (Mobile) */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-800 md:hidden">
+            <div 
+                className="h-full bg-cyan-500 transition-all duration-500" 
+                style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
+        </section>
+
+        {/* --- VIDEO COMPATIBILITY TOOL --- */}
+        <div className="px-6 py-2 bg-[#121212] border-b border-gray-800 flex justify-end">
+            <a 
+              href={`https://www.youtube.com/watch?v=${currentLesson.youtubeId}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] font-bold text-cyan-500 hover:text-cyan-400 flex items-center gap-1.5 uppercase tracking-widest"
+            >
+               Open in YouTube <ExternalLink className="w-3 h-3" />
+            </a>
+        </div>
+
+        {/* --- LESSON CONTENT --- */}
+        <div className="p-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] font-bold bg-orange-600/20 text-orange-400 px-2.5 py-1 rounded border border-orange-500/20 uppercase tracking-widest">
+                  {currentLesson.category}
+                </span>
+                <span className="text-[10px] font-bold bg-cyan-600/20 text-cyan-400 px-2.5 py-1 rounded border border-cyan-500/20 uppercase tracking-widest">
+                  Module {currentLesson.id + 1}
+                </span>
+              </div>
+              <h2 className="text-3xl font-black text-white leading-tight">
+                {currentLesson.title}
+              </h2>
+            </div>
+            <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-1">
+                <div className="flex items-center gap-1.5 text-gray-400 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
+                    <Clock className="w-4 h-4 text-cyan-500" />
+                    <span className="text-xs font-bold">{currentLesson.duration}</span>
+                </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-gray-800 pt-8">
+            <div className="md:col-span-2">
+              <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <BookOpen className="w-4 h-4" /> Lesson Briefing
+              </h3>
+              <p className="text-gray-400 leading-relaxed text-lg mb-8">
+                {currentLesson.description}
+              </p>
+
+              {currentLesson.outcomes?.length > 0 && currentLesson.outcomes[0] !== "" && (
+                <>
+                  <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <Target className="w-4 h-4 text-orange-400" /> Key Outcomes
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {currentLesson.outcomes.map((outcome, i) => (
+                      <li key={i} className="flex items-center gap-3 bg-[#121212] p-3 rounded-xl border border-gray-800">
+                        <CheckCircle className="w-4 h-4 text-cyan-500 flex-shrink-0" />
+                        <span className="text-sm font-medium text-gray-200">{outcome}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+
+            <div className="space-y-4">
+               <div className="bg-gradient-to-br from-[#121212] to-[#0a0a0a] border border-gray-800 rounded-2xl p-5 shadow-xl">
+                 <h4 className="text-xs font-bold text-orange-500 uppercase mb-4 tracking-tighter flex items-center gap-2">
+                    <Award className="w-4 h-4" /> Potential Impact
+                 </h4>
+                 <div className="space-y-4 text-right">
+                    <div className="flex justify-between items-end border-b border-gray-800 pb-3">
+                        <span className="text-sm text-gray-400 text-left">Skill Points (XP)</span>
+                        <span className="text-xl font-black text-white">+150</span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-gray-800 pb-3">
+                        <span className="text-sm text-gray-400 text-left">Mastery Bonus</span>
+                        <span className="text-xl font-black text-cyan-400">2.5x</span>
+                    </div>
+                 </div>
+               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- FIXED BOTTOM ACTION --- */}
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/95 to-transparent z-40">
+            <div className="max-w-4xl mx-auto">
+                <button 
+                    onClick={() => handleComplete(currentLesson.id)}
+                    disabled={completedLessons.includes(currentLesson.id)}
+                    className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-lg transition-all transform active:scale-[0.98] shadow-2xl ${
+                    completedLessons.includes(currentLesson.id)
+                    ? 'bg-gray-800 text-gray-500 border border-gray-700 cursor-default shadow-none'
+                    : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-500/40 hover:brightness-110 active:shadow-inner'
+                    }`}
+                >
+                    {completedLessons.includes(currentLesson.id) ? (
+                    <><CheckCircle className="w-6 h-6" /> Lesson Mastered</>
+                    ) : (
+                    <><Play className="w-6 h-6 fill-white" /> Mark as Completed</>
+                    )}
+                </button>
+            </div>
+        </div>
+      </main>
+
+      {/* --- SIDEBAR SYLLABUS --- */}
+      <div className={`fixed inset-0 z-[100] transition-transform duration-500 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setSidebarOpen(false)}></div>
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[400px] bg-[#0d0d0d] border-l border-gray-800 shadow-2xl flex flex-col overflow-hidden">
+          <div className="p-6 flex items-center justify-between border-b border-gray-800 bg-[#121212]">
+            <div>
+                <h3 className="font-black text-2xl text-white tracking-tighter">THE RECIPE LIST</h3>
+                <p className="text-[10px] text-orange-500 font-bold uppercase tracking-[0.2em]">{courseData.round}</p>
+            </div>
+            <button onClick={() => setSidebarOpen(false)} className="p-3 bg-gray-800 rounded-2xl hover:bg-gray-700 transition-colors">
+                <X className="w-6 h-6 text-gray-300" />
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {courseData.lessons.map((lesson, idx) => (
+              <button
+                key={lesson.id}
+                onClick={() => {
+                    setActiveLesson(lesson.id);
+                    setSidebarOpen(false);
+                }}
+                className={`w-full group flex items-center gap-4 p-4 rounded-2xl border transition-all relative ${
+                  activeLesson === lesson.id 
+                  ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.1)]' 
+                  : 'bg-[#121212] border-gray-800 hover:border-gray-600'
+                }`}
+              >
+                <div className={`w-10 h-10 flex-shrink-0 rounded-xl flex items-center justify-center text-sm font-black transition-all ${
+                  completedLessons.includes(lesson.id) 
+                  ? 'bg-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]' 
+                  : activeLesson === lesson.id 
+                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                    : 'bg-gray-800 text-gray-500 border border-gray-700'
+                }`}>
+                  {completedLessons.includes(lesson.id) ? <CheckCircle className="w-6 h-6" /> : idx + 1}
+                </div>
+                
+                <div className="text-left flex-1 min-w-0">
+                  <p className={`text-[10px] font-bold uppercase mb-1 tracking-wider ${activeLesson === lesson.id ? 'text-cyan-400' : 'text-gray-500'}`}>
+                    {lesson.category}
+                  </p>
+                  <p className={`text-sm font-black leading-tight truncate ${activeLesson === lesson.id ? 'text-white' : 'text-gray-400'}`}>
+                    {lesson.title}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="p-6 border-t border-gray-800 bg-[#121212]">
+            <button className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-orange-600 text-white font-black text-sm">
+                <MessageSquare className="w-5 h-5" /> CHAT WITH CHEF AI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
