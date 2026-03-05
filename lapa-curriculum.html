@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAPA — Learn AI + Play AI | SEA University Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2e;
+    --navy-mid: #142236;
+    --navy-light: #1e3350;
+    --gold: #c8a85a;
+    --gold-light: #e2c97e;
+    --gold-pale: #f5edda;
+    --cream: #faf8f4;
+    --white: #ffffff;
+    --text-dark: #0d1b2e;
+    --text-mid: #3a4f68;
+    --text-light: #6b829a;
+    --border: #e4ddd0;
+    --accent-1: #2a7d6f;
+    --accent-2: #8b4c9e;
+    --accent-3: #c04a2a;
+    --accent-4: #2563a8;
+    --accent-5: #7a5c1e;
+    --accent-6: #3d6e3a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 248, 244, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--navy); }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--navy);
+    color: var(--white);
+    padding: 100px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 168, 90, 0.12);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 168, 90, 0.08);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+
+  .hero-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.75;
+    max-width: 440px;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: 8px;
+  }
+
+  .hero-stat {
+    padding: 24px 28px;
+    border: 1px solid rgba(200,168,90,0.25);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .hero-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .hero-stat-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── ARCHITECTURE STRIP ─── */
+  .arch-strip {
+    background: var(--gold);
+    padding: 0 48px;
+  }
+
+  .arch-strip-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    divide: var(--navy);
+  }
+
+  .arch-block {
+    padding: 36px 32px;
+    border-right: 1px solid rgba(13,27,46,0.15);
+    position: relative;
+  }
+
+  .arch-block:last-child { border-right: none; }
+
+  .arch-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    color: rgba(13,27,46,0.12);
+    line-height: 1;
+    margin-bottom: -8px;
+  }
+
+  .arch-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .arch-desc {
+    font-size: 0.88rem;
+    color: rgba(13,27,46,0.65);
+    line-height: 1.6;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 80px 48px;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .section-intro {
+    font-size: 1rem;
+    color: var(--text-mid);
+    max-width: 600px;
+    line-height: 1.75;
+    margin-bottom: 56px;
+  }
+
+  /* ─── CURRICULUM GRID ─── */
+  .curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .module-card {
+    background: var(--white);
+    padding: 36px 32px;
+    transition: background 0.25s;
+    cursor: default;
+  }
+
+  .module-card:hover { background: #f7f4ee; }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .module-num {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--navy);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .module-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+  }
+
+  .module-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .module-tagline {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 16px;
+  }
+
+  .module-desc {
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.65;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .module-weeks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .week-row {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .week-num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    text-transform: uppercase;
+  }
+
+  .week-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+
+  .week-sub {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    grid-column: 2;
+  }
+
+  .week-arena {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    padding: 10px 14px;
+    background: var(--navy);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .arena-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .week-arena span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+  }
+
+  .sprint-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sprint-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+
+  .sprint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sprint-item {
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.45;
+  }
+
+  .sprint-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  /* ─── MODULE ACCENT COLORS ─── */
+  .m1 .module-tag { color: var(--accent-2); border-color: var(--accent-2); }
+  .m2 .module-tag { color: var(--accent-4); border-color: var(--accent-4); }
+  .m3 .module-tag { color: var(--accent-1); border-color: var(--accent-1); }
+  .m4 .module-tag { color: var(--accent-3); border-color: var(--accent-3); }
+  .m5 .module-tag { color: var(--accent-5); border-color: var(--accent-5); }
+  .m6 .module-tag { color: var(--accent-6); border-color: var(--accent-6); }
+
+  /* ─── ARENA SECTION ─── */
+  .arena-section {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .arena-section .section-title { color: var(--white); }
+  .arena-section .section-intro { color: rgba(255,255,255,0.55); }
+
+  .arena-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .arena-block {
+    background: var(--navy-mid);
+    padding: 36px 28px;
+  }
+
+  .arena-phase {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .arena-duration {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .arena-block-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .arena-block-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  .arena-rewards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .reward-item {
+    padding: 24px;
+    border: 1px solid rgba(200,168,90,0.25);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .reward-icon {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .reward-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+
+  .reward-desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
+  }
+
+  /* ─── TECH STACK ─── */
+  .techstack-section {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .tech-table thead tr {
+    border-bottom: 2px solid var(--navy);
+  }
+
+  .tech-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  .tech-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .tech-table tbody tr:hover { background: var(--cream); }
+  .tech-table tbody tr:last-child { border-bottom: none; }
+
+  .tech-table td {
+    padding: 16px 16px;
+    color: var(--text-mid);
+    vertical-align: top;
+  }
+
+  .tech-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+
+  .cost-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: #e6f4f1;
+    color: var(--accent-1);
+  }
+
+  .cost-badge.tier {
+    background: #fef6e4;
+    color: var(--accent-5);
+  }
+
+  /* ─── ARCHITECTURE DIAGRAM ─── */
+  .rhythm-section { background: var(--cream); }
+
+  .rhythm-diagram {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--border);
+  }
+
+  .rhythm-col {
+    background: var(--white);
+    padding: 0;
+  }
+
+  .rhythm-col-header {
+    padding: 20px 24px;
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .rhythm-col-header.arena-header {
+    background: var(--gold);
+  }
+
+  .rhythm-col-header.arena-header .rc-num,
+  .rhythm-col-header.arena-header .rc-label {
+    color: var(--navy);
+  }
+
+  .rc-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .rc-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .rhythm-body {
+    padding: 24px;
+  }
+
+  .rhythm-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  .rhythm-item:last-child { border-bottom: none; }
+
+  .rhythm-item strong {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.4);
+    padding: 48px;
+    text-align: center;
+    font-size: 0.82rem;
+  }
+
+  footer strong { color: rgba(255,255,255,0.75); }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 64px 24px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .arch-strip-inner { grid-template-columns: 1fr; }
+    .arch-block { border-right: none; border-bottom: 1px solid rgba(13,27,46,0.15); }
+    section { padding: 56px 24px; }
+    .curriculum-grid { grid-template-columns: 1fr; }
+    .arena-grid { grid-template-columns: 1fr; }
+    .arena-rewards { grid-template-columns: 1fr; }
+    .tech-table { font-size: 0.8rem; }
+    .rhythm-diagram { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-label, .hero h1, .hero-desc { animation: fadeUp 0.7s ease both; }
+  .hero h1 { animation-delay: 0.1s; }
+  .hero-desc { animation-delay: 0.2s; }
+  .hero-stats { animation: fadeUp 0.7s 0.15s ease both; }
+  /* ─── FACULTY ─── */
+  .faculty-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .faculty-card {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    transition: background 0.2s;
+  }
+
+  .faculty-card:hover { background: #f7f4ee; }
+
+  .faculty-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .faculty-svg {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    display: block;
+  }
+
+  .faculty-module-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 2px;
+  }
+
+  .faculty-info {
+    padding: 30px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .faculty-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .faculty-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+  }
+
+  .faculty-org {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faculty-bio {
+    font-size: 0.86rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .faculty-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .ftag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-mid);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .faculty-card { grid-template-columns: 1fr; }
+    .faculty-svg { min-height: 200px; max-height: 240px; }
+    .faculty-info { padding: 22px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LAPA <span>·</span> SEA University Edition</div>
+  <ul class="nav-links">
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#curriculum">Curriculum</a></li>
+    <li><a href="#arena">The Arena</a></li>
+    <li><a href="#faculty">Faculty</a></li>
+    <li><a href="#techstack">Tech Stack</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">MICE Neurol Pte Ltd &nbsp;·&nbsp; Learn AI + Play AI</div>
+      <h1>Building <em>AI Architects</em> Across Southeast Asia</h1>
+      <p class="hero-desc">LAPA is a structured, gamified AI literacy programme for university students — combining weekly learning tracks, industrial sprints, and live esports-style tournaments into a single, repeatable academic experience.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">Modules across 6 months</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">45 min</div>
+        <div class="hero-stat-label">Core content per week — 3 × 15-minute lessons</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">Top 10</div>
+        <div class="hero-stat-label">Monthly leaderboard qualifiers advance to live AI Esports</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE STRIP -->
+<div class="arch-strip" id="architecture">
+  <div class="arch-strip-inner">
+    <div class="arch-block">
+      <div class="arch-num">01</div>
+      <div class="arch-title">The Weekly Learning Track</div>
+      <div class="arch-desc">3 × 15-minute lessons — Vision, Tooling, Execution — followed by a Weekly Knowledge Quiz that locks in points immediately.</div>
+    </div>
+    <div class="arch-block">
+      <div class="arch-num">02</div>
+      <div class="arch-title">The Weekly Competition Track</div>
+      <div class="arch-desc">A standalone "Mission Lesson" drops an industrial problem. Students earn points on every Sprint — an assignment-as-competition with a live leaderboard. Points accumulate across all three sprint weeks.</div>
+    </div>
+    <div class="arch-block">
+      <div class="arch-num">03</div>
+      <div class="arch-title">The Path to the Arena</div>
+      <div class="arch-desc">At the end of every month, the leaderboard closes. The Top 10 highest scorers qualify for that month's AI Esports tournament — held live online every month.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY RHYTHM -->
+<section class="rhythm-section">
+  <div class="section-inner">
+    <div class="section-label">Programme Rhythm</div>
+    <h2 class="section-title">The 4-Week Module Structure</h2>
+    <p class="section-intro">Every module follows an identical, repeatable rhythm. Universities and students always know exactly what to expect — and what to prepare for.</p>
+    <div class="divider"></div>
+    <div class="rhythm-diagram">
+      <div class="rhythm-col">
+        <div class="rhythm-col-header">
+          <div class="rc-num">W1</div>
+          <div class="rc-label">Learn + Compete</div>
+        </div>
+        <div class="rhythm-body">
+          <div class="rhythm-item"><strong>Lesson 01</strong> The Vision — conceptual hook, industry context, the "Why."</div>
+          <div class="rhythm-item"><strong>Lesson 02</strong> The Tooling — deep dive into the week's framework.</div>
+          <div class="rhythm-item"><strong>Lesson 03</strong> The Execution — over-the-shoulder demo.</div>
+          <div class="rhythm-item"><strong>Quiz</strong> Weekly Knowledge Quiz — points locked in.</div>
+          <div class="rhythm-item"><strong>Sprint</strong> Industrial problem-solving contest submitted via app.</div>
+        </div>
+      </div>
+      <div class="rhythm-col">
+        <div class="rhythm-col-header">
+          <div class="rc-num">W2</div>
+          <div class="rc-label">Learn + Compete</div>
+        </div>
+        <div class="rhythm-body">
+          <div class="rhythm-item"><strong>Lesson 01</strong> The Vision — next concept introduced.</div>
+          <div class="rhythm-item"><strong>Lesson 02</strong> The Tooling — framework expanded.</div>
+          <div class="rhythm-item"><strong>Lesson 03</strong> The Execution — advanced demo.</div>
+          <div class="rhythm-item"><strong>Quiz</strong> Weekly Knowledge Quiz — cumulative scoring.</div>
+          <div class="rhythm-item"><strong>Sprint</strong> New industrial sprint; leaderboard updates live.</div>
+        </div>
+      </div>
+      <div class="rhythm-col">
+        <div class="rhythm-col-header">
+          <div class="rc-num">W3</div>
+          <div class="rc-label">Learn + Compete</div>
+        </div>
+        <div class="rhythm-body">
+          <div class="rhythm-item"><strong>Lesson 01</strong> The Vision — module's capstone concept.</div>
+          <div class="rhythm-item"><strong>Lesson 02</strong> The Tooling — advanced framework layer.</div>
+          <div class="rhythm-item"><strong>Lesson 03</strong> The Execution — what-to-avoid guide.</div>
+          <div class="rhythm-item"><strong>Quiz</strong> Final weekly quiz — cumulative sprint points tallied.</div>
+          <div class="rhythm-item"><strong>Sprint</strong> Final sprint. Month-end leaderboard closes. Top 10 scorers confirmed and notified.</div>
+        </div>
+      </div>
+      <div class="rhythm-col">
+        <div class="rhythm-col-header arena-header">
+          <div class="rc-num">W4</div>
+          <div class="rc-label">The Arena</div>
+        </div>
+        <div class="rhythm-body">
+          <div class="rhythm-item"><strong>Qualifier-only.</strong> Only the month's Top 10 sprint scorers compete.</div>
+          <div class="rhythm-item"><strong>Format</strong> Live online — publicly streamed with live casting on LAPA's esports platform.</div>
+          <div class="rhythm-item"><strong>Brief</strong> Mystery Brief dropped simultaneously for all 10 competitors.</div>
+          <div class="rhythm-item"><strong>2 hours+</strong> All competitors ideate and build at the same time, live on stream.</div>
+          <div class="rhythm-item"><strong>Outcome</strong> Winners announced live — badges, prizes &amp; industry fast-tracks awarded on-stream.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum" style="background: var(--white); border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-label">6-Month Curriculum</div>
+    <h2 class="section-title">Module-by-Module Breakdown</h2>
+    <p class="section-intro">Each module builds on the last — from creative thinking through to live industry consultancy — culminating in the LAPA World Cup in Month 6.</p>
+    <div class="divider"></div>
+    <div class="curriculum-grid">
+
+      <!-- M1 -->
+      <div class="module-card m1">
+        <div class="module-meta">
+          <div class="module-num">Month 01</div>
+          <div class="module-tag">Creative Strategy</div>
+        </div>
+        <h3>The Creative Disruptor</h3>
+        <div class="module-tagline">"Direct the Machine."</div>
+        <div class="module-desc">Master lateral thinking to find high-value solutions that "Generic AI" cannot see — ensuring students' unique perspective remains their ultimate professional advantage.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">The Six Thinking Hats</div>
+            <div class="week-sub">Orchestrated Perspectives — parallel thinking; segregating emotion, facts, and risks.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">Lateral Leaps</div>
+            <div class="week-sub">Escaping Predictability — "Random Entry" technique to force neural collisions AI cannot predict.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">Provocation (PO)</div>
+            <div class="week-sub">Breaking Logic — impossible statements bridged to breakthrough business models.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — AI Esports: The Disruption Arena (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">Tourism: Reinventing a heritage cultural site for digital nomads.</div>
+            <div class="sprint-item">Agri-Tech: Disrupting traditional farm-to-table supply chains.</div>
+            <div class="sprint-item">Social App: Gamifying community volunteering for Gen Z.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M2 -->
+      <div class="module-card m2">
+        <div class="module-meta">
+          <div class="module-num">Month 02</div>
+          <div class="module-tag">Personal Productivity</div>
+        </div>
+        <h3>The AI-Powered Scholar</h3>
+        <div class="module-tagline">"Smarter, Not Harder."</div>
+        <div class="module-desc">Grounding personal productivity in AI. Students learn to synthesize massive amounts of data and build logical study systems to reclaim their time and outperform their peers.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">The Research Oracle (NotebookLM)</div>
+            <div class="week-sub">Synthesis Mastery — turning 200 pages of PDFs and notes into an interactive knowledge base.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">Computational Logic</div>
+            <div class="week-sub">Deconstructing any academic or business problem into a step-by-step logic tree for AI to solve.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">The Socratic Tutor</div>
+            <div class="week-sub">Active Learning — designing custom AI tutors (Gems/GPTs) that force mastery through Socratic questioning.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — AI Esports: The Knowledge Gauntlet (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">Research: Synthesizing 50pp of regional policy into a 5-minute audio brief.</div>
+            <div class="sprint-item">Logic: Building a decision tree for a cross-border logistics project.</div>
+            <div class="sprint-item">Mastery: Training a tutor for a specific professional certification.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M3 -->
+      <div class="module-card m3">
+        <div class="module-meta">
+          <div class="module-num">Month 03</div>
+          <div class="module-tag">Prompt Precision</div>
+        </div>
+        <h3>The Prompt Engineer</h3>
+        <div class="module-tagline">"Words are the Code."</div>
+        <div class="module-desc">Master high-precision steering and structural prompting for zero-error professional results. The language of machines becomes the student's most valuable technical skill.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">The PTC Anchor</div>
+            <div class="week-sub">Boundary Setting — Persona-Task-Constraint framework to prevent AI "drift" and ensure professional alignment.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">Structural Skeletonics</div>
+            <div class="week-sub">JSON & Markdown Mastery — structured AI outputs ready for instant integration into software or databases.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">Chain-of-Thought (CoT)</div>
+            <div class="week-sub">Recursive Reasoning — forcing AI to "think out loud" and self-correct errors before presenting a final answer.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — AI Esports: Prompt Poker (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">CS: Drafting localized, multi-lingual support docs for a Grab-like app.</div>
+            <div class="sprint-item">E-Comm: Generating 1,000 SEO product tags for a regional marketplace.</div>
+            <div class="sprint-item">Data: Extracting messy financial data from varying regional receipt types.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M4 -->
+      <div class="module-card m4">
+        <div class="module-meta">
+          <div class="module-num">Month 04</div>
+          <div class="module-tag">Visual & Sonic Assets</div>
+        </div>
+        <h3>The Asset Alchemist</h3>
+        <div class="module-tagline">"Orchestrate the Senses."</div>
+        <div class="module-desc">Directing high-fidelity visual, sonic, and motion brand ecosystems. Students become one-person media houses capable of producing premium content for the Southeast Asian attention economy.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">The Cinematic Eye</div>
+            <div class="week-sub">Visual Identity — lighting, lenses, and composition to produce premium, consistent AI brand imagery.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">Sonic Architecture</div>
+            <div class="week-sub">Audio Branding — controlling BPM, key, and emotional descriptors for custom brand soundtracks.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">Temporal Motion</div>
+            <div class="week-sub">Video Synthesis — camera movement prompts and frame-rate consistency for high-fidelity social teasers.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — AI Esports: The Multimodal Mogul (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">Fashion: High-end visual campaign for a modern Batik/Silk brand.</div>
+            <div class="sprint-item">FinTech: Developing a unique sonic identity for a "Super-App" wallet.</div>
+            <div class="sprint-item">Real Estate: 15-second immersive motion walkthrough for a city-centre condo.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M5 -->
+      <div class="module-card m5">
+        <div class="module-meta">
+          <div class="module-num">Month 05</div>
+          <div class="module-tag">Zero-Code Development</div>
+        </div>
+        <h3>The Zero-Code Creator</h3>
+        <div class="module-tagline">"Build Your Empire."</div>
+        <div class="module-desc">Stop waiting for developers. Students use "Vibe Coding" and AI Agents to build functioning applications and launch viral marketing engines from scratch — without writing a single line of code.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">The Instant App (Lovable)</div>
+            <div class="week-sub">Prompt-to-Production — describing a business idea and getting a live URL in under 30 minutes.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">The Bi-Coding Hack (Cursor)</div>
+            <div class="week-sub">The Code Hunter — scavenging high-end features from the web and injecting them via natural language commands.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">The Viral Factory (Gumloop)</div>
+            <div class="week-sub">Ecosystem Orchestration — automated systems where one product upload generates the landing page, ads, and checkout.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — AI Esports: The Build-Off (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">Marketplace: Launch a live "Pre-loved" marketplace app in 45 minutes.</div>
+            <div class="sprint-item">Feature Hack: Inject live multi-lingual chat into an existing app.</div>
+            <div class="sprint-item">Launch: Create an automated viral campaign for a new coffee chain.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M6 -->
+      <div class="module-card m6">
+        <div class="module-meta">
+          <div class="module-num">Month 06</div>
+          <div class="module-tag">Industry Consultancy</div>
+        </div>
+        <h3>The Industrial Vanguard</h3>
+        <div class="module-tagline">"Consultancy Combat."</div>
+        <div class="module-desc">High-stakes consultancy solving real regional problems briefed by SEA Industry Captains. Every week is a live webinar brief from a Captain of Industry, followed by a live sprint to solve a local market crisis.</div>
+        <div class="module-weeks">
+          <div class="week-row">
+            <div class="week-num">W1</div>
+            <div class="week-title">Retail & Commerce Vertical</div>
+            <div class="week-sub">Regional CEO webinar on e-commerce friction + live sprint to solve a local marketplace crisis.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W2</div>
+            <div class="week-title">Professional Services Vertical</div>
+            <div class="week-sub">Partner-led webinar on AI accuracy in Law/Finance + live compliance-audit sprint.</div>
+          </div>
+          <div class="week-row">
+            <div class="week-num">W3</div>
+            <div class="week-title">Media & Entertainment Vertical</div>
+            <div class="week-sub">Creative Director webinar on future content + live 48-hour brand launch sprint.</div>
+          </div>
+          <div class="week-arena"><div class="arena-dot"></div><span>Month-End — The LAPA World Cup: Social Good Challenge (Live Online)</span></div>
+        </div>
+        <div class="sprint-section">
+          <div class="sprint-label">Industrial Sprints</div>
+          <div class="sprint-list">
+            <div class="sprint-item">E-Commerce: Solving logistics friction in archipelagic regions.</div>
+            <div class="sprint-item">Banking: Auditing AI-driven micro-loan contracts.</div>
+            <div class="sprint-item">ESG: Creating a circular economy model for a regional manufacturer.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARENA -->
+<section class="arena-section" id="arena">
+  <div class="section-inner">
+    <div class="section-label">Week 4 Tournament</div>
+    <h2 class="section-title">The AI Esports Arena</h2>
+    <p class="section-intro">A live-casted, publicly streamed 2-hour AI build tournament held online every month. All 10 qualifiers compete simultaneously — building in real time while audiences watch the action unfold.</p>
+    <div class="divider" style="background: var(--gold);"></div>
+
+    <div class="arena-grid">
+      <div class="arena-block">
+        <div class="arena-phase">The Format</div>
+        <div class="arena-duration">2 hrs+</div>
+        <div class="arena-block-title">All 10 Compete Simultaneously</div>
+        <div class="arena-block-desc">All ten monthly qualifiers receive the same Mystery Brief at the same moment and begin building in real time. No elimination rounds — everyone competes for the full duration, start to finish.</div>
+      </div>
+      <div class="arena-block">
+        <div class="arena-phase">The Broadcast</div>
+        <div class="arena-duration">Live</div>
+        <div class="arena-block-title">Casted & Streamed Publicly</div>
+        <div class="arena-block-desc">The entire tournament is live-casted with commentary via LAPA's esports streaming platform — free to view for everyone. Audiences watch competitors ideate, prompt, and build in real time.</div>
+      </div>
+      <div class="arena-block">
+        <div class="arena-phase">The Outcome</div>
+        <div class="arena-duration">Live</div>
+        <div class="arena-block-title">Winners Announced On-Stream</div>
+        <div class="arena-block-desc">Submissions are judged at the close of the session and results are announced live on stream. Monthly champions and top performers are recognised in front of the full public audience.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px; margin-bottom: 24px;">
+      <div class="section-label" style="margin-bottom: 12px;">Competitor Rewards</div>
+      <h3 style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--white); margin-bottom: 32px;">What Top Performers Earn</h3>
+    </div>
+
+    <div class="arena-rewards">
+      <div class="reward-item">
+        <div class="reward-icon">🏅</div>
+        <div class="reward-title">Exclusive Digital Badges</div>
+        <div class="reward-desc">Arena-level achievement badges issued for each module. Stackable across all six months — a verified, public record of AI competency.</div>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">⚡</div>
+        <div class="reward-title">Industry Fast-Tracks</div>
+        <div class="reward-desc">Internship and placement fast-track referrals with LAPA's regional industry partners — a direct pipeline from leaderboard to boardroom.</div>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">🎁</div>
+        <div class="reward-title">Merchandise &amp; Tech Gifts</div>
+        <div class="reward-desc">Top performers win LAPA-branded merchandise and tech gifts — from peripherals to premium software subscriptions.</div>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">💵</div>
+        <div class="reward-title">Cash Prizes</div>
+        <div class="reward-desc">Monthly champions and top finishers earn real cash prizes, putting immediate, tangible value on AI skill mastery.</div>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">🏢</div>
+        <div class="reward-title">Company Bounties</div>
+        <div class="reward-desc">Companies post real problems as bounties. Winning solutions earn sponsored prize pools — turning the Arena into a live talent-sourcing event for industry.</div>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">🏆</div>
+        <div class="reward-title">LAPA World Cup Credits</div>
+        <div class="reward-desc">Cumulative LAPA Credits from all six Arena events determine who competes in the grand final Social Good Challenge.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="techstack-section" id="techstack">
+  <div class="section-inner">
+    <div class="section-label">Programme Tech Stack</div>
+    <h2 class="section-title">The Zero-Friction Toolset</h2>
+    <p class="section-intro">All recommended tools are free or free-tier at the student level — eliminating cost as a barrier to participation across all SEA university partners.</p>
+    <div class="divider"></div>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Focus</th>
+          <th>Primary Tool</th>
+          <th>Cost</th>
+          <th>Why This Tool</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Month 01</td>
+          <td>Creative Strategy</td>
+          <td>Gemini (Free)</td>
+          <td><span class="cost-badge">Free</span></td>
+          <td>Best for real-world context and Google Workspace integration.</td>
+        </tr>
+        <tr>
+          <td>Month 02</td>
+          <td>Personal Productivity</td>
+          <td>NotebookLM</td>
+          <td><span class="cost-badge">Free</span></td>
+          <td>Unbeatable for student research synthesis with source citations.</td>
+        </tr>
+        <tr>
+          <td>Month 03</td>
+          <td>Prompt Precision</td>
+          <td>Google AI Studio</td>
+          <td><span class="cost-badge">Free</span></td>
+          <td>Teaches the "Developer View" (System vs. User prompts) at no cost.</td>
+        </tr>
+        <tr>
+          <td>Month 04</td>
+          <td>Visual Assets</td>
+          <td>Recraft.ai</td>
+          <td><span class="cost-badge tier">Free Tier</span></td>
+          <td>Superior to Microsoft Designer for branding; consistent vector and icon generation.</td>
+        </tr>
+        <tr>
+          <td>Month 04</td>
+          <td>Sonic Assets</td>
+          <td>Suno AI</td>
+          <td><span class="cost-badge tier">Free Tier</span></td>
+          <td>50 free credits daily — industry-standard for AI music and jingles.</td>
+        </tr>
+        <tr>
+          <td>Month 04</td>
+          <td>Motion Assets</td>
+          <td>Luma Dream Machine</td>
+          <td><span class="cost-badge tier">Free Tier</span></td>
+          <td>Highest cinematic quality for 15–30 second product and property walkthroughs.</td>
+        </tr>
+        <tr>
+          <td>Month 05</td>
+          <td>Zero-Code Creator</td>
+          <td>Lovable.dev / Bolt.new</td>
+          <td><span class="cost-badge tier">Free Tier</span></td>
+          <td>Vibe Coding at its best — generates full-stack apps via natural language chat.</td>
+        </tr>
+        <tr>
+          <td>Month 05</td>
+          <td>Bi-Coding Hack</td>
+          <td>Cursor (Free Tier)</td>
+          <td><span class="cost-badge tier">Free Tier</span></td>
+          <td>The AI-first code editor. Essential for the "Code Hunter" mindset.</td>
+        </tr>
+        <tr>
+          <td>Month 06</td>
+          <td>Consultancy Research</td>
+          <td>Perplexity AI</td>
+          <td><span class="cost-badge">Free</span></td>
+          <td>Primary tool for cited research — impresses Industry Captains with sourced outputs.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FACULTY -->
+<section id="faculty" style="background: var(--cream); border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-label">Programme Faculty</div>
+    <h2 class="section-title">Meet the Lecturers</h2>
+    <p class="section-intro">Modules 1–5 are each led by a specialist practitioner. Module 6 is entirely industry-driven — briefed and led by regional Captains of Industry each week.</p>
+    <div class="divider"></div>
+
+    <div class="faculty-grid">
+
+      <!-- Kenny Goh — Module 01 -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#1a2e45"/>
+            <!-- Background pattern -->
+            <circle cx="180" cy="40" r="60" fill="#c8a85a" opacity="0.08"/>
+            <circle cx="20" cy="220" r="80" fill="#c8a85a" opacity="0.06"/>
+            <!-- Suit/body -->
+            <rect x="50" y="185" width="120" height="90" rx="4" fill="#0d1b2e"/>
+            <rect x="85" y="183" width="20" height="35" fill="#1e3a5c"/>
+            <rect x="115" y="183" width="20" height="35" fill="#1e3a5c"/>
+            <!-- Tie -->
+            <polygon points="105,183 115,183 112,220 108,220" fill="#c8a85a"/>
+            <!-- Shirt -->
+            <rect x="88" y="183" width="44" height="12" fill="#f0ede8"/>
+            <!-- Neck -->
+            <rect x="98" y="158" width="24" height="30" fill="#c8956a"/>
+            <!-- Head -->
+            <ellipse cx="110" cy="145" rx="38" ry="42" fill="#c8956a"/>
+            <!-- Hair -->
+            <ellipse cx="110" cy="107" rx="38" ry="18" fill="#2a1a0a"/>
+            <rect x="72" y="107" width="76" height="15" fill="#2a1a0a"/>
+            <!-- Eyes -->
+            <ellipse cx="97" cy="140" rx="5" ry="4" fill="#fff"/>
+            <ellipse cx="123" cy="140" rx="5" ry="4" fill="#fff"/>
+            <ellipse cx="98" cy="140" rx="3" ry="3" fill="#1a0a00"/>
+            <ellipse cx="124" cy="140" rx="3" ry="3" fill="#1a0a00"/>
+            <!-- Eyebrows -->
+            <path d="M91,133 Q97,129 104,132" stroke="#2a1a0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M117,132 Q123,129 130,133" stroke="#2a1a0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <path d="M108,146 Q106,154 110,156 Q114,154 112,146" stroke="#b07a55" stroke-width="1.5" fill="none"/>
+            <!-- Mouth / subtle smile -->
+            <path d="M100,163 Q110,169 120,163" stroke="#a0603a" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Ear -->
+            <ellipse cx="72" cy="145" rx="5" ry="8" fill="#b8805a"/>
+            <ellipse cx="148" cy="145" rx="5" ry="8" fill="#b8805a"/>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#c8a85a"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="12" fill="#0d1b2e" text-anchor="middle" font-weight="bold">Kenny Goh</text>
+          </svg>
+          <div class="faculty-module-badge">Module 01</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Kenny Goh</div>
+          <div class="faculty-title">The Cognitive Architect</div>
+          <div class="faculty-org">Chief Cognitive Architect, AI Esports &nbsp;·&nbsp; Founder, MICE Neurol</div>
+          <p class="faculty-bio">Founder of Ken-Air (1973) and one of SEA's earliest digital pioneers, Kenny was awarded Singapore's first "Tourism Entrepreneur of the Year" in 1994. Having steered ventures through 9/11, SARS, and COVID-19, he brings fifty years of battle-tested leadership to the AI age. Today he designs human-AI frameworks that teach students not to compete with the machine — but to command it. Author of the forthcoming <em>Asymmetric Intelligence</em>.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Lateral Thinking</span>
+            <span class="ftag">De Bono Methods</span>
+            <span class="ftag">Strategic Foresight</span>
+            <span class="ftag">Human-AI Frameworks</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dr. Priya — Module 02 -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#1a2e45"/>
+            <circle cx="40" cy="50" r="70" fill="#2563a8" opacity="0.1"/>
+            <circle cx="200" cy="230" r="60" fill="#2563a8" opacity="0.08"/>
+            <!-- Body / blazer -->
+            <rect x="45" y="190" width="130" height="80" rx="4" fill="#1e3a6e"/>
+            <!-- Blouse -->
+            <rect x="88" y="188" width="44" height="14" fill="#e8d5f0"/>
+            <!-- Neck -->
+            <rect x="98" y="160" width="24" height="32" fill="#c49a7a"/>
+            <!-- Head -->
+            <ellipse cx="110" cy="146" rx="37" ry="41" fill="#c49a7a"/>
+            <!-- Hair — long dark hair -->
+            <ellipse cx="110" cy="108" rx="40" ry="18" fill="#1a0800"/>
+            <rect x="70" y="108" width="17" height="65" rx="8" fill="#1a0800"/>
+            <rect x="133" y="108" width="17" height="65" rx="8" fill="#1a0800"/>
+            <rect x="70" y="105" width="80" height="20" fill="#1a0800"/>
+            <!-- Earrings -->
+            <circle cx="73" cy="158" r="4" fill="#c8a85a"/>
+            <circle cx="147" cy="158" r="4" fill="#c8a85a"/>
+            <!-- Ears -->
+            <ellipse cx="73" cy="148" rx="5" ry="7" fill="#b88a6a"/>
+            <ellipse cx="147" cy="148" rx="5" ry="7" fill="#b88a6a"/>
+            <!-- Eyes -->
+            <ellipse cx="97" cy="141" rx="5.5" ry="4.5" fill="#fff"/>
+            <ellipse cx="123" cy="141" rx="5.5" ry="4.5" fill="#fff"/>
+            <ellipse cx="98" cy="141" rx="3.5" ry="3.5" fill="#1a0800"/>
+            <ellipse cx="124" cy="141" rx="3.5" ry="3.5" fill="#1a0800"/>
+            <!-- Eyelashes -->
+            <path d="M91,137 Q97,133 104,136" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M116,136 Q123,133 130,137" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <path d="M107,148 Q105,156 110,158 Q115,156 113,148" stroke="#a07050" stroke-width="1.5" fill="none"/>
+            <!-- Smile -->
+            <path d="M100,165 Q110,172 120,165" stroke="#904040" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#2563a8"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">Dr. Priya Nanthakumar</text>
+          </svg>
+          <div class="faculty-module-badge" style="background: var(--accent-4);">Module 02</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Dr. Priya Nanthakumar</div>
+          <div class="faculty-title">Learning Systems Architect</div>
+          <div class="faculty-org">Senior Research Fellow, NUS Centre for Learning Sciences &nbsp;·&nbsp; AI Literacy Consultant</div>
+          <p class="faculty-bio">A former data scientist turned learning designer, Dr. Priya spent fifteen years studying how knowledge compounds across research institutions in Singapore and Malaysia. Her "Computational Pedagogy" framework has been adopted by three SEA universities. She is widely credited with pioneering the use of NotebookLM and AI tutoring systems in structured university curricula — and in Module 02, she teaches students to turn information overload into a decisive personal advantage.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Knowledge Synthesis</span>
+            <span class="ftag">Computational Logic</span>
+            <span class="ftag">AI Tutoring Systems</span>
+            <span class="ftag">Learning Science</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marcus Tan — Module 03 -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#1a2e45"/>
+            <circle cx="190" cy="60" r="70" fill="#2a7d6f" opacity="0.1"/>
+            <circle cx="10" cy="210" r="55" fill="#2a7d6f" opacity="0.08"/>
+            <!-- Body -->
+            <rect x="50" y="188" width="120" height="80" rx="4" fill="#1a3028"/>
+            <!-- Collar -->
+            <rect x="88" y="186" width="44" height="14" fill="#eaeaea"/>
+            <!-- Tie bar -->
+            <rect x="106" y="200" width="8" height="4" fill="#c8a85a"/>
+            <!-- Neck -->
+            <rect x="99" y="161" width="22" height="30" fill="#b8896a"/>
+            <!-- Head -->
+            <ellipse cx="110" cy="147" rx="36" ry="40" fill="#b8896a"/>
+            <!-- Short hair -->
+            <ellipse cx="110" cy="110" rx="36" ry="16" fill="#111"/>
+            <rect x="74" y="110" width="72" height="12" fill="#111"/>
+            <!-- Glasses -->
+            <rect x="88" y="136" width="18" height="13" rx="4" fill="none" stroke="#333" stroke-width="2.5"/>
+            <rect x="114" y="136" width="18" height="13" rx="4" fill="none" stroke="#333" stroke-width="2.5"/>
+            <line x1="106" y1="142" x2="114" y2="142" stroke="#333" stroke-width="2"/>
+            <line x1="88" y1="142" x2="82" y2="144" stroke="#333" stroke-width="2"/>
+            <line x1="132" y1="142" x2="138" y2="144" stroke="#333" stroke-width="2"/>
+            <!-- Eyes -->
+            <ellipse cx="97" cy="142" rx="3" ry="3" fill="#1a0800"/>
+            <ellipse cx="123" cy="142" rx="3" ry="3" fill="#1a0800"/>
+            <!-- Eyebrows -->
+            <path d="M90,132 Q97,128 104,131" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M116,131 Q123,128 130,132" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <path d="M107,149 Q105,157 110,159 Q115,157 113,149" stroke="#9a6845" stroke-width="1.5" fill="none"/>
+            <!-- Mouth -->
+            <path d="M101,166 Q110,172 119,166" stroke="#804030" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Ears -->
+            <ellipse cx="74" cy="147" rx="5" ry="7" fill="#a87858"/>
+            <ellipse cx="146" cy="147" rx="5" ry="7" fill="#a87858"/>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#2a7d6f"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">Marcus Tan Wei Liang</text>
+          </svg>
+          <div class="faculty-module-badge" style="background: var(--accent-1);">Module 03</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Marcus Tan Wei Liang</div>
+          <div class="faculty-title">Prompt Systems Engineer</div>
+          <div class="faculty-org">Head of AI Integration, GovTech Singapore (former) &nbsp;·&nbsp; Independent AI Consultant</div>
+          <p class="faculty-bio">Eight years inside GovTech Singapore stress-testing AI models where errors have policy consequences — not just UX ones. That rigour shaped Marcus into one of the region's sharpest prompt engineers. His PTC Anchor framework (Persona-Task-Constraint) is now widely adopted across ASEAN enterprises. In Module 03, he teaches students that prompting is a professional discipline — with its own grammar, logic, and consequences.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Prompt Engineering</span>
+            <span class="ftag">Structured Outputs</span>
+            <span class="ftag">Chain-of-Thought</span>
+            <span class="ftag">LLM Integration</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Siti Rahayu — Module 04 -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#1a2e45"/>
+            <circle cx="170" cy="200" r="80" fill="#c04a2a" opacity="0.08"/>
+            <circle cx="30" cy="40" r="50" fill="#c04a2a" opacity="0.07"/>
+            <!-- Body / blazer bright -->
+            <rect x="45" y="192" width="130" height="80" rx="4" fill="#8b1a0a"/>
+            <!-- Blouse -->
+            <rect x="88" y="190" width="44" height="14" fill="#fce8e0"/>
+            <!-- Hijab -->
+            <ellipse cx="110" cy="110" rx="50" ry="20" fill="#2a1a50"/>
+            <rect x="60" y="110" width="100" height="80" rx="10" fill="#2a1a50"/>
+            <ellipse cx="110" cy="106" rx="50" ry="22" fill="#3a2a60"/>
+            <!-- Neck -->
+            <rect x="100" y="162" width="20" height="32" fill="#d4a882"/>
+            <!-- Head / face -->
+            <ellipse cx="110" cy="148" rx="34" ry="38" fill="#d4a882"/>
+            <!-- Eyes -->
+            <ellipse cx="97" cy="142" rx="5" ry="4.5" fill="#fff"/>
+            <ellipse cx="123" cy="142" rx="5" ry="4.5" fill="#fff"/>
+            <ellipse cx="98" cy="142" rx="3.5" ry="3.5" fill="#1a0800"/>
+            <ellipse cx="124" cy="142" rx="3.5" ry="3.5" fill="#1a0800"/>
+            <!-- Eyelashes -->
+            <path d="M91,138 Q97,134 104,137" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M116,137 Q123,134 130,138" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Eyebrows -->
+            <path d="M91,134 Q97,130 104,133" stroke="#2a1a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M116,133 Q123,130 130,134" stroke="#2a1a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <path d="M107,150 Q105,158 110,160 Q115,158 113,150" stroke="#b08060" stroke-width="1.5" fill="none"/>
+            <!-- Smile with lipstick -->
+            <path d="M100,167 Q110,175 120,167" stroke="#c04a2a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Earrings (visible below hijab edge) -->
+            <circle cx="76" cy="163" r="4" fill="#c8a85a"/>
+            <circle cx="144" cy="163" r="4" fill="#c8a85a"/>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#c04a2a"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">Siti Rahayu Binte Johari</text>
+          </svg>
+          <div class="faculty-module-badge" style="background: var(--accent-3);">Module 04</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Siti Rahayu Binte Johari</div>
+          <div class="faculty-title">Creative Director & Multimodal Strategist</div>
+          <div class="faculty-org">Founder, Reka Studio KL &nbsp;·&nbsp; Former Regional Creative Lead, Publicis Southeast Asia</div>
+          <p class="faculty-bio">Twelve years overseeing visual and sonic campaigns at Publicis SEA, followed by founding Reka Studio — a KL-based creative consultancy specialising in AI-assisted brand production. She was among the first in the region to build a repeatable AI creative workflow covering image, audio, and motion. Her clients span FinTech, fashion, and property. In Module 04, she teaches students to stop consuming media and start directing it.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Visual Identity</span>
+            <span class="ftag">Sonic Branding</span>
+            <span class="ftag">AI Motion</span>
+            <span class="ftag">Brand Strategy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arjun — Module 05 -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#1a2e45"/>
+            <circle cx="30" cy="60" r="65" fill="#7a5c1e" opacity="0.1"/>
+            <circle cx="200" cy="220" r="70" fill="#7a5c1e" opacity="0.08"/>
+            <!-- Body — casual hoodie -->
+            <rect x="40" y="192" width="140" height="80" rx="8" fill="#2a3a50"/>
+            <!-- Hood detail -->
+            <path d="M80,192 Q110,180 140,192" stroke="#1a2a40" stroke-width="3" fill="none"/>
+            <!-- T-shirt beneath -->
+            <rect x="90" y="192" width="40" height="14" fill="#3a5a8a"/>
+            <!-- Neck -->
+            <rect x="100" y="163" width="20" height="32" fill="#c09070"/>
+            <!-- Head -->
+            <ellipse cx="110" cy="148" rx="36" ry="40" fill="#c09070"/>
+            <!-- Hair — curly/textured dark -->
+            <ellipse cx="110" cy="110" rx="40" ry="20" fill="#0d0500"/>
+            <rect x="70" y="110" width="80" height="14" fill="#0d0500"/>
+            <circle cx="82" cy="113" r="9" fill="#0d0500"/>
+            <circle cx="95" cy="108" r="9" fill="#0d0500"/>
+            <circle cx="110" cy="106" r="10" fill="#0d0500"/>
+            <circle cx="125" cy="108" r="9" fill="#0d0500"/>
+            <circle cx="138" cy="113" r="9" fill="#0d0500"/>
+            <!-- Beard / stubble -->
+            <path d="M90,168 Q110,182 130,168" stroke="#0d0500" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.5"/>
+            <!-- Eyes -->
+            <ellipse cx="97" cy="141" rx="5" ry="4.5" fill="#fff"/>
+            <ellipse cx="123" cy="141" rx="5" ry="4.5" fill="#fff"/>
+            <ellipse cx="98" cy="141" rx="3.5" ry="3.5" fill="#0d0500"/>
+            <ellipse cx="124" cy="141" rx="3.5" ry="3.5" fill="#0d0500"/>
+            <!-- Eyebrows -->
+            <path d="M90,133 Q97,129 104,132" stroke="#0d0500" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M116,132 Q123,129 130,133" stroke="#0d0500" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <path d="M107,149 Q104,158 110,160 Q116,158 113,149" stroke="#a07050" stroke-width="1.5" fill="none"/>
+            <!-- Mouth -->
+            <path d="M100,167 Q110,175 120,167" stroke="#804030" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Ears -->
+            <ellipse cx="74" cy="148" rx="5" ry="7" fill="#b08060"/>
+            <ellipse cx="146" cy="148" rx="5" ry="7" fill="#b08060"/>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#7a5c1e"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Arjun Krishnaswamy</text>
+          </svg>
+          <div class="faculty-module-badge" style="background: var(--accent-5);">Module 05</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Arjun Krishnaswamy</div>
+          <div class="faculty-title">Vibe Coder & Venture Builder</div>
+          <div class="faculty-org">Co-Founder, LaunchPad SEA &nbsp;·&nbsp; Venture Partner, Iterative</div>
+          <p class="faculty-bio">Two startups founded, two exited — and a reputation across the SEA ecosystem for one thing: turning ideas into live products faster than anyone in the room. Arjun has run zero-code build sprints at NUS, NTU, and universities across the Philippines and Indonesia, helping over 200 student founders ship their first product. In Module 05, his message to every student is simple: you have no excuse not to build.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Vibe Coding</span>
+            <span class="ftag">Zero-Code Development</span>
+            <span class="ftag">Startup Building</span>
+            <span class="ftag">AI Agents</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 06 — Industry -->
+      <div class="faculty-card">
+        <div class="faculty-img-wrap">
+          <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" class="faculty-svg">
+            <rect width="220" height="260" fill="#0d1b2e"/>
+            <!-- Grid pattern -->
+            <line x1="0" y1="40" x2="220" y2="40" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="0" y1="80" x2="220" y2="80" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="0" y1="120" x2="220" y2="120" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="0" y1="160" x2="220" y2="160" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="0" y1="200" x2="220" y2="200" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="44" y1="0" x2="44" y2="260" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="88" y1="0" x2="88" y2="260" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="132" y1="0" x2="132" y2="260" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <line x1="176" y1="0" x2="176" y2="260" stroke="#c8a85a" stroke-width="0.5" opacity="0.2"/>
+            <!-- Central icon -->
+            <circle cx="110" cy="115" r="55" fill="#142236" stroke="#c8a85a" stroke-width="1.5" opacity="0.9"/>
+            <!-- Building icon -->
+            <rect x="82" y="95" width="56" height="52" fill="none" stroke="#c8a85a" stroke-width="2"/>
+            <rect x="88" y="101" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="105" y="101" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="122" y="101" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="88" y="118" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="105" y="118" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="122" y="118" width="10" height="10" fill="#c8a85a" opacity="0.7"/>
+            <rect x="98" y="131" width="24" height="16" fill="#c8a85a" opacity="0.5"/>
+            <!-- Stars above -->
+            <text x="110" y="88" font-size="14" text-anchor="middle" fill="#c8a85a">★ ★ ★</text>
+            <!-- Label -->
+            <text x="110" y="188" font-family="Georgia,serif" font-size="11" fill="#c8a85a" text-anchor="middle" font-weight="bold">INDUSTRY LED</text>
+            <text x="110" y="204" font-family="Arial,sans-serif" font-size="9" fill="#6b829a" text-anchor="middle">Rotating Captains of Industry</text>
+            <!-- Name plate -->
+            <rect x="0" y="228" width="220" height="32" fill="#3d6e3a"/>
+            <text x="110" y="248" font-family="Georgia,serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Module 06</text>
+          </svg>
+          <div class="faculty-module-badge" style="background: var(--accent-6);">Module 06</div>
+        </div>
+        <div class="faculty-info">
+          <div class="faculty-name">Industry-Led Module</div>
+          <div class="faculty-title">Regional Captains of Industry</div>
+          <div class="faculty-org">Rotating roster of SEA executives, CEOs, and domain leaders</div>
+          <p class="faculty-bio">No fixed lecturer. Each week is briefed by a rotating Captain of Industry — a regional CEO, Managing Partner, or Creative Director bringing a live, unsolved business problem into the room. Students engage directly with the people who will one day hire them. Industry partners are invited to post bounties, observe sprints live, and fast-track standout performers into their talent pipelines.</p>
+          <div class="faculty-tags">
+            <span class="ftag">Retail & E-Commerce</span>
+            <span class="ftag">Law & Finance</span>
+            <span class="ftag">Media & Entertainment</span>
+            <span class="ftag">Live Bounties</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom: 8px;"><strong>LAPA — Learn AI + Play AI</strong> &nbsp;·&nbsp; SEA University Edition</p>
+  <p>Developed and operated by <strong>MICE Neurol Pte Ltd</strong> &nbsp;·&nbsp; Singapore</p>
+  <p style="margin-top: 16px; font-size: 0.75rem;">For partnership enquiries: <a href="/cdn-cgi/l/email-protection" class="__cf_emai
