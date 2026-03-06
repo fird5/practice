@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>LAPA · M01 W2 · Lateral Leaps</title>
+<style>
+  :root {
+    --bg:          #0e0e0e;
+    --bg-card:     #181818;
+    --bg-raised:   #222222;
+    --bg-pill:     #2a2a2a;
+    --border:      rgba(255,255,255,0.07);
+    --border-p:    rgba(255,60,140,0.35);
+
+    --pink:        #ff3c8c;
+    --pink-lt:     #ff6daa;
+    --pink-soft:   rgba(255,60,140,0.12);
+    --pink-glow:   rgba(255,60,140,0.05);
+
+    --gold:        #fbbf24;
+    --gold-soft:   rgba(251,191,36,0.12);
+    --green:       #34d399;
+    --green-soft:  rgba(52,211,153,0.1);
+
+    --text:        #f0f0f0;
+    --text-mid:    #999999;
+    --text-dim:    #555555;
+    --white:       #ffffff;
+
+    --r-xl:   22px;
+    --r-lg:   16px;
+    --r-md:   12px;
+    --r-pill: 999px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -160px; right: -100px;
+    width: 600px; height: 500px;
+    background: radial-gradient(ellipse, rgba(255,60,140,0.05) 0%, transparent 68%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── NAV ── */
+  .top-nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(14,14,14,0.95);
+    backdrop-filter: blur(22px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px; height: 56px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .nav-back {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card); color: var(--text-mid);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem; transition: all 0.2s;
+    text-decoration: none; flex-shrink: 0;
+  }
+  .nav-back:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-soft); }
+
+  .nav-crumb {
+    font-family: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    color: var(--text-dim);
+    display: flex; align-items: center; gap: 6px; overflow: hidden;
+  }
+  .nav-crumb .s { color: var(--text-mid); }
+  .nav-crumb .cur { color: var(--pink); }
+  .nav-crumb .sep { opacity: 0.3; }
+
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+  .prog-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg-pill); border: 1.5px solid var(--border);
+    border-radius: var(--r-pill); padding: 6px 14px;
+    font-size: 0.75rem; font-weight: 700; color: var(--text-mid);
+  }
+
+  .pip {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--bg-raised); border: 1.5px solid var(--text-dim);
+    transition: all 0.35s;
+  }
+  .pip.done { background: var(--green); border-color: var(--green); box-shadow: 0 0 7px var(--green); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(150deg, #111111 0%, #1a1018 55%, #1a0a0e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 28px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; bottom: -60px; right: -40px;
+    width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,60,140,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -40px; left: -40px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,109,170,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pink-soft); border: 1.5px solid var(--border-p);
+    border-radius: var(--r-pill);
+    padding: 5px 14px; margin-bottom: 14px;
+    font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--pink);
+  }
+
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--pink); box-shadow: 0 0 8px var(--pink);
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .hero h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 900; color: var(--white);
+    line-height: 1.15; margin-bottom: 10px;
+  }
+  .hero h1 em { font-style: normal; color: var(--pink-lt); }
+
+  .hero-sub {
+    font-size: 0.9rem; color: var(--text-mid);
+    margin-bottom: 22px; max-width: 520px; line-height: 1.7;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-pill); border: 1.5px solid var(--border);
+    border-radius: var(--r-pill); padding: 5px 13px;
+    font-size: 0.75rem; font-weight: 700; color: var(--text-mid);
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 292px;
+    gap: 0;
+    max-width: 1080px; margin: 0 auto;
+    padding: 22px 18px; align-items: start;
+  }
+  .main-col { padding-right: 20px; }
+  .sidebar-col { position: sticky; top: 68px; }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    display: flex; gap: 5px; margin-bottom: 18px;
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    border-radius: var(--r-pill); padding: 5px;
+  }
+  .tab-btn {
+    flex: 1; padding: 9px 10px; background: transparent; border: none;
+    border-radius: var(--r-pill);
+    font-size: 0.83rem; font-weight: 800;
+    color: var(--text-dim); cursor: pointer; transition: all 0.22s;
+  }
+  .tab-btn.active { background: var(--bg-raised); color: var(--pink); box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+  .tab-btn:hover:not(.active) { color: var(--text-mid); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── LESSON CARD ── */
+  .lcard {
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    border-radius: var(--r-xl); margin-bottom: 16px;
+    overflow: hidden; transition: border-color 0.25s;
+  }
+  .lcard:hover { border-color: rgba(255,255,255,0.12); }
+  .lcard.open { border-color: var(--border-p); }
+
+  .lcard-hdr {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px; cursor: pointer; user-select: none;
+    transition: background 0.2s;
+  }
+  .lcard-hdr:hover { background: rgba(255,255,255,0.02); }
+
+  .lbadge {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 2px solid var(--border-p); background: var(--pink-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 900;
+    color: var(--pink); flex-shrink: 0; transition: all 0.3s;
+  }
+  .lbadge.done {
+    background: var(--green); border-color: var(--green);
+    color: #000; box-shadow: 0 0 14px rgba(52,211,153,0.45);
+  }
+
+  .lcard-info { flex: 1; }
+  .lcard-info strong {
+    display: block; font-weight: 800; font-size: 0.97rem;
+    color: var(--text); margin-bottom: 2px;
+  }
+  .lcard-info span { font-size: 0.76rem; color: var(--text-dim); font-weight: 600; }
+
+  .lchev {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg-raised); border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 0.65rem;
+    transition: transform 0.3s, background 0.2s; flex-shrink: 0;
+  }
+  .lcard.open .lchev { transform: rotate(180deg); background: var(--pink-soft); border-color: var(--border-p); color: var(--pink); }
+
+  .lcard-body { display: none; border-top: 1.5px solid var(--border); }
+  .lcard.open .lcard-body { display: block; }
+
+  /* ── VIDEO ── */
+  .video-area { background: #000; }
+
+  .vph {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #0e0e0e, #1a1018);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .vph::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 25% 50%, rgba(255,60,140,0.07), transparent 50%),
+      radial-gradient(circle at 75% 50%, rgba(255,109,170,0.04), transparent 50%);
+  }
+
+  .play-ring {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: var(--pink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: #fff;
+    box-shadow: 0 0 0 12px rgba(255,60,140,0.12), 0 0 40px rgba(255,60,140,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; z-index: 1;
+  }
+  .vph:hover .play-ring {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 18px rgba(255,60,140,0.14), 0 0 60px rgba(255,60,140,0.55);
+  }
+
+  .play-lbl {
+    font-weight: 700; font-size: 0.82rem;
+    color: var(--text-mid); position: relative; z-index: 1;
+  }
+
+  .vembed { display: none; aspect-ratio: 16/9; width: 100%; }
+  .vembed iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  .url-row {
+    display: flex; gap: 8px; padding: 12px 16px;
+    background: var(--bg-raised); align-items: center;
+  }
+  .url-row input {
+    flex: 1; background: var(--bg-card);
+    border: 1.5px solid var(--border); border-radius: var(--r-md);
+    padding: 9px 13px; font-size: 0.82rem; color: var(--text);
+    font-family: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .url-row input::placeholder { color: var(--text-dim); }
+  .url-row input:focus { border-color: var(--pink); }
+
+  .url-btn {
+    background: var(--pink); color: #fff; border: none;
+    border-radius: var(--r-md); padding: 9px 16px;
+    font-size: 0.8rem; font-weight: 800;
+    cursor: pointer; transition: opacity 0.2s, transform 0.15s; white-space: nowrap;
+  }
+  .url-btn:hover { opacity: 0.88; transform: scale(1.02); }
+
+  .url-hint {
+    font-size: 0.71rem; color: var(--text-dim);
+    padding: 0 16px 10px; background: var(--bg-raised); font-weight: 600;
+  }
+
+  /* ── NOTES ── */
+  .lnotes { padding: 20px; }
+
+  .nlabel {
+    font-size: 0.72rem; font-weight: 900;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink);
+    margin-bottom: 10px; margin-top: 18px;
+  }
+  .nlabel:first-child { margin-top: 0; }
+
+  .ntext { font-size: 0.875rem; color: var(--text-mid); line-height: 1.75; }
+  .ntext p { margin-bottom: 10px; }
+  .ntext p:last-child { margin-bottom: 0; }
+  .ntext strong { color: var(--text); font-weight: 700; }
+
+  /* Key points */
+  .kpoints { display: flex; flex-direction: column; gap: 9px; }
+  .kpoint {
+    display: flex; gap: 11px; padding: 12px 14px;
+    background: var(--bg-raised); border-radius: var(--r-lg);
+    border: 1.5px solid var(--border);
+    font-size: 0.85rem; color: var(--text-mid); line-height: 1.55;
+    transition: border-color 0.2s;
+  }
+  .kpoint:hover { border-color: rgba(255,60,140,0.2); }
+  .kpoint .ki { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+  .kpoint strong { color: var(--text); font-weight: 700; }
+
+  /* Technique showcase */
+  .technique-grid {
+    display: grid; grid-template-columns: repeat(2,1fr);
+    gap: 10px; margin-top: 4px;
+  }
+
+  .tcard {
+    padding: 14px 12px;
+    border-radius: var(--r-lg);
+    border: 1.5px solid var(--border);
+    background: var(--bg-raised);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .tcard:hover { transform: translateY(-2px); border-color: rgba(255,60,140,0.25); }
+
+  .tcard-icon { font-size: 1.6rem; margin-bottom: 8px; }
+  .tcard-name {
+    font-size: 0.82rem; font-weight: 800;
+    color: var(--pink-lt); margin-bottom: 5px;
+  }
+  .tcard-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* Step flow */
+  .step-flow { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+
+  .step-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    position: relative;
+  }
+
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px; top: 34px;
+    width: 2px; height: calc(100% - 6px);
+    background: linear-gradient(180deg, var(--border-p), transparent);
+  }
+
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--pink-soft);
+    border: 2px solid var(--border-p);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 900; color: var(--pink);
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  .step-content {
+    flex: 1; padding: 10px 14px; margin-bottom: 10px;
+    background: var(--bg-raised);
+    border-radius: var(--r-lg);
+    border: 1.5px solid var(--border);
+  }
+
+  .step-content strong {
+    display: block; font-size: 0.85rem; font-weight: 800;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .step-content span { font-size: 0.8rem; color: var(--text-mid); line-height: 1.55; }
+
+  /* Tool chip */
+  .tool-chip {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 15px; background: var(--bg-raised);
+    border: 1.5px solid var(--border); border-radius: var(--r-lg); margin-top: 14px;
+  }
+  .ticon {
+    width: 40px; height: 40px; border-radius: var(--r-md);
+    background: var(--pink-soft); border: 1.5px solid var(--border-p);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .tname { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+  .tsub  { font-size: 0.71rem; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Complete button */
+  .done-btn {
+    margin: 16px 20px 20px;
+    width: calc(100% - 40px); padding: 13px;
+    border-radius: var(--r-lg); border: 2px solid var(--border-p);
+    background: var(--pink-soft); color: var(--pink);
+    font-size: 0.9rem; font-weight: 800;
+    cursor: pointer; transition: all 0.25s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .done-btn:hover:not(.completed) {
+    background: rgba(255,60,140,0.22); transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,60,140,0.2);
+  }
+  .done-btn.completed {
+    background: var(--green-soft); border-color: var(--green);
+    color: var(--green); cursor: default; transform: none; box-shadow: none;
+  }
+
+  /* ── SPRINT ── */
+  .sprint-card {
+    background: linear-gradient(135deg, #0c1a10, #160e14);
+    border: 2px solid rgba(52,211,153,0.2);
+    border-radius: var(--r-xl); padding: 22px; margin-bottom: 16px;
+  }
+  .slabel {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--green-soft); border: 1.5px solid rgba(52,211,153,0.25);
+    border-radius: var(--r-pill); padding: 4px 12px; margin-bottom: 12px;
+    font-size: 0.7rem; font-weight: 800;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--green);
+  }
+  .sdot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .stitle { font-size: 1.2rem; font-weight: 900; color: var(--white); line-height: 1.25; margin-bottom: 12px; }
+  .sbrief { font-size: 0.87rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 18px; }
+  .smeta { display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.25); border-radius: var(--r-lg); padding: 14px; margin-bottom: 18px; }
+  .smrow { display: flex; gap: 10px; font-size: 0.82rem; align-items: flex-start; }
+  .smlbl { font-weight: 800; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); width: 72px; flex-shrink: 0; padding-top: 1px; }
+  .smval { color: var(--text-mid); line-height: 1.5; }
+  .pts-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--gold-soft); border: 1.5px solid rgba(251,191,36,0.3);
+    border-radius: var(--r-pill); padding: 7px 16px;
+    font-size: 0.82rem; font-weight: 800; color: var(--gold);
+  }
+
+  /* ── SIDEBAR ── */
+  .sc {
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    border-radius: var(--r-xl); overflow: hidden; margin-bottom: 14px;
+  }
+  .sc-head {
+    padding: 13px 16px; border-bottom: 1.5px solid var(--border);
+    font-size: 0.73rem; font-weight: 900;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .sc-count {
+    background: var(--pink-soft); border: 1.5px solid var(--border-p);
+    border-radius: var(--r-pill); padding: 2px 10px;
+    font-size: 0.7rem; color: var(--pink); font-weight: 800;
+  }
+
+  /* ── TRAINER CARD ── */
+  .trainer-card {
+    background: linear-gradient(160deg, #1c1c1c 0%, #1a0a12 100%);
+    border: 1.5px solid var(--border-p);
+    border-radius: var(--r-xl); overflow: hidden; margin-bottom: 14px;
+  }
+
+  .trainer-top {
+    padding: 18px 18px 14px;
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+  }
+
+  .trainer-top::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(135deg, rgba(255,60,140,0.15), rgba(255,109,170,0.07));
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+  }
+
+  .trainer-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 3px solid var(--pink);
+    box-shadow: 0 0 0 4px rgba(255,60,140,0.15), 0 0 24px rgba(255,60,140,0.25);
+    overflow: hidden;
+    position: relative; z-index: 1;
+    margin-bottom: 12px; margin-top: 12px;
+    flex-shrink: 0;
+  }
+  .trainer-avatar svg { width: 100%; height: 100%; display: block; }
+
+  .trainer-name { font-size: 1.05rem; font-weight: 900; color: var(--white); text-align: center; position: relative; z-index: 1; margin-bottom: 3px; }
+  .trainer-role { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pink); text-align: center; position: relative; z-index: 1; margin-bottom: 10px; }
+  .trainer-org { font-size: 0.76rem; color: var(--text-dim); font-weight: 600; text-align: center; position: relative; z-index: 1; line-height: 1.5; }
+
+  .trainer-divider { height: 1px; background: var(--border); margin: 0 16px; }
+
+  .trainer-bio { padding: 14px 16px; font-size: 0.82rem; color: var(--text-mid); line-height: 1.7; }
+
+  .trainer-tags { padding: 0 16px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ttag {
+    font-size: 0.69rem; font-weight: 700;
+    color: var(--pink); background: var(--pink-soft);
+    border: 1px solid rgba(255,60,140,0.2);
+    border-radius: var(--r-pill); padding: 3px 10px;
+  }
+
+  /* Lesson list */
+  .s-list { padding: 6px 0; }
+  .s-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 10px 16px; cursor: pointer; transition: background 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .s-item:hover { background: var(--bg-raised); }
+  .s-item.active { border-left-color: var(--pink); background: var(--pink-glow); }
+  .s-item.sdone  { border-left-color: var(--green); }
+
+  .s-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 900; color: var(--text-dim);
+    flex-shrink: 0; transition: all 0.25s;
+  }
+  .s-item.active .s-dot { border-color: var(--pink); color: var(--pink); background: var(--pink-soft); }
+  .s-item.sdone  .s-dot { background: var(--green); border-color: var(--green); color: #000; font-size: 0.8rem; }
+
+  .s-inf { flex: 1; min-width: 0; }
+  .s-ttl { font-size: 0.84rem; font-weight: 700; color: var(--text-mid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .s-item.active .s-ttl { color: var(--text); }
+  .s-sub { font-size: 0.71rem; color: var(--text-dim); font-weight: 600; }
+
+  /* Progress */
+  .prog-wrap { padding: 14px 16px; border-top: 1.5px solid var(--border); }
+  .prog-lbl { display: flex; justify-content: space-between; font-size: 0.73rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; }
+  .prog-lbl span { color: var(--pink); }
+  .prog-track { height: 7px; background: var(--bg-raised); border-radius: var(--r-pill); overflow: hidden; }
+  .prog-fill {
+    height: 100%; background: linear-gradient(90deg, var(--pink), var(--pink-lt));
+    border-radius: var(--r-pill);
+    transition: width 0.65s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 0 10px rgba(255,60,140,0.45);
+    width: 0%;
+  }
+
+  /* Points */
+  .pts-wrap { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .pts-big { font-size: 2.2rem; font-weight: 900; color: var(--gold); text-align: center; line-height: 1; text-shadow: 0 0 22px rgba(251,191,36,0.4); }
+  .pts-cap { text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-top: -6px; }
+  .pts-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.83rem; }
+  .pts-lbl { color: var(--text-dim); font-weight: 600; }
+  .pts-val { font-weight: 900; font-size: 0.9rem; color: var(--gold); }
+
+  .wlocked .s-ttl { color: var(--text-dim) !important; }
+  .wlocked .s-dot { opacity: 0.4; }
+
+  /* MOBILE */
+  @media (max-width: 740px) {
+    .layout { grid-template-columns: 1fr; padding: 14px; }
+    .main-col { padding-right: 0; }
+    .sidebar-col { position: static; }
+    .technique-grid { grid-template-columns: 1fr; }
+    .hero { padding: 22px 18px 20px; }
+  }
+
+  @keyframes up { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+  .hero        { animation: up 0.45s ease both; }
+  .main-col    { animation: up 0.45s 0.08s ease both; }
+  .sidebar-col { animation: up 0.45s 0.15s ease both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a class="nav-back" onclick="history.back()">&#8592;</a>
+  <div class="nav-crumb">
+    <span class="s">LAPA</span><span class="sep">›</span>
+    <span class="s">Module 01</span><span class="sep">›</span>
+    <span class="cur">Week 2</span>
+  </div>
+  <div class="nav-right">
+    <div class="prog-pill">
+      <div class="pip" id="p1"></div>
+      <div class="pip" id="p2"></div>
+      <div class="pip" id="p3"></div>
+      <span id="navTxt" style="margin-left:4px;">0 / 3</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag"><div class="live-dot"></div> Module 01 · Week 2 · The Creative Disruptor</div>
+  <h1>Lateral <em>Leaps</em> 🎲</h1>
+  <p class="hero-sub">Escaping Predictability — master the Random Entry technique to force neural collisions that produce breakthrough ideas AI cannot predict or replicate.</p>
+  <div class="chips">
+    <div class="chip">🎓 Kenny Goh</div>
+    <div class="chip">⏱ 3 Lessons · 15 min each</div>
+    <div class="chip">🛠 Gemini (Free)</div>
+    <div class="chip">⭐ Points Available</div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN -->
+  <div class="main-col">
+
+    <div class="tabs-wrap">
+      <button class="tab-btn active" onclick="switchTab('lessons',this)">📖 Lessons</button>
+      <button class="tab-btn" onclick="switchTab('sprint',this)">⚡ Sprint</button>
+    </div>
+
+    <!-- LESSONS TAB -->
+    <div class="tab-panel active" id="tab-lessons">
+
+      <!-- L01 -->
+      <div class="lcard open" id="lc1">
+        <div class="lcard-hdr" onclick="toggleCard('lc1',1)">
+          <div class="lbadge" id="lb1">01</div>
+          <div class="lcard-info">
+            <strong>Lesson 01 · The Vision</strong>
+            <span>Why AI always converges · The predictability trap · 15 min</span>
+          </div>
+          <div class="lchev">▼</div>
+        </div>
+        <div class="lcard-body">
+          <div class="video-area">
+            <div class="vph" id="vph1" onclick="focusUrl(1)">
+              <div class="play-ring">▶</div>
+              <div class="play-lbl">Click to load lesson video</div>
+            </div>
+            <div class="vembed" id="ve1"><iframe id="vf1" src="" allowfullscreen allow="autoplay;encrypted-media"></iframe></div>
+            <div class="url-row">
+              <input id="vu1" type="text" placeholder="Paste YouTube or Vimeo URL…" onkeydown="if(event.key==='Enter')loadVid(1)"/>
+              <button class="url-btn" onclick="loadVid(1)">Load ▶</button>
+            </div>
+            <div class="url-hint">Supports YouTube &amp; Vimeo links</div>
+          </div>
+          <div class="lnotes">
+            <div class="nlabel">What You'll Learn</div>
+            <div class="ntext">
+              <p>In Week 1 you learned to separate thinking modes. This week you go further — you will understand <strong>why predictability is the enemy of disruption</strong> and why AI, no matter how powerful, is fundamentally a pattern-completion machine.</p>
+              <p>When you ask AI "give me a creative idea," it searches its training data for the most statistically probable answer. That answer is, by definition, <strong>what everyone else has already thought of</strong>. Lateral Leaps is the antidote.</p>
+            </div>
+            <div class="nlabel">The Predictability Trap</div>
+            <div class="technique-grid">
+              <div class="tcard">
+                <div class="tcard-icon">🤖</div>
+                <div class="tcard-name">What AI Does</div>
+                <div class="tcard-desc">Finds the highest-probability answer from billions of training examples. Safe, competent, forgettable.</div>
+              </div>
+              <div class="tcard">
+                <div class="tcard-icon">🧠</div>
+                <div class="tcard-name">What You Do</div>
+                <div class="tcard-desc">Force unexpected connections between unrelated concepts. Produces ideas that have never existed in training data.</div>
+              </div>
+              <div class="tcard">
+                <div class="tcard-icon">📉</div>
+                <div class="tcard-name">The Risk of Playing Safe</div>
+                <div class="tcard-desc">In a world where everyone uses AI, the "average" idea is free. Only unexpected ideas have commercial value.</div>
+              </div>
+              <div class="tcard">
+                <div class="tcard-icon">🚀</div>
+                <div class="tcard-name">The Lateral Leap</div>
+                <div class="tcard-desc">A deliberate mental jump to an unrelated stimulus — then forcing a connection back to your problem.</div>
+              </div>
+            </div>
+          </div>
+          <button class="done-btn" id="db1" onclick="markDone(1)">✓ Mark Lesson 01 Complete</button>
+        </div>
+      </div>
+
+      <!-- L02 -->
+      <div class="lcard" id="lc2">
+        <div class="lcard-hdr" onclick="toggleCard('lc2',2)">
+          <div class="lbadge" id="lb2">02</div>
+          <div class="lcard-info">
+            <strong>Lesson 02 · The Tooling</strong>
+            <span>Random Entry technique · How to use Gemini as your stimulus engine · 15 min</span>
+          </div>
+          <div class="lchev">▼</div>
+        </div>
+        <div class="lcard-body">
+          <div class="video-area">
+            <div class="vph" id="vph2" onclick="focusUrl(2)">
+              <div class="play-ring">▶</div>
+              <div class="play-lbl">Click to load lesson video</div>
+            </div>
+            <div class="vembed" id="ve2"><iframe id="vf2" src="" allowfullscreen allow="autoplay;encrypted-media"></iframe></div>
+            <div class="url-row">
+              <input id="vu2" type="text" placeholder="Paste YouTube or Vimeo URL…" onkeydown="if(event.key==='Enter')loadVid(2)"/>
+              <button class="url-btn" onclick="loadVid(2)">Load ▶</button>
+            </div>
+            <div class="url-hint">Supports YouTube &amp; Vimeo links</div>
+          </div>
+          <div class="lnotes">
+            <div class="nlabel">What You'll Learn</div>
+            <div class="ntext">
+              <p>The <strong>Random Entry technique</strong> is De Bono's core Lateral Thinking tool. You pick a completely random word, object, or concept — with no logical connection to your problem — and then force yourself to build a bridge between them.</p>
+              <p>The randomness is the point. Your brain cannot predict what connections it will find, which means the output is genuinely novel. In this lesson you will learn the <strong>5-step process</strong> and how to use Gemini as your stimulus generator.</p>
+            </div>
+            <div class="nlabel">The 5-Step Random Entry Process</div>
+            <div class="step-flow">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <strong>Define the Problem Clearly</strong>
+                  <span>State the challenge in one sentence. The more specific, the better. Vague problems produce vague leaps.</span>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <strong>Generate a Random Stimulus</strong>
+                  <span>Ask Gemini: "Give me one completely random noun — an object, animal, or concept." Accept the first response without filtering.</span>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <strong>List Attributes of the Stimulus</strong>
+                  <span>Ask Gemini to describe 5–8 properties of the random word. Don't think about your problem yet.</span>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <strong>Force the Connection</strong>
+                  <span>Take each attribute and ask: "How could this quality apply to my problem?" Resist the urge to discard uncomfortable connections.</span>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                  <strong>Develop the Best Connections</strong>
+                  <span>Pick the 2–3 most unexpected connections and ask Gemini to build them into full concepts. These are your lateral leaps.</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-chip">
+              <div class="ticon">✨</div>
+              <div><div class="tname">Gemini (Free)</div><div class="tsub">Stimulus Generator · This Lesson</div></div>
+            </div>
+          </div>
+          <button class="done-btn" id="db2" onclick="markDone(2)">✓ Mark Lesson 02 Complete</button>
+        </div>
+      </div>
+
+      <!-- L03 -->
+      <div class="lcard" id="lc3">
+        <div class="lcard-hdr" onclick="toggleCard('lc3',3)">
+          <div class="lbadge" id="lb3">03</div>
+          <div class="lcard-info">
+            <strong>Lesson 03 · The Execution</strong>
+            <span>Live demo · Forcing connections · What a bad leap looks like · 15 min</span>
+          </div>
+          <div class="lchev">▼</div>
+        </div>
+        <div class="lcard-body">
+          <div class="video-area">
+            <div class="vph" id="vph3" onclick="focusUrl(3)">
+              <div class="play-ring">▶</div>
+              <div class="play-lbl">Click to load lesson video</div>
+            </div>
+            <div class="vembed" id="ve3"><iframe id="vf3" src="" allowfullscreen allow="autoplay;encrypted-media"></iframe></div>
+            <div class="url-row">
+              <input id="vu3" type="text" placeholder="Paste YouTube or Vimeo URL…" onkeydown="if(event.key==='Enter')loadVid(3)"/>
+              <button class="url-btn" onclick="loadVid(3)">Load ▶</button>
+            </div>
+            <div class="url-hint">Supports YouTube &amp; Vimeo links</div>
+          </div>
+          <div class="lnotes">
+            <div class="nlabel">What You'll Learn</div>
+            <div class="ntext">
+              <p>Watch the full 5-step Random Entry process applied to a <strong>real SEA business problem</strong> in real time. You will see what a genuine lateral leap looks like — and importantly, what a <strong>fake leap</strong> looks like (when students just rename an obvious idea).</p>
+              <p>After this lesson you will run your own Random Entry session as warm-up for the Sprint, using a problem prompt provided in class.</p>
+            </div>
+            <div class="nlabel">Common Mistakes to Avoid</div>
+            <div class="kpoints">
+              <div class="kpoint">
+                <span class="ki">🚫</span>
+                <div><strong>Filtering your random word.</strong> If Gemini gives you "jellyfish" and you ask for a "better" word, you've already killed the lateral leap. Randomness is non-negotiable.</div>
+              </div>
+              <div class="kpoint">
+                <span class="ki">🚫</span>
+                <div><strong>Making a superficial connection.</strong> "My startup should be like a jellyfish because it's fluid" is not a lateral leap — it's a metaphor. Force deeper: what does a jellyfish's lack of a brain teach you about decentralised decision-making?</div>
+              </div>
+              <div class="kpoint">
+                <span class="ki">🚫</span>
+                <div><strong>Stopping at one leap.</strong> Run the process 3–5 times with different random stimuli. Your best idea almost never comes from the first session.</div>
+              </div>
+              <div class="kpoint">
+                <span class="ki">🚫</span>
+                <div><strong>Using obvious stimuli.</strong> Don't ask Gemini for a random word "related to business" or "related to technology." The stimulus must be genuinely unrelated to your problem domain.</div>
+              </div>
+            </div>
+          </div>
+          <button class="done-btn" id="db3" onclick="markDone(3)">✓ Mark Lesson 03 Complete</button>
+        </div>
+      </div>
+
+    </div><!-- /lessons -->
+
+    <!-- SPRINT TAB -->
+    <div class="tab-panel" id="tab-sprint">
+      <div class="sprint-card">
+        <div class="slabel"><span class="sdot"></span> Week 2 Industrial Sprint · Agri-Tech</div>
+        <div class="stitle">Disrupt the Farm-to-Table Supply Chain 🌾</div>
+        <p class="sbrief">Southeast Asia's food supply chain is one of the most inefficient in the world — produce travels through 4–6 intermediaries before reaching a restaurant, losing freshness and margin at every step. Your brief: use the <strong>Random Entry technique</strong> to generate a genuinely disruptive concept that could compress or redesign this supply chain. The idea must be something Generic AI would not produce in its first three responses.</p>
+        <div class="smeta">
+          <div class="smrow"><span class="smlbl">Tool</span><span class="smval">Gemini (Free) — run the full 5-step Random Entry process, minimum 3 rounds</span></div>
+          <div class="smrow"><span class="smlbl">Deliver</span><span class="smval">Your random stimulus, the attributes you listed, the connection you forced, and the final concept (max 300 words)</span></div>
+          <div class="smrow"><span class="smlbl">Submit</span><span class="smval">App → Submit Impact Asset</span></div>
+        </div>
+        <div class="pts-chip">⭐ Sprint points contribute to your Monthly Leaderboard score</div>
+      </div>
+
+      <div class="lcard open" id="tcard">
+        <div class="lcard-hdr" onclick="document.getElementById('tcard').classList.toggle('open')">
+          <div class="lbadge" style="background:var(--green-soft);border-color:rgba(52,211,153,0.4);color:var(--green);">💡</div>
+          <div class="lcard-info">
+            <strong>Sprint Tips from Kenny</strong>
+            <span>Read before you begin</span>
+          </div>
+          <div class="lchev">▼</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lnotes">
+            <div class="kpoints">
+              <div class="kpoint" style="border-color:rgba(52,211,153,0.2);">
+                <span class="ki">🎯</span>
+                <div>Do <strong>3 full rounds</strong> of Random Entry before choosing your best concept. Your first leap will almost always be the weakest. The third or fourth is where the real disruption lives.</div>
+              </div>
+              <div class="kpoint" style="border-color:rgba(52,211,153,0.2);">
+                <span class="ki">🎯</span>
+                <div><strong>Show your work.</strong> Include the random stimulus in your submission. Judges will verify the connection is genuinely lateral — not a renamed obvious idea.</div>
+              </div>
+              <div class="kpoint" style="border-color:rgba(52,211,153,0.2);">
+                <span class="ki">🎯</span>
+                <div>Think about <strong>who loses</strong> if your idea works. Disruption always has a victim. If no existing business model is threatened by your concept, it probably isn't disruptive enough.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /sprint -->
+
+  </div><!-- /main -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-col">
+
+    <!-- TRAINER -->
+    <div class="trainer-card">
+      <div class="trainer-top">
+        <div class="trainer-avatar">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <rect width="80" height="80" fill="#1a1a1a"/>
+            <circle cx="65" cy="18" r="28" fill="#ff3c8c" opacity="0.08"/>
+            <rect x="16" y="58" width="48" height="30" rx="3" fill="#111111"/>
+            <rect x="32" y="57" width="8" height="14" fill="#1e1e2e"/>
+            <rect x="40" y="57" width="8" height="14" fill="#1e1e2e"/>
+            <polygon points="38,57 42,57 41,68 39,68" fill="#ff3c8c"/>
+            <rect x="33" y="57" width="14" height="5" fill="#f0ede8"/>
+            <rect x="35" y="46" width="10" height="13" fill="#c8956a"/>
+            <ellipse cx="40" cy="40" rx="16" ry="17" fill="#c8956a"/>
+            <ellipse cx="40" cy="25" rx="16" ry="7" fill="#1a0a00"/>
+            <rect x="24" y="25" width="32" height="7" fill="#1a0a00"/>
+            <ellipse cx="34" cy="38" rx="2.5" ry="2" fill="#fff"/>
+            <ellipse cx="46" cy="38" rx="2.5" ry="2" fill="#fff"/>
+            <ellipse cx="34.5" cy="38" rx="1.5" ry="1.5" fill="#1a0800"/>
+            <ellipse cx="46.5" cy="38" rx="1.5" ry="1.5" fill="#1a0800"/>
+            <path d="M31,34 Q34,32 37,34" stroke="#2a1a0a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M43,34 Q46,32 49,34" stroke="#2a1a0a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M39,41 Q38,44 40,45 Q42,44 41,41" stroke="#b07a55" stroke-width="0.8" fill="none"/>
+            <path d="M35,49 Q40,53 45,49" stroke="#a0603a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="24" cy="40" rx="2.5" ry="3.5" fill="#b8805a"/>
+            <ellipse cx="56" cy="40" rx="2.5" ry="3.5" fill="#b8805a"/>
+          </svg>
+        </div>
+        <div class="trainer-name">Kenny Goh</div>
+        <div class="trainer-role">The Cognitive Architect</div>
+        <div class="trainer-org">Chief Cognitive Architect, AI Esports<br>Founder, MICE Neurol Pte Ltd</div>
+      </div>
+      <div class="trainer-divider"></div>
+      <div class="trainer-bio">
+        Founder of Ken-Air (1973) and Singapore's first "Tourism Entrepreneur of the Year" (1994). A five-decade entrepreneur who navigated 9/11, SARS, and COVID-19, Kenny now designs human-AI frameworks that teach students not to compete with the machine — but to command it. Author of the forthcoming <em>Asymmetric Intelligence</em>.
+      </div>
+      <div class="trainer-tags">
+        <span class="ttag">Random Entry</span>
+        <span class="ttag">Lateral Thinking</span>
+        <span class="ttag">De Bono Methods</span>
+        <span class="ttag">50 Yrs Experience</span>
+      </div>
+    </div>
+
+    <!-- Lesson Nav -->
+    <div class="sc">
+      <div class="sc-head">Week 2 Lessons <span class="sc-count" id="scnt">0/3</span></div>
+      <div class="s-list">
+        <div class="s-item active" id="si1" onclick="openLesson(1)">
+          <div class="s-dot" id="sd1">01</div>
+          <div class="s-inf"><div class="s-ttl">The Vision</div><div class="s-sub">15 min · Predictability trap</div></div>
+        </div>
+        <div class="s-item" id="si2" onclick="openLesson(2)">
+          <div class="s-dot" id="sd2">02</div>
+          <div class="s-inf"><div class="s-ttl">The Tooling</div><div class="s-sub">15 min · 5-step Random Entry</div></div>
+        </div>
+        <div class="s-item" id="si3" onclick="openLesson(3)">
+          <div class="s-dot" id="sd3">03</div>
+          <div class="s-inf"><div class="s-ttl">The Execution</div><div class="s-sub">15 min · Live demo + mistakes</div></div>
+        </div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-lbl">Progress <span id="ppct">0%</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pfill"></div></div>
+      </div>
+    </div>
+
+    <!-- Points -->
+    <div class="sc">
+      <div class="sc-head">Your Points</div>
+      <div class="pts-wrap">
+        <div class="pts-big" id="ptsbig">0</div>
+        <div class="pts-cap">Week 2 Points</div>
+        <div class="pts-row"><span class="pts-lbl">Lessons</span><span class="pts-val" id="ptsl">+0 pts</span></div>
+        <div class="pts-row"><span class="pts-lbl">Sprint</span><span class="pts-val" style="color:var(--text-dim);font-size:0.78rem;">Submit via App</span></div>
+      </div>
+    </div>
+
+    <!-- Module weeks -->
+    <div class="sc">
+      <div class="sc-head">Module 01</div>
+      <div class="s-list">
+        <div class="s-item wlocked">
+          <div class="s-dot" style="color:var(--text-mid);border-color:rgba(255,255,255,0.2);">W1</div>
+          <div class="s-inf"><div class="s-ttl" style="color:var(--text-mid);">Six Thinking Hats</div><div class="s-sub">Completed</div></div>
+        </div>
+        <div class="s-item active">
+          <div class="s-dot" style="border-color:var(--pink);color:var(--pink);background:var(--pink-soft);">W2</div>
+          <div class="s-inf"><div class="s-ttl" style="color:var(--text);">Lateral Leaps</div><div class="s-sub">Current week</div></div>
+        </div>
+        <div class="s-item wlocked">
+          <div class="s-dot">W3</div>
+          <div class="s-inf"><div class="s-ttl">Provocation (PO)</div><div class="s-sub">Locked</div></div>
+        </div>
+        <div class="s-item wlocked">
+          <div class="s-dot" style="color:var(--gold);border-color:rgba(251,191,36,0.35);">🏆</div>
+          <div class="s-inf"><div class="s-ttl" style="color:var(--gold);">The Arena</div><div class="s-sub">Top 10 qualifiers</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /layout -->
+
+<script>
+  const done = {1:false,2:false,3:false};
+
+  function focusUrl(n){ document.getElementById('vu'+n).focus(); }
+
+  function loadVid(n){
+    const raw = document.getElementById('vu'+n).value.trim();
+    if(!raw){ focusUrl(n); return; }
+    let em = '';
+    const yt = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+    if(yt) em = 'https://www.youtube.com/embed/'+yt[1]+'?autoplay=1&rel=0';
+    const vm = raw.match(/vimeo\.com\/(\d+)/);
+    if(vm) em = 'https://player.vimeo.com/video/'+vm[1]+'?autoplay=1';
+    if(!em){ alert('Please paste a valid YouTube or Vimeo URL.'); return; }
+    document.getElementById('vf'+n).src = em;
+    document.getElementById('vph'+n).style.display = 'none';
+    document.getElementById('ve'+n).style.display = 'block';
+  }
+
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleCard(id,n){
+    document.getElementById(id).classList.toggle('open');
+    if(n>0) setActive(n);
+  }
+
+  function openLesson(n){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-lessons').classList.add('active');
+    document.querySelector('.tab-btn').classList.add('active');
+    [1,2,3].forEach(i=> document.getElementById('lc'+i).classList.toggle('open', i===n));
+    setActive(n);
+    setTimeout(()=>document.getElementById('lc'+n).scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }
+
+  function setActive(n){
+    [1,2,3].forEach(i=>{
+      const el = document.getElementById('si'+i);
+      el.classList.toggle('active', i===n && !done[i]);
+    });
+  }
+
+  function markDone(n){
+    if(done[n]) return;
+    done[n]=true;
+    const lb = document.getElementById('lb'+n);
+    lb.classList.add('done'); lb.textContent='✓';
+    const db = document.getElementById('db'+n);
+    db.classList.add('completed'); db.textContent='✓ Lesson 0'+n+' Complete! 🎉';
+    const sd = document.getElementById('sd'+n);
+    sd.classList.add('done'); sd.textContent='✓';
+    document.getElementById('si'+n).classList.remove('active');
+    document.getElementById('si'+n).classList.add('sdone');
+    document.getElementById('p'+n).classList.add('done');
+    recalc();
+    if(n<3) setTimeout(()=>openLesson(n+1),450);
+  }
+
+  function recalc(){
+    const c = Object.values(done).filter(Boolean).length;
+    const pct = Math.round(c/3*100);
+    const pts = c*50;
+    document.getElementById('pfill').style.width = pct+'%';
+    document.getElementById('ppct').textContent = pct+'%';
+    document.getElementById('scnt').textContent = c+'/3';
+    document.getElementById('navTxt').textContent = c+' / 3';
+    document.getElementById('ptsbig').textContent = pts;
+    document.getElementById('ptsl').textContent = '+'+pts+' pts';
+  }
+</script>
+</body>
+</html>
