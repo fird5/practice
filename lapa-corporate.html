@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAPA · Malaysia Corporate Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root {
+  --navy:      #0d1b2e;
+  --navy-mid:  #14263d;
+  --gold:      #c8a035;
+  --gold-lt:   #e2b84a;
+  --parchment: #f5f0e8;
+  --warm:      #ede5d4;
+  --warm-deep: #e0d4bc;
+  --white:     #f5f0e8;
+  --ink:       #0d1b2e;
+  --ink-mid:   #3a4a5c;
+  --ink-dim:   #6a7a8c;
+  --ink-faint: #9aaabb;
+  --rule:      rgba(13,27,46,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--parchment);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--parchment);
+  border-bottom: 3px solid var(--navy);
+  padding: 0 52px; height: 56px;
+  display: flex; align-items: center;
+}
+.nav-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--navy); letter-spacing: 0.01em;
+}
+.nav-links {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 32px;
+}
+.nav-link {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--navy); text-decoration: none;
+  transition: opacity 0.15s;
+}
+.nav-link:hover { opacity: 0.45; }
+
+/* ─── HERO ───────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  padding: 88px 52px 80px;
+  text-align: center;
+}
+.hero-kicker {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900; color: var(--white);
+  line-height: 1.1; margin-bottom: 20px;
+}
+.hero h1 em { font-style: italic; color: var(--gold-lt); }
+.hero-sub {
+  font-size: 1rem; color: rgba(255,255,255,0.6);
+  max-width: 560px; margin: 0 auto 32px; line-height: 1.75;
+}
+.hero-pitch {
+  display: inline-block;
+  border-left: 3px solid var(--gold);
+  padding: 18px 28px;
+  font-size: 0.97rem; font-style: italic;
+  color: rgba(255,255,255,0.75);
+  max-width: 680px; text-align: left;
+  line-height: 1.72; margin-bottom: 40px;
+}
+.hero-pitch strong { font-style: normal; color: var(--white); }
+.hero-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.btn-gold {
+  background: var(--gold); color: var(--navy);
+  font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 12px 26px; border: 2px solid var(--gold);
+  text-decoration: none; transition: all 0.18s;
+}
+.btn-gold:hover { background: var(--gold-lt); border-color: var(--gold-lt); }
+.btn-outline {
+  background: transparent; color: rgba(255,255,255,0.7);
+  font-size: 0.82rem; font-weight: 600;
+  padding: 12px 26px; border: 2px solid rgba(255,255,255,0.25);
+  text-decoration: none; transition: all 0.18s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+/* ─── SECTION SHARED ─────────────────────────────────── */
+.section-kicker {
+  font-size: 0.67rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+}
+.section-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800; color: var(--navy);
+  line-height: 1.15; margin-bottom: 10px;
+}
+.section-h2-white { color: var(--white); }
+.section-lead {
+  font-size: 0.92rem; color: var(--ink-mid);
+  max-width: 540px; line-height: 1.72; margin-bottom: 44px;
+}
+
+/* ─── ECOSYSTEM ──────────────────────────────────────── */
+.ecosystem {
+  background: var(--parchment);
+  border-bottom: 1px solid var(--rule);
+  padding: 72px 52px;
+}
+.eco-inner { max-width: 1100px; margin: 0 auto; }
+.eco-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; border: 1px solid var(--rule);
+}
+.eco-card {
+  padding: 34px 30px;
+  border-right: 1px solid var(--rule);
+  background: var(--white);
+  transition: background 0.2s;
+}
+.eco-card:last-child { border-right: none; }
+.eco-card:hover { background: #ede5d4; }
+.eco-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.12em; color: var(--gold);
+  margin-bottom: 14px;
+}
+.eco-label {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 5px;
+}
+.eco-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 800;
+  color: var(--navy); margin-bottom: 12px; line-height: 1.2;
+}
+.eco-desc {
+  font-size: 0.85rem; color: var(--ink-mid); line-height: 1.68;
+}
+.eco-desc strong { color: var(--navy); font-weight: 600; }
+
+/* ─── WHY LAPA ───────────────────────────────────────── */
+.why {
+  background: var(--navy);
+  padding: 72px 52px;
+}
+.why-inner { max-width: 1100px; margin: 0 auto; }
+.why .section-lead { color: rgba(255,255,255,0.5); }
+.why-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; border: 1px solid rgba(255,255,255,0.08);
+}
+.why-card {
+  padding: 30px 26px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.why-card:hover { background: rgba(255,255,255,0.04); }
+.why-card:nth-child(3),
+.why-card:nth-child(6) { border-right: none; }
+.why-card:nth-child(4),
+.why-card:nth-child(5),
+.why-card:nth-child(6) { border-bottom: none; }
+.why-tag {
+  display: inline-block;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(200,160,53,0.35);
+  padding: 2px 9px; margin-bottom: 13px;
+}
+.why-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 800;
+  color: var(--white); margin-bottom: 8px; line-height: 1.25;
+}
+.why-italic {
+  font-size: 0.78rem; color: rgba(255,255,255,0.4);
+  font-style: italic; margin-bottom: 10px;
+  border-left: 2px solid rgba(200,160,53,0.3);
+  padding-left: 9px; line-height: 1.5;
+}
+.why-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.66; }
+.why-desc strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+
+/* ─── MODULES ────────────────────────────────────────── */
+.modules-wrap {
+  background: var(--warm);
+  padding: 72px 52px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.modules-inner { max-width: 1100px; margin: 0 auto; }
+.modules-hdr {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px; gap: 20px; flex-wrap: wrap;
+}
+.modules-note {
+  font-size: 0.82rem; color: var(--ink-dim);
+  max-width: 280px; line-height: 1.6; text-align: right;
+}
+
+/* Accordion */
+.mc {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  margin-bottom: 2px;
+  overflow: hidden;
+}
+.mc.open { border-color: var(--navy); }
+.mc-head {
+  display: flex; align-items: center; gap: 20px;
+  padding: 22px 28px; cursor: pointer; user-select: none;
+  transition: background 0.15s;
+}
+.mc-head:hover { background: #ede5d4; }
+.mc.open .mc-head { background: var(--navy); }
+.mc-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 900;
+  color: var(--gold); flex-shrink: 0;
+  width: 44px;
+  transition: color 0.2s;
+}
+.mc.open .mc-num { color: var(--gold-lt); }
+.mc-info { flex: 1; min-width: 0; }
+.mc-label {
+  font-size: 0.64rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 3px;
+  transition: color 0.2s;
+}
+.mc.open .mc-label { color: rgba(255,255,255,0.45); }
+.mc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 800;
+  color: var(--navy); line-height: 1.2; margin-bottom: 6px;
+  transition: color 0.2s;
+}
+.mc.open .mc-title { color: var(--white); }
+.mc-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+.mc-meta-item {
+  font-size: 0.72rem; color: var(--ink-faint);
+  transition: color 0.2s;
+}
+.mc.open .mc-meta-item { color: rgba(255,255,255,0.4); }
+.mc-chev {
+  font-size: 0.7rem; color: var(--ink-dim);
+  flex-shrink: 0; transition: transform 0.28s, color 0.2s;
+}
+.mc.open .mc-chev { transform: rotate(180deg); color: var(--gold); }
+
+/* Module body */
+.mc-body {
+  display: none;
+  border-top: 1px solid var(--rule);
+  background: var(--white);
+}
+.mc.open .mc-body { display: block; }
+
+.day-block { padding: 28px 28px 0; }
+.day-block:last-child { padding-bottom: 28px; }
+
+.day-hdr {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--navy);
+}
+.day-pill {
+  font-size: 0.62rem; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--navy); color: var(--gold);
+  padding: 3px 10px;
+}
+.day-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 800; color: var(--navy);
+}
+.day-focus {
+  font-size: 0.74rem; font-style: italic;
+  color: var(--ink-dim); margin-left: auto;
+}
+
+/* Schedule table */
+.sched { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+.sched tr { border-bottom: 1px solid rgba(13,27,46,0.07); }
+.sched tr:last-child { border-bottom: none; }
+.sched tr:hover td { background: #ede5d4; }
+.sched td { padding: 12px 13px; font-size: 0.82rem; vertical-align: top; transition: background 0.12s; }
+
+.td-time {
+  width: 106px; color: var(--gold);
+  font-weight: 700; font-size: 0.74rem;
+  white-space: nowrap; padding-left: 0;
+}
+.td-sess { width: 185px; }
+.sess-name {
+  font-weight: 700; color: var(--navy);
+  font-size: 0.84rem; margin-bottom: 4px; line-height: 1.3;
+}
+.sess-badge {
+  display: inline-block;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 7px; border: 1px solid;
+}
+.b-sess   { color: #7a6010; border-color: rgba(200,160,53,0.4); background: rgba(200,160,53,0.08); }
+.b-sprint { color: #1a7a50; border-color: rgba(26,122,80,0.35); background: rgba(26,122,80,0.07); }
+.b-arena  { color: #8a2c0a; border-color: rgba(200,80,30,0.35); background: rgba(200,80,30,0.07); }
+.b-break  { color: var(--ink-faint); border-color: var(--rule); background: transparent; }
+.b-close  { color: #5a3a8a; border-color: rgba(90,58,138,0.3); background: rgba(90,58,138,0.06); }
+
+.td-desc { color: var(--ink-mid); line-height: 1.6; }
+.td-desc strong { color: var(--navy); font-weight: 600; }
+
+.td-app {
+  width: 205px; font-size: 0.76rem;
+  color: var(--ink-dim); line-height: 1.56;
+  border-left: 2px solid rgba(200,160,53,0.3);
+  padding-left: 14px;
+}
+.app-lbl {
+  font-size: 0.58rem; font-weight: 800;
+  letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2px; display: block;
+}
+
+/* ─── CTA ────────────────────────────────────────────── */
+.cta {
+  background: var(--parchment);
+  padding: 80px 52px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+.cta-inner { max-width: 600px; margin: 0 auto; }
+.cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900; color: var(--navy);
+  line-height: 1.15; margin-bottom: 14px;
+}
+.cta h2 em { font-style: italic; color: var(--gold); }
+.cta p {
+  font-size: 0.92rem; color: var(--ink-mid);
+  line-height: 1.72; margin-bottom: 34px;
+}
+.cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.btn-navy {
+  background: var(--navy); color: var(--white);
+  font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 13px 28px; border: 2px solid var(--navy);
+  text-decoration: none; transition: all 0.18s;
+}
+.btn-navy:hover { background: var(--navy-mid); }
+.btn-outline-navy {
+  background: transparent; color: var(--navy);
+  font-size: 0.82rem; font-weight: 600;
+  padding: 13px 28px; border: 2px solid rgba(13,27,46,0.3);
+  text-decoration: none; transition: all 0.18s;
+}
+.btn-outline-navy:hover { border-color: var(--navy); }
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  padding: 28px 52px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  border-top: 3px solid var(--gold);
+}
+.footer-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; font-weight: 700;
+  color: var(--white); letter-spacing: 0.01em;
+}
+.footer-copy { font-size: 0.71rem; color: rgba(255,255,255,0.35); }
+
+/* ─── COMING SOON ────────────────────────────────────── */
+.coming-soon {
+  padding: 40px 28px; text-align: center;
+  background: #ede5d4;
+}
+.cs-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 6px;
+}
+.cs-desc { font-size: 0.83rem; color: var(--ink-dim); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav { padding: 0 20px; }
+  .nav-links { gap: 18px; }
+  .nav-link { font-size: 0.6rem; }
+  .hero { padding: 60px 22px 52px; }
+  .hero-pitch { padding: 14px 18px; }
+  .ecosystem, .why, .modules-wrap, .cta { padding-left: 22px; padding-right: 22px; }
+  footer { padding: 24px 22px; }
+  .eco-grid, .why-grid { grid-template-columns: 1fr; }
+  .eco-card { border-right: none; border-bottom: 1px solid var(--rule); }
+  .eco-card:last-child { border-bottom: none; }
+  .why-card { border-right: none; }
+  .why-card:nth-child(even) { border-right: none; }
+  .mc-head { padding: 18px 20px; }
+  .mc-body { padding: 0; }
+  .day-block { padding: 20px 20px 0; }
+  .day-block:last-child { padding-bottom: 20px; }
+  .td-app { display: none; }
+  .td-sess { width: 140px; }
+  .day-focus { display: none; }
+  .modules-hdr { flex-direction: column; align-items: flex-start; }
+  .modules-note { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">LAPA · Malaysia Corporate Edition</div>
+  <div class="nav-links">
+    <a href="#ecosystem" class="nav-link">The Ecosystem</a>
+    <a href="#why" class="nav-link">Why LAPA</a>
+    <a href="#modules" class="nav-link">Modules</a>
+    <a href="#contact" class="nav-link">Enquire</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-kicker">Corporate AI Masterclass Programme · Malaysia</div>
+  <h1>Turn Your Team Into<br><em>AI Builders.</em><br>Not Just Learners.</h1>
+  <p class="hero-sub">The only corporate AI programme that combines a high-intensity 2-day masterclass, a 6-month digital academy, and weekly Subject Matter Expert webinars — under one SBL-Khas claim.</p>
+  <div class="hero-pitch">
+    "Traditional training treats your staff like <strong>students</strong> — they listen and forget. LAPA treats them like <strong>builders</strong> — they learn, they build, they play, they win. <strong>Buy one 2-day Masterclass and install a 6-month AI Academy and weekly Subject Matter Expert Webinar series in their pocket for free.</strong>"
+  </div>
+  <div class="hero-btns">
+    <a href="#modules" class="btn-gold">Explore the Modules</a>
+    <a href="#why" class="btn-outline">Why LAPA?</a>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="ecosystem" id="ecosystem">
+  <div class="eco-inner">
+    <div class="section-kicker">The LAPA Ecosystem</div>
+    <div class="section-h2">Three Pillars. One Transformation.</div>
+    <p class="section-lead">A high-octane framework designed to transform untouched domain knowledge into industrial-grade AI competency — and keep it there.</p>
+    <div class="eco-grid">
+      <div class="eco-card">
+        <div class="eco-num">01 — The Spark</div>
+        <div class="eco-label">The 2-Day Masterclass</div>
+        <div class="eco-title">Ignite the Mindset. Build on Day One.</div>
+        <p class="eco-desc">High-intensity onsite training driven by our strict <strong>50/50 Practical Pedagogy</strong> — equal theory and doing. We don't lecture then leave. Participants build real AI outputs during the session itself. The catalyst for both mindset shift and tactical mastery.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">02 — The Engine</div>
+        <div class="eco-label">The LAPA App</div>
+        <div class="eco-title">The 24/7 AI Dojo. Always Running.</div>
+        <p class="eco-desc">Snackable micro-lessons, a relentless "Zero-to-Hero" roadmap, live leaderboard, and a community of doers. The digital backbone that turns a one-off event into a daily practice — and turns high performers into visible talent for your C-Suite.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">03 — The Momentum</div>
+        <div class="eco-label">The Subject Matter Expert Webinar Series</div>
+        <div class="eco-title">One Expert. Every Week. No Exceptions.</div>
+        <p class="eco-desc">Unlimited access to live and on-demand sessions. <strong>At least one webinar every week</strong> led by an AI or Industry Subject Matter Expert. Your team stays at the absolute bleeding edge of the AI revolution — permanently, not periodically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY LAPA -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div class="section-kicker">Why LAPA</div>
+    <div class="section-h2 section-h2-white">The Unfair Advantage.</div>
+    <p class="section-lead">Six reasons LAPA delivers ROI that no other corporate AI programme can match.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-tag">Buy 1, Get 5</div>
+        <div class="why-title">One Masterclass. The Entire Frontier.</div>
+        <div class="why-italic">Why pay for five separate courses when one masterclass unlocks everything?</div>
+        <p class="why-desc">Purchasing <strong>one 2-day Masterclass</strong> unlocks a full 6-month subscription to the LAPA App — all 5 modules, all future content, all weekly webinars. The ultimate ROI for a single SBL-Khas claim.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-tag">50/50 Pedagogy</div>
+        <div class="why-title">Equal Theory and Doing. No Exceptions.</div>
+        <div class="why-italic">Corporate training is usually 90% slides and 10% yawning.</div>
+        <p class="why-desc">Our <strong>Learning-by-Doing ratio is a strict 1:1</strong>. For every hour of theory, there is an hour of Industrial Sprinting. Participants leave having built tangible AI assets — prompts, agents, and apps — tailored to their roles.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-tag">Double-Engine</div>
+        <div class="why-title">We Solve the "Day 3 Problem."</div>
+        <div class="why-italic">Traditional training has a 7-day decay rate.</div>
+        <p class="why-desc">LAPA provides the <strong>Transformation</strong> (Live Workshop) and the <strong>Habit</strong> (App + Subject Matter Expert Webinars). AI becomes a daily practice, not a one-off event.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-tag">AI as a Sport</div>
+        <div class="why-title">Gamification That Actually Works.</div>
+        <div class="why-italic">People don't want another LMS. They want to win.</div>
+        <p class="why-desc">Every activity earns points on a <strong>Live Leaderboard</strong>. Top scorers qualify for the <strong>Monthly AI Esports Arena</strong>. Gamification drives 90% higher engagement than traditional corporate portals.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-tag">Talent Radar</div>
+        <div class="why-title">See Your Real AI Leaders.</div>
+        <div class="why-italic">Management is often blind to who their actual AI super-users are.</div>
+        <p class="why-desc">The Leaderboard acts as a <strong>High-Potential Radar</strong> — allowing the C-Suite to identify natural AI leaders based on verified build-data, not self-reported skills or attendance sheets.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-tag">Digital Portfolio</div>
+        <div class="why-title">Verified Proof of Competency.</div>
+        <div class="why-italic">Certificates of attendance are dead. Verified portfolios are the new currency.</div>
+        <p class="why-desc">Every Sprint is stored in a verified <strong>In-App Gallery</strong>. Individuals build tangible "AI-Ready" portfolios they can present to employers, clients, or promotion panels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules-wrap" id="modules">
+  <div class="modules-inner">
+    <div class="modules-hdr">
+      <div>
+        <div class="section-kicker">The Curriculum</div>
+        <div class="section-h2">Five Masterclasses.<br>One Complete AI Professional.</div>
+      </div>
+      <p class="modules-note">Each module is a standalone 2-day programme. Click any module to expand the full day-by-day schedule.</p>
+    </div>
+
+    <!-- MODULE 01 -->
+    <div class="mc" id="mc1">
+      <div class="mc-head" onclick="toggleMc('mc1')">
+        <div class="mc-num">M1</div>
+        <div class="mc-info">
+          <div class="mc-label">Module 01</div>
+          <div class="mc-title">The Creative Disruptor — Strategic AI Mastery</div>
+          <div class="mc-meta">
+            <span class="mc-meta-item">Strategic Leaders &amp; Corporate Innovators</span>
+            <span class="mc-meta-item">2 Days · 09:00–17:00</span>
+            <span class="mc-meta-item">3 Industrial Sprints + The Arena</span>
+          </div>
+        </div>
+        <div class="mc-chev">▼</div>
+      </div>
+      <div class="mc-body">
+        <div class="day-block">
+          <div class="day-hdr">
+            <span class="day-pill">Day 1</span>
+            <div class="day-title">The Human-AI Neural Collision</div>
+            <div class="day-focus">Breaking the "Average AI" trap through Lateral Thinking</div>
+          </div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 01: The Asymmetric Advantage</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Introduction to Asymmetric Intelligence. Analysing why "Generic AI" leads to business commoditisation. The 50-year perspective on human-machine collaboration.</td><td class="td-app"><span class="app-lbl">App Integration</span>Unlock the "Vision" track. Take the "AI Bias" diagnostic quiz to benchmark starting mindset.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">Refreshment &amp; Networking</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 02: Parallel Perspectives (Six Hats)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Deep dive into De Bono's Six Thinking Hats. Learning to orchestrate AI to simulate department stakeholders — Finance, Risk, Creative, Operations, and more.</td><td class="td-app"><span class="app-lbl">App Integration</span>Download the "Stakeholder Prompt Matrix" from the Document Store. Participants map out a current company project.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 01: The Stakeholder Simulation</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Use AI to simulate a hostile board meeting regarding a live project, identifying 3 critical blind spots previously missed.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the "Risk Mitigation Brief" to the App Gallery for peer review and points.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–15:30</td><td class="td-sess"><div class="sess-name">Session 03: Lateral Leaps &amp; Neural Collisions</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastery of "Random Entry" and "Escaping Predictability" techniques. Forcing AI to generate solutions outside of its training data's most likely path.</td><td class="td-app"><span class="app-lbl">App Integration</span>Watch the 3-minute "Neural Collision" snackable video in-app to visualise the technique before the sprint.</td></tr>
+            <tr><td class="td-time">15:30–15:45</td><td class="td-sess"><div class="sess-name">Afternoon Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">15:45–17:00</td><td class="td-sess"><div class="sess-name">Sprint 02: The Blue Ocean Creator</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Take a traditional product (e.g., Life Insurance) and use Lateral Leaps to invent a new service model for Gen Z.</td><td class="td-app"><span class="app-lbl">App Integration</span>Submit solutions to the App. The group votes on the most "Disruptive" idea. Points awarded to the Top 3.</td></tr>
+          </table>
+        </div>
+        <div class="day-block">
+          <div class="day-hdr">
+            <span class="day-pill">Day 2</span>
+            <div class="day-title">The Disruption War Room</div>
+            <div class="day-focus">Provocation, Stress Testing &amp; Industrial Competitive Logic</div>
+          </div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 04: Provocation (PO) Logic</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Learning to use "Impossible Statements" (PO) as a bridge to breakthrough business models. Breaking the rules of industry logic to find new value.</td><td class="td-app"><span class="app-lbl">App Integration</span>Quick-fire in-app quiz on "PO Logic" to test recall of Day 1 foundational concepts.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 05: Competitive Red-Teaming</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Using AI as a "Competitor Proxy." Conducting a 360-degree stress test on the company's current 3-year roadmap to find vulnerabilities.</td><td class="td-app"><span class="app-lbl">App Integration</span>Access the "Red-Team Prompt Library." Participants download the Stress Test template.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 03: The Rival's Move</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Role-play as your biggest competitor using AI. Draft a "Counter-Strategy" that would effectively put your own company out of business.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the "Vulnerability Audit" — this becomes a proprietary asset for the company.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–16:00</td><td class="td-sess"><div class="sess-name">THE ARENA: Industrial Capstone</div><span class="sess-badge b-arena">Arena</span></td><td class="td-desc"><strong>Live Tournament:</strong> A "Mystery Brief" is dropped — e.g., a sudden market collapse or a new tech giant entering the region. Participants have 120 minutes to pivot and solve.</td><td class="td-app"><span class="app-lbl">App Integration</span>Final Sprint via the "Tournament" portal. Judged live on creativity and feasibility.</td></tr>
+            <tr><td class="td-time">16:00–17:00</td><td class="td-sess"><div class="sess-name">The Zero-to-Hero Roadmap</div><span class="sess-badge b-close">Closing</span></td><td class="td-desc">Final Leaderboard reveal. Onboarding into the 180-day LAPA App journey. Unlocking Module 02 for "Flipped Classroom" next steps.</td><td class="td-app"><span class="app-lbl">App Integration</span>Live ranking update. Top 10 scorers tagged for the Monthly Regional Arena.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 02 -->
+    <div class="mc" id="mc2">
+      <div class="mc-head" onclick="toggleMc('mc2')">
+        <div class="mc-num">M2</div>
+        <div class="mc-info">
+          <div class="mc-label">Module 02</div>
+          <div class="mc-title">The AI-Powered Scholar — High-Velocity Knowledge Mastery</div>
+          <div class="mc-meta">
+            <span class="mc-meta-item">Researchers, Analysts &amp; Efficiency-Driven Teams</span>
+            <span class="mc-meta-item">2 Days · 09:00–17:00</span>
+            <span class="mc-meta-item">3 Industrial Sprints + Knowledge Gauntlet</span>
+          </div>
+        </div>
+        <div class="mc-chev">▼</div>
+      </div>
+      <div class="mc-body">
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 1</span><div class="day-title">Building the Second Brain</div><div class="day-focus">Synthesis Mastery and Data Deconstruction</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 01: The Information Audit</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Identifying "Dark Data" within the organisation. Mapping the cost of information overload. The philosophy of "Mastery over Consumption."</td><td class="td-app"><span class="app-lbl">App Integration</span>Unlock Module 02 roadmap. Participants log their "Biggest Time Wasters" in the App poll.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 02: Synthesis Mastery (NotebookLM)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Deep dive into source-grounded research. Turning 200+ pages of company PDFs into an interactive, cited knowledge base.</td><td class="td-app"><span class="app-lbl">App Integration</span>Download the "Research Oracle" setup guide. Upload first datasets.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 01: The Executive Briefing</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Given a massive, messy dataset — use AI to produce a 1-page "Action Brief" with 100% source accuracy.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the brief to the App Gallery. Points awarded for clarity and accuracy.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–15:30</td><td class="td-sess"><div class="sess-name">Session 03: Computational Logic Trees</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Deconstructing complex business problems into logic gates. Learning to translate a vague SOP into a step-by-step "Logic Tree" for AI execution.</td><td class="td-app"><span class="app-lbl">App Integration</span>Watch the 3-minute "Logic Gates vs. Natural Language" snackable video in the LAPA App.</td></tr>
+            <tr><td class="td-time">15:30–15:45</td><td class="td-sess"><div class="sess-name">Afternoon Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">15:45–17:00</td><td class="td-sess"><div class="sess-name">Sprint 02: The SOP Architect</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Take a convoluted company process (e.g., Procurement) and map it into a flawless AI-readable decision tree.</td><td class="td-app"><span class="app-lbl">App Integration</span>Submit the Logic Tree. Peers use AI to "stress test" it. Highest "Logic Score" wins the round.</td></tr>
+          </table>
+        </div>
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 2</span><div class="day-title">The Mastery Engine</div><div class="day-focus">AI Tutoring, Automations &amp; Decision Intelligence</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 04: The Socratic Tutor</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Designing custom AI Tutors (Gems/GPTs) that don't just "give answers" but force mastery through Socratic questioning.</td><td class="td-app"><span class="app-lbl">App Integration</span>Build your first "Company Mentor" bot. Deploy it via the App's "Tool Sandbox."</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 05: Executive Automations</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Designing AI-driven meeting minute engines and email "triage" systems. Reducing administrative load by 60% through structured intelligence.</td><td class="td-app"><span class="app-lbl">App Integration</span>Access the "Automation Prompt Library." Download the "Minute-Taker" framework.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 03: The "Inbox Zero" Engine</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Build a prompt chain that categorises, summarises, and drafts replies for 20 messy sample emails in 5 minutes.</td><td class="td-app"><span class="app-lbl">App Integration</span>Screen-cap the result and upload to the App Gallery. Points for "Efficiency Gain."</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–16:00</td><td class="td-sess"><div class="sess-name">THE ARENA: The Knowledge Gauntlet</div><span class="sess-badge b-arena">Arena</span></td><td class="td-desc"><strong>Live Tournament:</strong> A 100-page mystery industrial crisis document is dropped. Participants must synthesise and solve 5 specific problems live.</td><td class="td-app"><span class="app-lbl">App Integration</span>Submission via the App Capstone portal. Scored on speed and source-grounded accuracy.</td></tr>
+            <tr><td class="td-time">16:00–17:00</td><td class="td-sess"><div class="sess-name">Knowledge Leaderboard &amp; Certification</div><span class="sess-badge b-close">Closing</span></td><td class="td-desc">Live ranking update. Awarding the "LAPA Scholar" digital badge. Unlocking Module 03 content.</td><td class="td-app"><span class="app-lbl">App Integration</span>Announcement of top scorers. Final "Productivity Pledge" logged in-app.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 03 -->
+    <div class="mc" id="mc3">
+      <div class="mc-head" onclick="toggleMc('mc3')">
+        <div class="mc-num">M3</div>
+        <div class="mc-info">
+          <div class="mc-label">Module 03</div>
+          <div class="mc-title">The Prompt Engineer — Technical AI Steering</div>
+          <div class="mc-meta">
+            <span class="mc-meta-item">Developers, Content Teams &amp; Data Specialists</span>
+            <span class="mc-meta-item">2 Days · 09:00–17:00</span>
+            <span class="mc-meta-item">3 Industrial Sprints + Prompt Poker</span>
+          </div>
+        </div>
+        <div class="mc-chev">▼</div>
+      </div>
+      <div class="mc-body">
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 1</span><div class="day-title">The Grammar of Control</div><div class="day-focus">Structural Prompting and Zero-Drift Outputs</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 01: Professional Steering</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Analysing why "Chatting" fails in corporate settings. The difference between "User Prompts" and "System Specifications." The Developer View.</td><td class="td-app"><span class="app-lbl">App Integration</span>Unlock Module 03. Take the "Prompt Grammar" diagnostic quiz in-app.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 02: The PTC Anchor</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Deep dive into the Persona-Task-Constraint framework. Learning to set strict boundaries to prevent AI "hallucination" and "drift."</td><td class="td-app"><span class="app-lbl">App Integration</span>Download the "PTC Anchor Template." Practice mapping complex corporate briefs.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 01: The Corporate Identity Lock</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Prompt an AI to write a press release that perfectly mimics the CEO's voice using only 3 data points.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the "Voice-Verified" output. Points awarded for persona accuracy.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–15:30</td><td class="td-sess"><div class="sess-name">Session 03: Structural Skeletonics</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastering Markdown and JSON outputs. Forcing AI to produce "Clean Data" that can be instantly injected into software or CRM systems.</td><td class="td-app"><span class="app-lbl">App Integration</span>Watch the 3-minute "JSON for Non-Devs" video in the LAPA App.</td></tr>
+            <tr><td class="td-time">15:30–15:45</td><td class="td-sess"><div class="sess-name">Afternoon Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">15:45–17:00</td><td class="td-sess"><div class="sess-name">Sprint 02: The 1,000-SKU Tagger</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Given a messy product list, build a prompt that extracts 5 specific tags into a clean JSON table.</td><td class="td-app"><span class="app-lbl">App Integration</span>Submit the JSON table. Points for 100% formatting accuracy and speed.</td></tr>
+          </table>
+        </div>
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 2</span><div class="day-title">Recursive Reasoning</div><div class="day-focus">Chain-of-Thought (CoT) and Prompt Auditing</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 04: Chain-of-Thought (CoT)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastery of recursive reasoning. Forcing AI to "Think Out Loud" to catch its own errors before presenting the final answer.</td><td class="td-app"><span class="app-lbl">App Integration</span>Build a "Self-Correcting" prompt chain for a complex financial calculation.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 05: The Prompt Audit</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">"Red-Teaming" prompts. Participants swap prompts and try to "break" them through edge cases. Learning to build "Audit Loops" into prompts.</td><td class="td-app"><span class="app-lbl">App Integration</span>Access the "Audit Library." Download the "Prompt Red-Team" checklist.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 03: The Error Hunter</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Given a "Broken Prompt" that hallucinates, identify the logic flaw and fix it in 15 minutes.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the "Fixed Prompt." Points for the most elegant logic fix.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–16:00</td><td class="td-sess"><div class="sess-name">THE ARENA: Prompt Poker</div><span class="sess-badge b-arena">Arena</span></td><td class="td-desc"><strong>Live Tournament:</strong> A mystery technical brief is dropped. Participants build a multi-layer prompt chain live to solve a data extraction crisis.</td><td class="td-app"><span class="app-lbl">App Integration</span>Final Sprint via the App Capstone portal. Judged on structure, output accuracy, and speed.</td></tr>
+            <tr><td class="td-time">16:00–17:00</td><td class="td-sess"><div class="sess-name">Engineering Certification</div><span class="sess-badge b-close">Closing</span></td><td class="td-desc">Live ranking reveal. Awarding the "LAPA Engineer" badge. Unlocking Module 04 content.</td><td class="td-app"><span class="app-lbl">App Integration</span>Top 10 qualifier announcement. Final "Prompt Library" export.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 04 -->
+    <div class="mc" id="mc4">
+      <div class="mc-head" onclick="toggleMc('mc4')">
+        <div class="mc-num">M4</div>
+        <div class="mc-info">
+          <div class="mc-label">Module 04</div>
+          <div class="mc-title">The Asset Alchemist — Multimodal Brand Production</div>
+          <div class="mc-meta">
+            <span class="mc-meta-item">Marketing, Creative &amp; Brand Teams</span>
+            <span class="mc-meta-item">2 Days · 09:00–17:00</span>
+            <span class="mc-meta-item">3 Industrial Sprints + Multimodal Mogul</span>
+          </div>
+        </div>
+        <div class="mc-chev">▼</div>
+      </div>
+      <div class="mc-body">
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 1</span><div class="day-title">The Aesthetic Director</div><div class="day-focus">Visual Identity and Sonic Architecture</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 01: The Visual Identity Matrix</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Understanding lighting, lenses, and composition in AI art direction. Moving from "Random Prompts" to "Cinematic Directing."</td><td class="td-app"><span class="app-lbl">App Integration</span>Unlock Module 04. Access the "Visual Inspiration Gallery" in the App Document Store.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 02: The Cinematic Eye</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastery of brand consistency across imagery. Using AI to generate consistent vector icons and brand-aligned product shots.</td><td class="td-app"><span class="app-lbl">App Integration</span>Download the "Visual Recipe Book." Setup of Recraft / Flux / Midjourney lab.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 01: The Brand Board</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Take a "Sustainable Fashion" brand concept and produce 3 high-fidelity, consistent campaign images.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the "Brand Board" to the App Gallery. Peers vote on visual consistency.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–15:30</td><td class="td-sess"><div class="sess-name">Session 03: Sonic Architecture</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Audio branding mastery. Controlling BPM, key, and emotional descriptors to create custom brand soundtracks and jingles using Suno/Udio.</td><td class="td-app"><span class="app-lbl">App Integration</span>Watch the 3-minute "Audio Prompting 101" snackable video in the LAPA App.</td></tr>
+            <tr><td class="td-time">15:30–15:45</td><td class="td-sess"><div class="sess-name">Afternoon Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">15:45–17:00</td><td class="td-sess"><div class="sess-name">Sprint 02: The Sonic Identity</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Create a 15-second sonic logo and background track for a high-end "Digital Banking" app.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the track. Points for emotional alignment and production quality.</td></tr>
+          </table>
+        </div>
+        <div class="day-block">
+          <div class="day-hdr"><span class="day-pill">Day 2</span><div class="day-title">Motion &amp; Impact</div><div class="day-focus">Video Synthesis and Temporal Motion</div></div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 04: Temporal Motion (Video)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastery of video synthesis: camera-movement prompting, frame-rate consistency, and producing high-fidelity brand teasers.</td><td class="td-app"><span class="app-lbl">App Integration</span>Build your first 15-second cinematic motion teaser using Luma / Runway / Pika.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 05: The Multimodal Workflow</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Orchestrating the three senses. Combining Image, Audio, and Video assets into a cohesive, high-impact campaign.</td><td class="td-app"><span class="app-lbl">App Integration</span>Access the "Multimodal Campaign Template." Download the "Production Workflow" guide.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 03: The Viral Teaser</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Take Day 1 brand assets and produce a 15-second "Motion Teaser" with a custom soundtrack.</td><td class="td-app"><span class="app-lbl">App Integration</span>Upload the final video. Points for "Attention-Grabbing" factor and technical fidelity.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–16:00</td><td class="td-sess"><div class="sess-name">THE ARENA: The Multimodal Mogul</div><span class="sess-badge b-arena">Arena</span></td><td class="td-desc"><strong>Live Tournament:</strong> A mystery brand launch brief is dropped. Participants have 120 minutes to produce a 15-second visual/sonic ad campaign.</td><td class="td-app"><span class="app-lbl">App Integration</span>Final video via the App Capstone portal. Judged on creativity, timing, and brand consistency.</td></tr>
+            <tr><td class="td-time">16:00–17:00</td><td class="td-sess"><div class="sess-name">Alchemist Showcase &amp; Certification</div><span class="sess-badge b-close">Closing</span></td><td class="td-desc">Live screening of the top 5 videos. Awarding the "LAPA Alchemist" badge. Unlocking Module 05 content.</td><td class="td-app"><span class="app-lbl">App Integration</span>Live ranking update. Announcement of top qualifiers.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 05 -->
+    <div class="mc" id="mc5">
+      <div class="mc-head" onclick="toggleMc('mc5')">
+        <div class="mc-num">M5</div>
+        <div class="mc-info">
+          <div class="mc-label">Module 05</div>
+          <div class="mc-title">The Zero-Code Creator — Coming Soon</div>
+          <div class="mc-meta">
+            <span class="mc-meta-item">Entrepreneurs, PMs &amp; Non-Technical Builders</span>
+            <span class="mc-meta-item">2 Days · 09:00–17:00</span>
+            <span class="mc-meta-item">Content being finalised</span>
+          </div>
+        </div>
+        <div class="mc-chev">▼</div>
+      </div>
+      <div class="mc-body">
+        <div class="coming-soon">
+          <div class="cs-title">Module 05 curriculum is being finalised.</div>
+          <p class="cs-desc">Share the Module 05 document to populate this section with the full day-by-day schedule.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <div class="section-kicker">Get Started</div>
+    <h2>Ready to Install an<br><em>AI Academy</em> in Your Organisation?</h2>
+    <p>One masterclass unlocks 6 months of continuous learning, weekly Subject Matter Expert webinars, and a live leaderboard. One SBL-Khas claim. Zero management overhead.</p>
+    <div class="cta-btns">
+      <a href="mailto:firdaus@miceneurol.com" class="btn-navy">Enquire About a Programme</a>
+      <a href="#modules" class="btn-outline-navy">Review the Curriculum</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">LAPA · Malaysia Corporate Edition &nbsp;·&nbsp; MICE Neurol Pte Ltd</div>
+  <div class="footer-copy">© 2025 beingremarkable.co · All rights reserved.</div>
+</footer>
+
+<script>
+  function toggleMc(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.mc').forEach(c => c.classList.remove('open'));
+    if (!isOpen) {
+      card.classList.add('open');
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+    }
+  }
+</script>
+</body>
+</html>
