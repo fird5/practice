@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LAPA · Malaysia Corporate Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<script>
+  function toggleMc(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.mc').forEach(c => c.classList.remove('open'));
+    if (!isOpen) {
+      card.classList.add('open');
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+    }
+  }
+</script>
 <style>
 
 /* ─── TOKENS ─────────────────────────────────────────── */
@@ -175,22 +186,45 @@ body {
 }
 .why-inner { max-width: 1100px; margin: 0 auto; }
 .why .section-lead { color: rgba(255,255,255,0.5); }
-.why-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 0; border: 1px solid rgba(255,255,255,0.08);
+
+/* Tic-tac-toe board */
+.why-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: rgba(200,160,53,0.2);
+  border: 2px solid rgba(200,160,53,0.2);
+  overflow: hidden;
 }
+
 .why-card {
   padding: 30px 26px;
-  border-right: 1px solid rgba(255,255,255,0.08);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  transition: background 0.2s;
+  background: #0d1b2e;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
 }
-.why-card:hover { background: rgba(255,255,255,0.04); }
-.why-card:nth-child(3),
-.why-card:nth-child(6) { border-right: none; }
-.why-card:nth-child(4),
-.why-card:nth-child(5),
-.why-card:nth-child(6) { border-bottom: none; }
+.why-card:hover { background: #132436; }
+
+/* X/O only appears on hover — centred, fills the card */
+.why-card::before {
+  content: attr(data-mark);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11rem; font-weight: 900; line-height: 1;
+  font-family: Georgia, serif;
+  color: rgba(200,160,53,0.12);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.why-card:hover::before { opacity: 1; }
+
+/* Ensure all text content sits above the watermark */
+.why-card > * { position: relative; z-index: 1; }
+
 .why-tag {
   display: inline-block;
   font-size: 0.62rem; font-weight: 700;
@@ -200,7 +234,7 @@ body {
 }
 .why-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1rem; font-weight: 800;
+  font-size: 0.98rem; font-weight: 800;
   color: var(--white); margin-bottom: 8px; line-height: 1.25;
 }
 .why-italic {
@@ -419,6 +453,16 @@ footer {
 }
 .cs-desc { font-size: 0.83rem; color: var(--ink-dim); }
 
+/* ─── PILLAR ILLUSTRATIONS ───────────────────────────── */
+.eco-illustration {
+  width: 100%; aspect-ratio: 16/9;
+  display: block; margin-bottom: 22px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--warm-deep);
+  overflow: hidden;
+}
+.eco-illustration svg { width: 100%; height: 100%; display: block; }
+
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media (max-width: 900px) {
   .nav { padding: 0 20px; }
@@ -431,8 +475,9 @@ footer {
   .eco-grid, .why-grid { grid-template-columns: 1fr; }
   .eco-card { border-right: none; border-bottom: 1px solid var(--rule); }
   .eco-card:last-child { border-bottom: none; }
-  .why-card { border-right: none; }
-  .why-card:nth-child(even) { border-right: none; }
+  .why-board { grid-template-columns: 1fr; gap: 3px; }
+  .why-card:nth-child(odd) { background: #0d1b2e; }
+  .why-card:nth-child(even) { background: #0f2235; }
   .mc-head { padding: 18px 20px; }
   .mc-body { padding: 0; }
   .day-block { padding: 20px 20px 0; }
@@ -464,7 +509,8 @@ footer {
   <h1>Turn Your Team Into<br><em>AI Builders.</em><br>Not Just Learners.</h1>
   <p class="hero-sub">The only corporate AI programme that combines a high-intensity 2-day masterclass, a 6-month digital academy, and weekly Subject Matter Expert webinars — under one SBL-Khas claim.</p>
   <div class="hero-pitch">
-    "Traditional training treats your staff like <strong>students</strong> — they listen and forget. LAPA treats them like <strong>builders</strong> — they learn, they build, they play, they win. <strong>Buy one 2-day Masterclass and install a 6-month AI Academy and weekly Subject Matter Expert Webinar series in their pocket for free.</strong>"
+    <p>"Traditional training treats your staff like <strong>students</strong> — they listen and forget. LAPA treats them like <strong>builders</strong> — they learn, they build, they play, they win."</p>
+    <p style="margin-top:1.1em;">"<strong>Buy one 2-day Masterclass and install a 6-month AI Academy and weekly Subject Matter Expert Webinar series in their pocket for free.</strong>"</p>
   </div>
   <div class="hero-btns">
     <a href="#modules" class="btn-gold">Explore the Modules</a>
@@ -479,24 +525,435 @@ footer {
     <div class="section-h2">Three Pillars. One Transformation.</div>
     <p class="section-lead">A high-octane framework designed to transform untouched domain knowledge into industrial-grade AI competency — and keep it there.</p>
     <div class="eco-grid">
+
+      <!-- PILLAR 1: Classroom Session -->
       <div class="eco-card">
+        <div class="eco-illustration">
+          <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="roomGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a2d45"/>
+                <stop offset="100%" stop-color="#0d1b2e"/>
+              </linearGradient>
+              <linearGradient id="screenGlow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2a4a6e"/>
+                <stop offset="100%" stop-color="#1a3355"/>
+              </linearGradient>
+              <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#14263d"/>
+                <stop offset="100%" stop-color="#0d1b2e"/>
+              </linearGradient>
+              <filter id="softGlow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Room background -->
+            <rect width="480" height="270" fill="url(#roomGrad)"/>
+            <!-- Floor perspective -->
+            <polygon points="0,270 480,270 420,160 60,160" fill="url(#floorGrad)" opacity="0.5"/>
+            <!-- Back wall -->
+            <rect x="60" y="60" width="360" height="100" fill="#12223a" rx="2"/>
+            <!-- Projection screen -->
+            <rect x="140" y="55" width="200" height="110" fill="url(#screenGlow)" rx="3"/>
+            <rect x="144" y="59" width="192" height="102" fill="#1e3f6a" rx="2"/>
+            <!-- Screen content: dashboard lines -->
+            <rect x="154" y="68" width="80" height="6" fill="#c8a035" opacity="0.9" rx="1"/>
+            <rect x="154" y="80" width="172" height="3" fill="rgba(255,255,255,0.15)" rx="1"/>
+            <rect x="154" y="88" width="140" height="3" fill="rgba(255,255,255,0.1)" rx="1"/>
+            <rect x="154" y="98" width="60" height="22" fill="#c8a035" opacity="0.2" rx="2"/>
+            <rect x="156" y="100" width="56" height="18" fill="none" stroke="#c8a035" stroke-width="0.8" rx="1"/>
+            <rect x="222" y="98" width="50" height="22" fill="rgba(255,255,255,0.05)" rx="2"/>
+            <rect x="280" y="98" width="40" height="22" fill="rgba(255,255,255,0.05)" rx="2"/>
+            <!-- Bar chart on screen -->
+            <rect x="158" y="130" width="10" height="18" fill="#c8a035" opacity="0.7" rx="1"/>
+            <rect x="172" y="122" width="10" height="26" fill="#c8a035" opacity="0.85" rx="1"/>
+            <rect x="186" y="118" width="10" height="30" fill="#c8a035" rx="1"/>
+            <rect x="200" y="125" width="10" height="23" fill="#c8a035" opacity="0.6" rx="1"/>
+            <rect x="214" y="119" width="10" height="29" fill="#c8a035" opacity="0.9" rx="1"/>
+            <!-- Screen frame/bezel -->
+            <rect x="140" y="55" width="200" height="110" fill="none" stroke="#c8a035" stroke-width="1.2" rx="3" opacity="0.5"/>
+            <!-- Screen stand -->
+            <rect x="235" y="165" width="10" height="12" fill="#1a3355"/>
+            <rect x="220" y="177" width="40" height="3" fill="#1a3355" rx="1"/>
+            <!-- Presenter figure (left of screen) -->
+            <!-- Head -->
+            <circle cx="122" cy="130" r="9" fill="#d4956a"/>
+            <!-- Body -->
+            <rect x="114" y="139" width="16" height="22" fill="#1a3a6e" rx="2"/>
+            <!-- Arms -->
+            <line x1="130" y1="143" x2="142" y2="150" stroke="#1a3a6e" stroke-width="4" stroke-linecap="round"/>
+            <line x1="114" y1="143" x2="108" y2="150" stroke="#1a3a6e" stroke-width="4" stroke-linecap="round"/>
+            <!-- Legs -->
+            <rect x="115" y="161" width="6" height="14" fill="#14263d" rx="1"/>
+            <rect x="123" y="161" width="6" height="14" fill="#14263d" rx="1"/>
+            <!-- Pointer line from presenter to screen -->
+            <line x1="138" y1="148" x2="152" y2="110" stroke="#c8a035" stroke-width="0.8" opacity="0.5" stroke-dasharray="3,3"/>
+
+            <!-- TABLE ROWS (audience) — perspective -->
+            <!-- Row 1 (front, widest) -->
+            <ellipse cx="240" cy="220" rx="160" ry="12" fill="#14263d" opacity="0.8"/>
+            <!-- Row 2 -->
+            <ellipse cx="240" cy="200" rx="130" ry="10" fill="#14263d" opacity="0.6"/>
+            <!-- Row 3 -->
+            <ellipse cx="240" cy="184" rx="100" ry="8" fill="#14263d" opacity="0.5"/>
+
+            <!-- SEATED FIGURES row 1 -->
+            <!-- Person 1 -->
+            <circle cx="160" cy="210" r="7" fill="#c8956a"/>
+            <rect x="154" y="217" width="12" height="10" fill="#2a4a6e" rx="1"/>
+            <!-- Laptop glow -->
+            <rect x="152" y="224" width="16" height="10" fill="#1e3f6a" rx="1"/>
+            <rect x="153" y="225" width="14" height="8" fill="#2a5a8a" rx="0.5"/>
+            <rect x="154" y="226" width="12" height="6" fill="#c8a035" opacity="0.15" rx="0.5"/>
+
+            <!-- Person 2 -->
+            <circle cx="210" cy="212" r="7" fill="#a07050"/>
+            <rect x="204" y="219" width="12" height="10" fill="#3a2a6e" rx="1"/>
+            <rect x="202" y="226" width="16" height="10" fill="#1e3f6a" rx="1"/>
+            <rect x="203" y="227" width="14" height="8" fill="#2a5a8a" rx="0.5"/>
+            <rect x="204" y="228" width="12" height="6" fill="#c8a035" opacity="0.2" rx="0.5"/>
+
+            <!-- Person 3 (centre) -->
+            <circle cx="260" cy="211" r="7" fill="#d4956a"/>
+            <rect x="254" y="218" width="12" height="10" fill="#1a3a6e" rx="1"/>
+            <rect x="252" y="225" width="16" height="10" fill="#1e3f6a" rx="1"/>
+            <rect x="253" y="226" width="14" height="8" fill="#2a5a8a" rx="0.5"/>
+            <rect x="254" y="227" width="12" height="6" fill="#c8a035" opacity="0.25" rx="0.5"/>
+
+            <!-- Person 4 -->
+            <circle cx="310" cy="212" r="7" fill="#b08060"/>
+            <rect x="304" y="219" width="12" height="10" fill="#2a3a5e" rx="1"/>
+            <rect x="302" y="226" width="16" height="10" fill="#1e3f6a" rx="1"/>
+            <rect x="303" y="227" width="14" height="8" fill="#2a5a8a" rx="0.5"/>
+
+            <!-- Row 2 figures -->
+            <circle cx="190" cy="193" r="6" fill="#c09070"/>
+            <rect x="185" y="199" width="10" height="8" fill="#2a4a5e" rx="1"/>
+            <rect x="184" y="205" width="12" height="8" fill="#1e3f6a" rx="1"/>
+
+            <circle cx="245" cy="192" r="6" fill="#a08060"/>
+            <rect x="240" y="198" width="10" height="8" fill="#1a3a5e" rx="1"/>
+            <rect x="239" y="204" width="12" height="8" fill="#1e3f6a" rx="1"/>
+            <rect x="240" y="205" width="10" height="6" fill="#c8a035" opacity="0.2" rx="0.5"/>
+
+            <circle cx="295" cy="193" r="6" fill="#d4a070"/>
+            <rect x="290" y="199" width="10" height="8" fill="#2a3a6e" rx="1"/>
+            <rect x="289" y="205" width="12" height="8" fill="#1e3f6a" rx="1"/>
+
+            <!-- Row 3 figures -->
+            <circle cx="220" cy="178" r="5" fill="#b07050"/>
+            <rect x="216" y="183" width="8" height="7" fill="#2a4a6e" rx="1"/>
+            <circle cx="260" cy="177" r="5" fill="#c09060"/>
+            <rect x="256" y="182" width="8" height="7" fill="#1a3a5e" rx="1"/>
+
+            <!-- Ambient light from screen -->
+            <ellipse cx="240" cy="165" rx="90" ry="30" fill="#c8a035" opacity="0.04"/>
+            <!-- Ceiling light -->
+            <ellipse cx="240" cy="62" rx="40" ry="8" fill="#c8a035" opacity="0.08"/>
+            <line x1="240" y1="62" x2="240" y2="68" stroke="#c8a035" stroke-width="1" opacity="0.2"/>
+          </svg>
+        </div>
         <div class="eco-num">01 — The Spark</div>
         <div class="eco-label">The 2-Day Masterclass</div>
         <div class="eco-title">Ignite the Mindset. Build on Day One.</div>
         <p class="eco-desc">High-intensity onsite training driven by our strict <strong>50/50 Practical Pedagogy</strong> — equal theory and doing. We don't lecture then leave. Participants build real AI outputs during the session itself. The catalyst for both mindset shift and tactical mastery.</p>
       </div>
+
+      <!-- PILLAR 2: Mobile App -->
       <div class="eco-card">
+        <div class="eco-illustration">
+          <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="appBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0d1b2e"/>
+                <stop offset="100%" stop-color="#12223a"/>
+              </linearGradient>
+              <linearGradient id="phoneBody" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1e2d3e"/>
+                <stop offset="100%" stop-color="#141f2e"/>
+              </linearGradient>
+              <linearGradient id="screenBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d1b2e"/>
+                <stop offset="100%" stop-color="#0a1624"/>
+              </linearGradient>
+              <linearGradient id="goldBar" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c8a035"/>
+                <stop offset="100%" stop-color="#e2b84a"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Background -->
+            <rect width="480" height="270" fill="url(#appBg)"/>
+
+            <!-- Ambient glow behind phone -->
+            <ellipse cx="240" cy="135" rx="110" ry="90" fill="#c8a035" opacity="0.04"/>
+
+            <!-- Phone body (main) -->
+            <rect x="165" y="18" width="150" height="234" rx="18" fill="url(#phoneBody)"/>
+            <!-- Phone inner border -->
+            <rect x="168" y="21" width="144" height="228" rx="16" fill="none" stroke="#2a3d52" stroke-width="1.2"/>
+            <!-- Phone screen area -->
+            <rect x="172" y="32" width="136" height="210" rx="10" fill="url(#screenBg)"/>
+
+            <!-- Notch -->
+            <rect x="218" y="32" width="44" height="8" rx="4" fill="#141f2e"/>
+            <circle cx="240" cy="36" r="2" fill="#1e2d3e"/>
+
+            <!-- STATUS BAR -->
+            <text x="180" y="52" font-family="Arial" font-size="7" fill="rgba(255,255,255,0.5)">09:41</text>
+            <rect x="284" y="46" width="18" height="8" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <rect x="285" y="47" width="14" height="6" rx="1.5" fill="#c8a035" opacity="0.8"/>
+
+            <!-- APP HEADER -->
+            <rect x="172" y="56" width="136" height="28" fill="#0d1b2e"/>
+            <text x="183" y="74" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#c8a035">LAPA</text>
+            <text x="210" y="74" font-family="Arial" font-size="7" fill="rgba(255,255,255,0.4)">· AI Academy</text>
+            <!-- Avatar circle top right -->
+            <circle cx="296" cy="70" r="7" fill="#1a3a5e" stroke="#c8a035" stroke-width="0.8"/>
+            <circle cx="296" cy="68" r="3" fill="#c8956a"/>
+            <ellipse cx="296" cy="73" rx="4" ry="2" fill="#1a3a6e"/>
+
+            <!-- LEADERBOARD SECTION -->
+            <rect x="172" y="84" width="136" height="14" fill="#0a1422"/>
+            <text x="183" y="94" font-family="Arial" font-size="7" font-weight="bold" fill="rgba(255,255,255,0.5)" letter-spacing="1">LEADERBOARD</text>
+
+            <!-- Rank rows -->
+            <!-- Rank 1 -->
+            <rect x="172" y="98" width="136" height="20" fill="#0f1e30"/>
+            <text x="181" y="111" font-family="Arial" font-size="8" font-weight="bold" fill="#c8a035">1</text>
+            <circle cx="196" cy="108" r="5" fill="#c8956a"/>
+            <rect x="205" y="104" width="50" height="4" rx="1" fill="rgba(255,255,255,0.6)"/>
+            <rect x="205" y="111" width="32" height="3" rx="1" fill="rgba(255,255,255,0.25)"/>
+            <rect x="268" y="104" width="30" height="8" rx="1" fill="url(#goldBar)" opacity="0.9"/>
+            <text x="270" y="111" font-family="Arial" font-size="6" font-weight="bold" fill="#0d1b2e">4,820 pts</text>
+
+            <!-- Rank 2 -->
+            <rect x="172" y="118" width="136" height="20" fill="#0d1b2e"/>
+            <text x="181" y="131" font-family="Arial" font-size="8" fill="rgba(255,255,255,0.5)">2</text>
+            <circle cx="196" cy="128" r="5" fill="#a07050"/>
+            <rect x="205" y="124" width="42" height="4" rx="1" fill="rgba(255,255,255,0.45)"/>
+            <rect x="205" y="131" width="28" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <rect x="268" y="124" width="26" height="8" rx="1" fill="#c8a035" opacity="0.5"/>
+            <text x="270" y="131" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.6)">3,940 pts</text>
+
+            <!-- Rank 3 -->
+            <rect x="172" y="138" width="136" height="20" fill="#0f1e30"/>
+            <text x="181" y="151" font-family="Arial" font-size="8" fill="rgba(255,255,255,0.4)">3</text>
+            <circle cx="196" cy="148" r="5" fill="#d4a070"/>
+            <rect x="205" y="144" width="46" height="4" rx="1" fill="rgba(255,255,255,0.4)"/>
+            <rect x="205" y="151" width="24" height="3" rx="1" fill="rgba(255,255,255,0.18)"/>
+            <rect x="268" y="144" width="22" height="8" rx="1" fill="#c8a035" opacity="0.35"/>
+            <text x="270" y="151" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)">3,210 pts</text>
+
+            <!-- PROGRESS MODULE SECTION -->
+            <rect x="172" y="162" width="136" height="14" fill="#0a1422"/>
+            <text x="183" y="172" font-family="Arial" font-size="7" font-weight="bold" fill="rgba(255,255,255,0.5)" letter-spacing="1">YOUR PROGRESS</text>
+
+            <!-- Module progress bars -->
+            <rect x="183" y="180" width="116" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+            <rect x="183" y="180" width="116" height="4" rx="2" fill="url(#goldBar)"/>
+            <text x="183" y="178" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)">M01 · The Creative Disruptor</text>
+            <text x="292" y="178" font-family="Arial" font-size="6" fill="#c8a035">100%</text>
+
+            <rect x="183" y="194" width="116" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+            <rect x="183" y="194" width="78" height="4" rx="2" fill="#c8a035" opacity="0.7"/>
+            <text x="183" y="192" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)">M02 · The AI Scholar</text>
+            <text x="292" y="192" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.4)">67%</text>
+
+            <rect x="183" y="208" width="116" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+            <rect x="183" y="208" width="35" height="4" rx="2" fill="#c8a035" opacity="0.4"/>
+            <text x="183" y="206" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.3)">M03 · The Prompt Engineer</text>
+            <text x="292" y="206" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.3)">30%</text>
+
+            <!-- BOTTOM NAV -->
+            <rect x="172" y="222" width="136" height="20" rx="0" fill="#0a1422"/>
+            <line x1="172" y1="222" x2="308" y2="222" stroke="#c8a035" stroke-width="0.5" opacity="0.4"/>
+            <!-- Nav items -->
+            <rect x="191" y="227" width="14" height="10" rx="1" fill="#c8a035" opacity="0.8"/>
+            <rect x="218" y="229" width="14" height="8" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <rect x="246" y="229" width="14" height="8" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <rect x="274" y="229" width="14" height="8" rx="1" fill="rgba(255,255,255,0.2)"/>
+
+            <!-- Home button -->
+            <rect x="224" y="244" width="32" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+
+            <!-- Side button details on phone -->
+            <rect x="313" y="80" width="3" height="20" rx="1.5" fill="#2a3d52"/>
+            <rect x="163" y="75" width="3" height="14" rx="1.5" fill="#2a3d52"/>
+            <rect x="163" y="95" width="3" height="14" rx="1.5" fill="#2a3d52"/>
+
+            <!-- Reflection highlight on phone -->
+            <rect x="165" y="18" width="8" height="234" rx="4" fill="white" opacity="0.03"/>
+
+            <!-- Floating notification badge -->
+            <rect x="310" y="40" width="80" height="36" rx="6" fill="#14263d" stroke="#c8a035" stroke-width="0.8" opacity="0.9"/>
+            <text x="318" y="54" font-family="Arial" font-size="7" font-weight="bold" fill="#c8a035">NEW LESSON</text>
+            <text x="318" y="65" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.6)">M02 Week 3 unlocked</text>
+
+            <!-- Floating streak badge -->
+            <rect x="90" y="100" width="68" height="36" rx="6" fill="#14263d" stroke="#c8a035" stroke-width="0.8" opacity="0.9"/>
+            <text x="98" y="114" font-family="Arial" font-size="7" font-weight="bold" fill="#c8a035">14-DAY STREAK</text>
+            <text x="98" y="125" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.55)">Keep it up!</text>
+
+            <!-- Floating XP badge -->
+            <rect x="316" y="160" width="68" height="36" rx="6" fill="#14263d" stroke="#c8a035" stroke-width="0.8" opacity="0.9"/>
+            <text x="324" y="174" font-family="Arial" font-size="7" font-weight="bold" fill="#c8a035">+250 XP</text>
+            <text x="324" y="185" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.55)">Sprint completed</text>
+          </svg>
+        </div>
         <div class="eco-num">02 — The Engine</div>
         <div class="eco-label">The LAPA App</div>
         <div class="eco-title">The 24/7 AI Dojo. Always Running.</div>
         <p class="eco-desc">Snackable micro-lessons, a relentless "Zero-to-Hero" roadmap, live leaderboard, and a community of doers. The digital backbone that turns a one-off event into a daily practice — and turns high performers into visible talent for your C-Suite.</p>
       </div>
+
+      <!-- PILLAR 3: Webinar -->
       <div class="eco-card">
+        <div class="eco-illustration">
+          <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="webBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a1622"/>
+                <stop offset="100%" stop-color="#0d1b2e"/>
+              </linearGradient>
+              <linearGradient id="mainScreen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#12223a"/>
+                <stop offset="100%" stop-color="#0d1b2e"/>
+              </linearGradient>
+              <linearGradient id="speakerGlow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a3a5e"/>
+                <stop offset="100%" stop-color="#0f2440"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Background -->
+            <rect width="480" height="270" fill="url(#webBg)"/>
+
+            <!-- Desk surface -->
+            <rect x="0" y="195" width="480" height="75" fill="#0a1420"/>
+            <rect x="0" y="195" width="480" height="2" fill="#1a2d45"/>
+
+            <!-- MAIN LAPTOP -->
+            <!-- Screen -->
+            <rect x="90" y="55" width="300" height="188" rx="8" fill="#141f2e"/>
+            <rect x="94" y="59" width="292" height="180" rx="6" fill="url(#mainScreen)"/>
+
+            <!-- Laptop platform / keyboard base -->
+            <rect x="70" y="241" width="340" height="12" rx="3" fill="#141f2e"/>
+            <rect x="80" y="243" width="320" height="8" rx="2" fill="#1a2535"/>
+            <!-- Trackpad -->
+            <rect x="198" y="245" width="84" height="5" rx="2" fill="#1e2d3e" stroke="#2a3d52" stroke-width="0.5"/>
+            <!-- Hinge line -->
+            <rect x="70" y="241" width="340" height="2" rx="1" fill="#0d1b2e"/>
+
+            <!-- TOP BAR of app -->
+            <rect x="94" y="59" width="292" height="22" fill="#0a1422"/>
+            <circle cx="104" cy="70" r="4" fill="#e05a5a" opacity="0.7"/>
+            <circle cx="116" cy="70" r="4" fill="#e0b050" opacity="0.7"/>
+            <circle cx="128" cy="70" r="4" fill="#50c050" opacity="0.7"/>
+            <rect x="155" y="65" width="130" height="10" rx="5" fill="#1a2d45"/>
+            <text x="175" y="73" font-family="Arial" font-size="7" fill="rgba(255,255,255,0.4)">LAPA Expert Webinar — Live</text>
+            <!-- Live indicator -->
+            <circle cx="282" cy="70" r="3" fill="#e05050"/>
+            <text x="288" y="73" font-family="Arial" font-size="6" fill="#e05050" font-weight="bold">LIVE</text>
+
+            <!-- MAIN SPEAKER TILE (large, centre-left) -->
+            <rect x="100" y="86" width="188" height="130" rx="4" fill="url(#speakerGlow)"/>
+            <!-- Speaker figure -->
+            <!-- Background bookshelf suggestion -->
+            <rect x="100" y="86" width="188" height="130" fill="#1a3050" rx="4"/>
+            <rect x="100" y="86" width="188" height="130" fill="none" stroke="#c8a035" stroke-width="1" rx="4" opacity="0.5"/>
+            <!-- Bookshelf lines -->
+            <rect x="240" y="90" width="44" height="3" rx="1" fill="#2a4060" opacity="0.8"/>
+            <rect x="240" y="100" width="44" height="3" rx="1" fill="#2a4060" opacity="0.6"/>
+            <rect x="240" y="110" width="44" height="3" rx="1" fill="#2a4060" opacity="0.5"/>
+            <!-- Book spines -->
+            <rect x="242" y="93" width="6" height="24" rx="0.5" fill="#c8a035" opacity="0.4"/>
+            <rect x="250" y="93" width="5" height="24" rx="0.5" fill="#4a6a9a" opacity="0.6"/>
+            <rect x="257" y="93" width="7" height="24" rx="0.5" fill="#2a5a3a" opacity="0.5"/>
+            <rect x="266" y="93" width="5" height="24" rx="0.5" fill="#8a3a3a" opacity="0.4"/>
+            <rect x="273" y="93" width="8" height="24" rx="0.5" fill="#c8a035" opacity="0.3"/>
+            <!-- Speaker person -->
+            <circle cx="178" cy="130" r="24" fill="#c8956a"/>
+            <!-- Hair -->
+            <ellipse cx="178" cy="109" rx="22" ry="12" fill="#3a2010"/>
+            <!-- Collar/jacket -->
+            <rect x="154" y="152" width="48" height="30" rx="4" fill="#1a3a6e"/>
+            <rect x="170" y="152" width="16" height="20" fill="#f5f0e8" opacity="0.9"/>
+            <polygon points="170,152 178,165 170,168" fill="#e8e0d0"/>
+            <polygon points="186,152 178,165 186,168" fill="#e8e0d0"/>
+            <!-- Name bar at bottom of tile -->
+            <rect x="100" y="200" width="188" height="16" rx="0 0 4 4" fill="rgba(0,0,0,0.6)"/>
+            <text x="108" y="211" font-family="Georgia,serif" font-size="8" font-weight="bold" fill="#c8a035">Dr. Aisha Rahman</text>
+            <text x="108" y="211" dx="92" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)"> · AI Research, NUS</text>
+
+            <!-- PARTICIPANT TILES (right column) -->
+            <!-- Tile 1 -->
+            <rect x="294" y="86" width="86" height="60" rx="3" fill="#0f2030"/>
+            <rect x="294" y="86" width="86" height="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" rx="3"/>
+            <circle cx="325" cy="108" r="12" fill="#1a3a5e"/>
+            <circle cx="325" cy="104" r="5" fill="#a07050"/>
+            <ellipse cx="325" cy="113" rx="7" ry="3" fill="#1a3a6e"/>
+            <rect x="294" y="134" width="86" height="12" rx="0 0 3 3" fill="rgba(0,0,0,0.5)"/>
+            <text x="300" y="143" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)">Ahmad Farid · KL</text>
+
+            <!-- Tile 2 -->
+            <rect x="294" y="151" width="86" height="60" rx="3" fill="#0f1e2e"/>
+            <rect x="294" y="151" width="86" height="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" rx="3"/>
+            <circle cx="337" cy="173" r="12" fill="#2a1a3e"/>
+            <circle cx="337" cy="169" r="5" fill="#c09070"/>
+            <ellipse cx="337" cy="178" rx="7" ry="3" fill="#2a1a4e"/>
+            <rect x="294" y="199" width="86" height="12" rx="0 0 3 3" fill="rgba(0,0,0,0.5)"/>
+            <text x="300" y="208" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.5)">Priya Nair · SG</text>
+
+            <!-- BOTTOM BAR -->
+            <rect x="94" y="221" width="292" height="18" fill="#0a1422"/>
+            <line x1="94" y1="221" x2="386" y2="221" stroke="#1a2d45" stroke-width="0.8"/>
+            <!-- Attendee count -->
+            <circle cx="108" cy="230" r="4" fill="#c8a035" opacity="0.7"/>
+            <text x="116" y="234" font-family="Arial" font-size="7" fill="rgba(255,255,255,0.5)">247 attendees</text>
+            <!-- Chat indicator -->
+            <rect x="210" y="225" width="35" height="10" rx="2" fill="#1a3a5e"/>
+            <text x="215" y="233" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.6)">Chat</text>
+            <!-- Raise hand -->
+            <rect x="252" y="225" width="50" height="10" rx="2" fill="#1a3a5e"/>
+            <text x="257" y="233" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.6)">Q &amp; A</text>
+            <!-- Record -->
+            <circle cx="335" cy="230" r="4" fill="#e05050" opacity="0.8"/>
+            <text x="342" y="234" font-family="Arial" font-size="6" fill="rgba(255,255,255,0.4)">REC</text>
+
+            <!-- LIVE chat sidebar floating -->
+            <rect x="330" y="22" width="130" height="88" rx="5" fill="#0f1e2e" stroke="#1a2d45" stroke-width="0.8" opacity="0.95"/>
+            <text x="340" y="35" font-family="Arial" font-size="7" font-weight="bold" fill="rgba(255,255,255,0.5)" letter-spacing="1">LIVE CHAT</text>
+            <line x1="330" y1="38" x2="460" y2="38" stroke="#1a2d45" stroke-width="0.8"/>
+            <!-- Chat messages -->
+            <circle cx="340" cy="50" r="4" fill="#c09070"/>
+            <rect x="348" y="46" width="60" height="4" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <rect x="348" y="52" width="44" height="3" rx="1" fill="rgba(255,255,255,0.12)"/>
+
+            <circle cx="340" cy="64" r="4" fill="#a07050"/>
+            <rect x="348" y="60" width="50" height="4" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <rect x="348" y="66" width="70" height="3" rx="1" fill="rgba(255,255,255,0.12)"/>
+
+            <circle cx="340" cy="78" r="4" fill="#d4956a"/>
+            <rect x="348" y="74" width="65" height="4" rx="1" fill="#c8a035" opacity="0.3"/>
+            <rect x="348" y="80" width="38" height="3" rx="1" fill="rgba(255,255,255,0.12)"/>
+
+            <rect x="330" y="98" width="130" height="12" rx="0 0 5 5" fill="#0a1422"/>
+            <rect x="335" y="101" width="90" height="6" rx="3" fill="#1a2d45"/>
+            <text x="340" y="106" font-family="Arial" font-size="5.5" fill="rgba(255,255,255,0.3)">Type a message...</text>
+
+            <!-- Ambient screen glow on desk -->
+            <ellipse cx="240" cy="243" rx="150" ry="10" fill="#1a3a5e" opacity="0.15"/>
+          </svg>
+        </div>
         <div class="eco-num">03 — The Momentum</div>
         <div class="eco-label">The Subject Matter Expert Webinar Series</div>
-        <div class="eco-title">One Expert. Every Week. No Exceptions.</div>
+        <div class="eco-title">One Expert. Every Week.</div>
         <p class="eco-desc">Unlimited access to live and on-demand sessions. <strong>At least one webinar every week</strong> led by an AI or Industry Subject Matter Expert. Your team stays at the absolute bleeding edge of the AI revolution — permanently, not periodically.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -507,43 +964,71 @@ footer {
     <div class="section-kicker">Why LAPA</div>
     <div class="section-h2 section-h2-white">The Unfair Advantage.</div>
     <p class="section-lead">Six reasons LAPA delivers ROI that no other corporate AI programme can match.</p>
-    <div class="why-grid">
-      <div class="why-card">
+    <div class="why-board">
+
+      <div class="why-card" data-mark="X">
         <div class="why-tag">Buy 1, Get 5</div>
         <div class="why-title">One Masterclass. The Entire Frontier.</div>
         <div class="why-italic">Why pay for five separate courses when one masterclass unlocks everything?</div>
         <p class="why-desc">Purchasing <strong>one 2-day Masterclass</strong> unlocks a full 6-month subscription to the LAPA App — all 5 modules, all future content, all weekly webinars. The ultimate ROI for a single SBL-Khas claim.</p>
       </div>
-      <div class="why-card">
+
+      <div class="why-card" data-mark="O">
         <div class="why-tag">50/50 Pedagogy</div>
         <div class="why-title">Equal Theory and Doing. No Exceptions.</div>
         <div class="why-italic">Corporate training is usually 90% slides and 10% yawning.</div>
         <p class="why-desc">Our <strong>Learning-by-Doing ratio is a strict 1:1</strong>. For every hour of theory, there is an hour of Industrial Sprinting. Participants leave having built tangible AI assets — prompts, agents, and apps — tailored to their roles.</p>
       </div>
-      <div class="why-card">
+
+      <div class="why-card" data-mark="X">
         <div class="why-tag">Double-Engine</div>
         <div class="why-title">We Solve the "Day 3 Problem."</div>
         <div class="why-italic">Traditional training has a 7-day decay rate.</div>
-        <p class="why-desc">LAPA provides the <strong>Transformation</strong> (Live Workshop) and the <strong>Habit</strong> (App + Subject Matter Expert Webinars). AI becomes a daily practice, not a one-off event.</p>
+        <p class="why-desc">LAPA delivers both the <strong>Transformation</strong> (Live Workshop) and the <strong>Habit</strong> (App + Subject Matter Expert Webinars). One ignites the change. The other makes it permanent.</p>
       </div>
-      <div class="why-card">
+
+      <div class="why-card" data-mark="O">
         <div class="why-tag">AI as a Sport</div>
         <div class="why-title">Gamification That Actually Works.</div>
         <div class="why-italic">People don't want another LMS. They want to win.</div>
-        <p class="why-desc">Every activity earns points on a <strong>Live Leaderboard</strong>. Top scorers qualify for the <strong>Monthly AI Esports Arena</strong>. Gamification drives 90% higher engagement than traditional corporate portals.</p>
+        <p class="why-desc">Every activity earns points on a <strong>Live Leaderboard</strong>. Top scorers qualify for the <strong>Monthly AI Esports Arena</strong> — a live-casted competitive build tournament. AI mastery becomes sport.</p>
       </div>
-      <div class="why-card">
+
+      <div class="why-card" data-mark="X">
+        <div class="why-tag">The Arena</div>
+        <div class="why-title">Where Your Best People Prove It.</div>
+        <div class="why-italic">Leaderboards rank. The Arena reveals character.</div>
+        <p class="why-desc">Monthly qualifiers compete live in a <strong>2-hour simultaneous AI build</strong> — publicly streamed, judged in real time. Winners earn badges, prizes, and direct industry fast-tracks. This is where careers pivot.</p>
+      </div>
+
+      <div class="why-card" data-mark="O">
         <div class="why-tag">Talent Radar</div>
         <div class="why-title">See Your Real AI Leaders.</div>
         <div class="why-italic">Management is often blind to who their actual AI super-users are.</div>
-        <p class="why-desc">The Leaderboard acts as a <strong>High-Potential Radar</strong> — allowing the C-Suite to identify natural AI leaders based on verified build-data, not self-reported skills or attendance sheets.</p>
+        <p class="why-desc">The Leaderboard is a <strong>High-Potential Radar</strong>. Your C-Suite identifies natural AI leaders based on verified build-data — not self-reported skills, not attendance sheets.</p>
       </div>
-      <div class="why-card">
+
+      <div class="why-card" data-mark="X">
         <div class="why-tag">Digital Portfolio</div>
         <div class="why-title">Verified Proof of Competency.</div>
         <div class="why-italic">Certificates of attendance are dead. Verified portfolios are the new currency.</div>
-        <p class="why-desc">Every Sprint is stored in a verified <strong>In-App Gallery</strong>. Individuals build tangible "AI-Ready" portfolios they can present to employers, clients, or promotion panels.</p>
+        <p class="why-desc">Every Sprint output is stored in a verified <strong>In-App Gallery</strong>. Participants build tangible "AI-Ready" portfolios — real work, real evidence, presentable to employers, clients, or promotion panels.</p>
       </div>
+
+      <div class="why-card" data-mark="O">
+        <div class="why-tag">SME Webinar Network</div>
+        <div class="why-title">The Bleeding Edge. Delivered Weekly.</div>
+        <div class="why-italic">The AI landscape shifts every 90 days. Most training is already outdated on delivery day.</div>
+        <p class="why-desc">LAPA's rotating <strong>Subject Matter Expert Webinar Series</strong> ensures your team is never more than 7 days behind the frontier. Live, interactive, and permanently on-demand.</p>
+      </div>
+
+      <div class="why-card" data-mark="X">
+        <div class="why-tag">One Claim. Full Ecosystem.</div>
+        <div class="why-title">SBL-Khas Eligible. Zero Overhead.</div>
+        <div class="why-italic">Why manage five vendors when one programme covers everything?</div>
+        <p class="why-desc">The entire LAPA ecosystem — masterclass, app, webinars, arena, portfolios — sits under <strong>a single SBL-Khas claim</strong>. One invoice. One approval. Six months of continuous AI development, installed.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -749,19 +1234,48 @@ footer {
         <div class="mc-num">M5</div>
         <div class="mc-info">
           <div class="mc-label">Module 05</div>
-          <div class="mc-title">The Zero-Code Creator — Coming Soon</div>
+          <div class="mc-title">The Zero-Code Creator — Venture Building & Automation</div>
           <div class="mc-meta">
-            <span class="mc-meta-item">Entrepreneurs, PMs &amp; Non-Technical Builders</span>
+            <span class="mc-meta-item">Intrapreneurs, Sales Operations &amp; Technical Leads</span>
             <span class="mc-meta-item">2 Days · 09:00–17:00</span>
-            <span class="mc-meta-item">Content being finalised</span>
+            <span class="mc-meta-item">3 Industrial Sprints + The Build-Off</span>
           </div>
         </div>
         <div class="mc-chev">▼</div>
       </div>
       <div class="mc-body">
-        <div class="coming-soon">
-          <div class="cs-title">Module 05 curriculum is being finalised.</div>
-          <p class="cs-desc">Share the Module 05 document to populate this section with the full day-by-day schedule.</p>
+        <div class="day-block">
+          <div class="day-hdr">
+            <span class="day-pill">Day 1</span>
+            <div class="day-title">Building Without Boundaries</div>
+            <div class="day-focus">Vibe Coding and Instant App Production</div>
+          </div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 01: The Zero-Code Revolution</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Understanding the shift from "Waiting for IT" to "Instant Implementation." The philosophy of Vibe Coding and Rapid MVPs.</td><td class="td-app"><span class="app-lbl">App Integration</span>Unlock Module 05. Access the "App Blueprint Gallery" in the App Document Store.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 02: The Instant App (Lovable/Bolt)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Mastery of prompt-to-production. Describing a business idea and getting a live, functional web URL in under 30 minutes.</td><td class="td-app"><span class="app-lbl">App Integration</span>Download the "App Architecture Spec" guide. Setup of Lovable/Bolt/Replit accounts.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 01: The Marketplace MVP</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Participants take a simple concept (e.g., "Company Equipment Rental App") and build a live functional landing page with a database.</td><td class="td-app"><span class="app-lbl">App Integration</span>Post the Live URL to the App Gallery. Points for speed and functional reliability.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–15:30</td><td class="td-sess"><div class="sess-name">Session 03: The Bi-Coding Hack (Cursor)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">The "Code Hunter" mindset. Using AI to scavenge high-end features from the web and injecting them into your app via natural language.</td><td class="td-app"><span class="app-lbl">App Integration</span>Watch the 3-minute "Vibe Coding with Cursor" snackable video in the LAPA App.</td></tr>
+            <tr><td class="td-time">15:30–15:45</td><td class="td-sess"><div class="sess-name">Afternoon Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">15:45–17:00</td><td class="td-sess"><div class="sess-name">Sprint 02: The Feature Injector</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Take the Day 1 app and inject a "Live Multi-lingual Chat" or "Dark Mode" feature using AI commands only.</td><td class="td-app"><span class="app-lbl">App Integration</span>Participants test each other's apps live. Highest "Feature Score" wins the round.</td></tr>
+          </table>
+        </div>
+        <div class="day-block">
+          <div class="day-hdr">
+            <span class="day-pill">Day 2</span>
+            <div class="day-title">Orchestration & Launch</div>
+            <div class="day-focus">Viral Factories, Agents, and Business Ecosystems</div>
+          </div>
+          <table class="sched">
+            <tr><td class="td-time">09:00–10:30</td><td class="td-sess"><div class="sess-name">Session 04: The Viral Factory (Automation)</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Learning ecosystem orchestration. Building automated systems where one product upload generates ads, pages, and checkouts — using Gumloop/Zapier.</td><td class="td-app"><span class="app-lbl">App Integration</span>Build an automation that takes one "Idea" and generates 10 LinkedIn posts and a Landing Page.</td></tr>
+            <tr><td class="td-time">10:30–10:45</td><td class="td-sess"><div class="sess-name">Morning Break</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">10:45–12:15</td><td class="td-sess"><div class="sess-name">Session 05: AI Agents & Autonomous Work</div><span class="sess-badge b-sess">Session</span></td><td class="td-desc">Designing bots that work while you sleep. Building "Agentic" workflows for recurring business tasks like Lead Generation or Data Audits.</td><td class="td-app"><span class="app-lbl">App Integration</span>Access the "Agent Blueprint Library." Download the "Agent Deployment" checklist.</td></tr>
+            <tr><td class="td-time">12:15–13:00</td><td class="td-sess"><div class="sess-name">Sprint 03: The Lead Gen Bot</div><span class="sess-badge b-sprint">Sprint</span></td><td class="td-desc"><strong>Active Sprint:</strong> Build an agent that scans a directory, summarises companies, and drafts a personalised pitch email.</td><td class="td-app"><span class="app-lbl">App Integration</span>Screen-cap the Agent workflow and upload to the App. Points for logic complexity.</td></tr>
+            <tr><td class="td-time">13:00–14:00</td><td class="td-sess"><div class="sess-name">Networking Lunch</div><span class="sess-badge b-break">Break</span></td><td class="td-desc">—</td><td class="td-app">—</td></tr>
+            <tr><td class="td-time">14:00–16:00</td><td class="td-sess"><div class="sess-name">THE ARENA: The Build-Off</div><span class="sess-badge b-arena">Arena</span></td><td class="td-desc"><strong>Live Tournament:</strong> A mystery business model brief is dropped (e.g., "A subscription-based laundry app"). Participants have 120 minutes to build and launch.</td><td class="td-app"><span class="app-lbl">App Integration</span>Live App Demos via the App Gallery. Judged on UI/UX, functional completeness, and speed.</td></tr>
+            <tr><td class="td-time">16:00–17:00</td><td class="td-sess"><div class="sess-name">Zero-to-Hero Graduation</div><span class="sess-badge b-close">Closing</span></td><td class="td-desc">Final Leaderboard reveal. Announcement of LAPA World Cup qualifiers. Awarding the "LAPA Creator" badge. Graduation celebration and Hero certificates issued.</td><td class="td-app"><span class="app-lbl">App Integration</span>Final cumulative points tallied. Top scorers announced for the World Cup.</td></tr>
+          </table>
         </div>
       </div>
     </div>
@@ -776,7 +1290,7 @@ footer {
     <h2>Ready to Install an<br><em>AI Academy</em> in Your Organisation?</h2>
     <p>One masterclass unlocks 6 months of continuous learning, weekly Subject Matter Expert webinars, and a live leaderboard. One SBL-Khas claim. Zero management overhead.</p>
     <div class="cta-btns">
-      <a href="mailto:firdaus@miceneurol.com" class="btn-navy">Enquire About a Programme</a>
+      <a href="/cdn-cgi/l/email-protection#1d7b746f797c686e5d70747e787378686f7271337e7270" class="btn-navy">Enquire About a Programme</a>
       <a href="#modules" class="btn-outline-navy">Review the Curriculum</a>
     </div>
   </div>
@@ -787,17 +1301,5 @@ footer {
   <div class="footer-logo">LAPA · Malaysia Corporate Edition &nbsp;·&nbsp; MICE Neurol Pte Ltd</div>
   <div class="footer-copy">© 2025 beingremarkable.co · All rights reserved.</div>
 </footer>
-
-<script>
-  function toggleMc(id) {
-    const card = document.getElementById(id);
-    const isOpen = card.classList.contains('open');
-    document.querySelectorAll('.mc').forEach(c => c.classList.remove('open'));
-    if (!isOpen) {
-      card.classList.add('open');
-      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
-    }
-  }
-</script>
 </body>
 </html>
