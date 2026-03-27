@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHRKL Performance Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .slider-blue { accent-color: #2563eb; }
+        .slider-green { accent-color: #10b981; }
+        
+        /* Improved Input Styling */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .editable-field {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 800;
+        }
+        
+        .pu-btn {
+            @apply w-8 h-8 flex items-center justify-center bg-white border-2 border-slate-200 rounded-lg text-slate-600 font-black hover:bg-blue-50 hover:border-blue-400 active:scale-95 transition-all;
+        }
+
+        .sal-field:focus {
+            border-color: #10b981;
+            outline: none;
+            background-color: #f0fdf4;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .table-row-hover:hover {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 text-slate-800">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 rounded-3xl p-8 mb-8 text-white flex flex-col md:flex-row justify-between items-center shadow-xl">
+            <div>
+                <h1 class="text-3xl font-extrabold italic tracking-tighter text-white">MHRKL</h1>
+                <p class="text-blue-400 font-bold uppercase tracking-widest text-xs mt-1">Strategic Compensation Simulator</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-right text-slate-400">
+                <p class="text-[10px] font-bold uppercase mb-1 tracking-widest">Prepared By</p>
+                <p class="text-xl font-bold text-white tracking-tight">Chairman Firdaus Salim</p>
+                <p class="text-[10px] font-bold uppercase mt-1 tracking-widest text-blue-400">March 2026</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Sidebar: Controls -->
+            <aside class="lg:col-span-4 space-y-6">
+                
+                <!-- Global Comparison Setting -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase mb-4 border-b pb-2 text-blue-600">Comparison Target</h3>
+                    <label class="block text-sm font-medium text-slate-700 mb-2 italic">Benchmark Increment (%)</label>
+                    <div class="flex items-center gap-4">
+                        <input type="range" id="comparePct" min="0" max="20" step="0.5" value="5" class="w-full slider-blue cursor-pointer">
+                        <span id="comparePctVal" class="font-bold text-blue-600 w-12 text-right">5%</span>
+                    </div>
+                </div>
+
+                <!-- Tier Config -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase mb-4 border-b pb-2 text-emerald-600">Tier Configuration</h3>
+                    
+                    <div class="space-y-8">
+                        <!-- Thresholds (Blue) -->
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <label class="text-xs font-bold text-blue-600 uppercase tracking-tight italic">Survival Threshold ($)</label>
+                                    <span class="text-xs font-bold text-blue-600" id="survivalThrVal">$15,000</span>
+                                </div>
+                                <input type="range" id="survivalThr" min="0" max="40000" step="1000" value="15000" class="w-full slider-blue cursor-pointer">
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <label class="text-xs font-bold text-blue-600 uppercase tracking-tight italic">Superior Threshold ($)</label>
+                                    <span class="text-xs font-bold text-blue-600" id="superiorThrVal">$50,000</span>
+                                </div>
+                                <input type="range" id="superiorThr" min="20000" max="150000" step="5000" value="50000" class="w-full slider-blue cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Pools (Green) -->
+                        <div class="space-y-6 pt-6 border-t border-slate-100">
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <label class="text-xs font-bold text-emerald-600 uppercase tracking-tight italic">Base Pool (% of Surplus)</label>
+                                    <span class="text-xs font-bold text-emerald-600" id="basePctVal">16.2%</span>
+                                </div>
+                                <input type="range" id="basePct" min="0" max="50" step="0.1" value="16.2" class="w-full slider-green cursor-pointer">
+                                
+                                <div class="mt-4 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg shadow-sm">
+                                    <p class="text-[11px] text-emerald-800 leading-relaxed">
+                                        <span class="font-bold block uppercase mb-1 tracking-wider text-emerald-900">CFO Advisory:</span>
+                                        To maintain <span class="font-bold" id="adviseComparePct">5</span>% increment parity at the $<span class="font-bold" id="adviseThr">15k</span> survival threshold, set this pool to: 
+                                        <span class="text-base font-black block mt-1" id="adviseResult">16.2%</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="space-y-2 pt-4">
+                                <div class="flex justify-between text-emerald-600">
+                                    <label class="text-xs font-bold uppercase tracking-tight italic">Superior Pool (% of Surplus)</label>
+                                    <span class="text-xs font-bold" id="superiorPctVal">20%</span>
+                                </div>
+                                <input type="range" id="superiorPct" min="0" max="50" step="1" value="20" class="w-full slider-green cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions Card -->
+                <div class="bg-indigo-50 p-6 rounded-3xl border border-indigo-100">
+                    <h3 class="text-[10px] font-black text-indigo-400 uppercase mb-2 tracking-widest">Controls</h3>
+                    <p class="text-[11px] text-indigo-700 leading-relaxed italic">
+                        Use the <span class="font-bold text-blue-600">+/- selectors</span> in the table to adjust Performance Units. Click any <span class="font-bold text-emerald-600">Base Salary</span> to type new figures.
+                    </p>
+                </div>
+            </aside>
+
+            <!-- Main Panel: Results -->
+            <main class="lg:col-span-8 space-y-6">
+                
+                <!-- Main Simulator -->
+                <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border-t-8 border-blue-600 relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-6 relative z-10">
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Quarterly Surplus Simulator</h2>
+                        <div class="px-6 py-2 bg-slate-900 text-white rounded-2xl text-2xl font-black shadow-inner" id="totalSurplusVal">$15,000</div>
+                    </div>
+                    <input type="range" id="currentSurplus" min="0" max="150000" step="1000" value="15000" class="w-full h-4 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-blue mb-4">
+                    
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                        <div class="p-4 rounded-2xl border transition-all duration-300" id="tierStatusCard">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Tier</p>
+                            <p class="text-xl font-black text-slate-800" id="activeTierName">Base Performance</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                            <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Total Bonus Pool</p>
+                            <p class="text-xl font-black text-blue-700" id="totalPoolVal">$2,430</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Retained Surplus</p>
+                            <p class="text-xl font-black text-emerald-700" id="retainedVal">$12,570</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Tier Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-100 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between h-32 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Survival</p>
+                            <p class="text-[10px] font-bold text-slate-500">Below $<span id="cardSurvivalThr">15k</span></p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-slate-600">0% Payout</p>
+                            <p class="text-[10px] text-slate-400 italic font-medium tracking-tight">Focus: Financial Recovery.</p>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-200 flex flex-col justify-between h-32 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest">Base</p>
+                            <p class="text-[10px] font-bold text-blue-400">$<span id="cardBaseRange">15k-50k</span></p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-blue-700"><span id="cardBasePct">16.2</span>% Pool</p>
+                            <p class="text-[10px] text-blue-400 italic font-medium tracking-tight">Target: <span id="cardComparePctText">5</span>% Parity.</p>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-100 flex flex-col justify-between h-32 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Superior</p>
+                            <p class="text-[10px] font-bold text-emerald-400">Above $<span id="cardSuperiorThr">50k</span></p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-emerald-700"><span id="cardSuperiorPct">20</span>% Pool</p>
+                            <p class="text-[10px] text-emerald-400 italic font-medium tracking-tight">Impact: Growth Sharing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payout Table -->
+                <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            Staff Performance Breakdown
+                        </h3>
+                        <span class="text-xs font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full shadow-sm uppercase tracking-tighter" id="unitSumDisplay">Total Units: 5.75</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] font-extrabold text-slate-500 uppercase tracking-widest border-b border-slate-200">
+                                <tr>
+                                    <th class="p-6">Staff Member</th>
+                                    <th class="p-6 text-center">Unit Weight (PU)</th>
+                                    <th class="p-6 text-center">Monthly Base</th>
+                                    <th class="p-6 text-center">Fixed Incr.</th>
+                                    <th class="p-6 text-center bg-blue-50 text-blue-600">Proposed QPB</th>
+                                    <th class="p-6 text-center bg-blue-100/50 text-blue-800 whitespace-nowrap">QPB Multiplier</th>
+                                    <th class="p-6 text-center">Net Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payoutTableBody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                            <tfoot id="payoutTableFoot" class="bg-slate-900 text-white font-black text-sm shadow-inner">
+                                <!-- Dynamic totals row -->
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Summary Panel -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+                    <div class="bg-slate-900 p-8 rounded-3xl text-white shadow-xl flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Habeeb Savings Utilization</h4>
+                            <p class="text-5xl font-black text-white tracking-tighter" id="poolVsHabeeb">33.7%</p>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-4 leading-relaxed font-medium">Percentage of quarterly savings ($7,200) from vacant Assistant role utilized for this specific payout.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-center text-center">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest">Annual Net Recovery</h4>
+                        <p class="text-slate-600 text-sm italic">Projected annual paydown of institutional debt:</p>
+                        <strong class="text-emerald-600 text-3xl block mt-1 font-black tracking-tight" id="annualDeficitRecovery">$50,280</strong>
+                        <p class="text-[9px] text-slate-400 mt-2 font-bold uppercase tracking-tighter">Based on current simulation surplus</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const staffData = [
+            { id: 0, name: "Mahdi", title: "Mosque Manager", salary: 3910.24, pu: 1.5 },
+            { id: 1, name: "Sahrin", title: "Asst. Manager", salary: 3000.00, pu: 1.25 },
+            { id: 2, name: "Haffiz", title: "Executive", salary: 3732.37, pu: 1.0 },
+            { id: 3, name: "Isman", title: "Executive", salary: 3000.00, pu: 1.0 },
+            { id: 4, name: "Roslan", title: "Officer", salary: 2530.00, pu: 1.0 }
+        ];
+
+        const inputs = {
+            currentSurplus: document.getElementById('currentSurplus'),
+            comparePct: document.getElementById('comparePct'),
+            survivalThr: document.getElementById('survivalThr'),
+            basePct: document.getElementById('basePct'),
+            superiorThr: document.getElementById('superiorThr'),
+            superiorPct: document.getElementById('superiorPct')
+        };
+
+        const displays = {
+            totalSurplus: document.getElementById('totalSurplusVal'),
+            comparePctVal: document.getElementById('comparePctVal'),
+            survivalThrVal: document.getElementById('survivalThrVal'),
+            basePctVal: document.getElementById('basePctVal'),
+            superiorThrVal: document.getElementById('superiorThrVal'),
+            superiorPctVal: document.getElementById('superiorPctVal'),
+            activeTierName: document.getElementById('activeTierName'),
+            totalPoolVal: document.getElementById('totalPoolVal'),
+            retainedVal: document.getElementById('retainedVal'),
+            unitSumDisplay: document.getElementById('unitSumDisplay'),
+            poolVsHabeeb: document.getElementById('poolVsHabeeb'),
+            annualDeficitRecovery: document.getElementById('annualDeficitRecovery'),
+            cardSurvivalThr: document.getElementById('cardSurvivalThr'),
+            cardBaseRange: document.getElementById('cardBaseRange'),
+            cardBasePct: document.getElementById('cardBasePct'),
+            cardSuperiorThr: document.getElementById('cardSuperiorThr'),
+            cardSuperiorPct: document.getElementById('cardSuperiorPct'),
+            cardComparePctText: document.getElementById('cardComparePctText'),
+            adviseComparePct: document.getElementById('adviseComparePct'),
+            adviseThr: document.getElementById('adviseThr'),
+            adviseResult: document.getElementById('adviseResult')
+        };
+
+        function adjustPU(index, delta) {
+            staffData[index].pu = Math.max(0, parseFloat((staffData[index].pu + delta).toFixed(2)));
+            calculate();
+        }
+
+        function calculate() {
+            const surplus = parseFloat(inputs.currentSurplus.value);
+            const compRate = parseFloat(inputs.comparePct.value) / 100;
+            const sThr = parseFloat(inputs.survivalThr.value);
+            const supThr = parseFloat(inputs.superiorThr.value);
+            const basePoolPctInput = parseFloat(inputs.basePct.value) / 100;
+            const supPoolPctInput = parseFloat(inputs.superiorPct.value) / 100;
+
+            staffData.forEach((staff, i) => {
+                const salInp = document.getElementById(`sal-${i}`);
+                if (salInp) staff.salary = parseFloat(salInp.value) || 0;
+            });
+
+            displays.totalSurplus.innerText = `$${surplus.toLocaleString()}`;
+            displays.comparePctVal.innerText = `${inputs.comparePct.value}%`;
+            displays.survivalThrVal.innerText = `$${sThr.toLocaleString()}`;
+            displays.basePctVal.innerText = `${inputs.basePct.value}%`;
+            displays.superiorThrVal.innerText = `$${supThr.toLocaleString()}`;
+            displays.superiorPctVal.innerText = `${inputs.superiorPct.value}%`;
+
+            const totalMonthlySalary = staffData.reduce((sum, s) => sum + s.salary, 0);
+            const quarterlyIncrCostTotal = totalMonthlySalary * compRate * 3;
+            const parityPct = sThr > 0 ? (quarterlyIncrCostTotal / sThr) * 100 : 0;
+            
+            displays.adviseComparePct.innerText = inputs.comparePct.value;
+            displays.adviseThr.innerText = `${(sThr/1000).toFixed(0)}k`;
+            displays.adviseResult.innerText = `${parityPct.toFixed(1)}%`;
+
+            displays.cardSurvivalThr.innerText = `${(sThr/1000).toFixed(0)}k`;
+            displays.cardBaseRange.innerText = `${(sThr/1000).toFixed(0)}k - ${(supThr/1000).toFixed(0)}k`;
+            displays.cardBasePct.innerText = inputs.basePct.value;
+            displays.cardSuperiorThr.innerText = `${(supThr/1000).toFixed(0)}k`;
+            displays.cardSuperiorPct.innerText = inputs.superiorPct.value;
+            displays.cardComparePctText.innerText = inputs.comparePct.value;
+
+            let pool = 0;
+            let tierName = "Survival";
+            const statusCard = document.getElementById('tierStatusCard');
+            
+            if (surplus < sThr) {
+                pool = 0;
+                tierName = "Survival Mode";
+                statusCard.className = "p-4 bg-slate-100 rounded-2xl border border-slate-300";
+            } else if (surplus < supThr) {
+                pool = surplus * basePoolPctInput;
+                tierName = "Base Performance";
+                statusCard.className = "p-4 bg-blue-50 rounded-2xl border border-blue-200 shadow-sm shadow-blue-100";
+            } else {
+                pool = surplus * supPoolPctInput;
+                tierName = "Superior Impact";
+                statusCard.className = "p-4 bg-emerald-50 rounded-2xl border border-emerald-200 shadow-sm shadow-emerald-100";
+            }
+
+            displays.activeTierName.innerText = tierName;
+            displays.totalPoolVal.innerText = `$${pool.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            displays.retainedVal.innerText = `$${(surplus - pool).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+            const totalPU = staffData.reduce((sum, s) => sum + s.pu, 0);
+            displays.unitSumDisplay.innerText = `Total Units: ${totalPU.toFixed(2)}`;
+            const vpu = totalPU > 0 ? (pool / totalPU) : 0;
+
+            let sumBaseSal = 0;
+            let sumFixedIncr = 0;
+            let sumQPB = 0;
+            let sumVariance = 0;
+
+            const tbody = document.getElementById('payoutTableBody');
+            tbody.innerHTML = '';
+            
+            staffData.forEach((staff, i) => {
+                const fixedIncr = (staff.salary * compRate) * 3;
+                const qpb = vpu * staff.pu;
+                const variance = qpb - fixedIncr;
+                const mthlyMultiplier = staff.salary > 0 ? (qpb / staff.salary) : 0;
+
+                sumBaseSal += staff.salary;
+                sumFixedIncr += fixedIncr;
+                sumQPB += qpb;
+                sumVariance += variance;
+
+                const row = document.createElement('tr');
+                row.className = "table-row-hover transition-colors";
+                row.innerHTML = `
+                    <td class="p-6">
+                        <p class="font-bold text-slate-800 leading-tight">${staff.name}</p>
+                        <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest mt-0.5 italic">${staff.title}</p>
+                    </td>
+                    <td class="p-6 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="adjustPU(${i}, -0.05)" class="pu-btn">-</button>
+                            <span class="w-12 text-center font-black text-blue-600 text-sm">${staff.pu.toFixed(2)}</span>
+                            <button onclick="adjustPU(${i}, 0.05)" class="pu-btn">+</button>
+                        </div>
+                    </td>
+                    <td class="p-6 text-center">
+                        <div class="flex items-center justify-center gap-1">
+                            <span class="text-xs font-bold text-slate-400">$</span>
+                            <input type="number" step="10" value="${staff.salary}" id="sal-${i}" class="w-28 editable-field sal-field text-emerald-600 text-sm">
+                        </div>
+                    </td>
+                    <td class="p-6 text-center text-red-400 font-black text-sm">$${fixedIncr.toLocaleString(undefined, {minimumFractionDigits: 0})}</td>
+                    <td class="p-6 text-center bg-blue-50/50 font-black text-blue-700 text-lg">$${qpb.toLocaleString(undefined, {minimumFractionDigits: 0})}</td>
+                    <td class="p-6 text-center bg-blue-100/20">
+                        <span class="text-base font-black text-blue-900">${mthlyMultiplier.toFixed(2)}x</span>
+                        <p class="text-[8px] text-blue-400 uppercase font-bold tracking-tighter">Month Base</p>
+                    </td>
+                    <td class="p-6 text-center font-black ${variance >= 0 ? 'text-emerald-600' : 'text-slate-300'}">
+                        ${variance >= 0 ? '+' : ''}$${variance.toLocaleString(undefined, {maximumFractionDigits: 0})}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            const tfoot = document.getElementById('payoutTableFoot');
+            const avgMthlyMult = sumBaseSal > 0 ? (sumQPB / sumBaseSal) : 0;
+            tfoot.innerHTML = `
+                <tr>
+                    <td class="p-6 uppercase tracking-widest text-[10px] font-black">Totals</td>
+                    <td class="p-6 text-center font-black text-blue-400">${totalPU.toFixed(2)}x</td>
+                    <td class="p-6 text-center text-emerald-400 font-black">$${sumBaseSal.toLocaleString()}</td>
+                    <td class="p-6 text-center text-red-400 font-black">$${sumFixedIncr.toLocaleString(undefined, {minimumFractionDigits: 0})}</td>
+                    <td class="p-6 text-center bg-blue-800 text-white font-black text-xl">$${sumQPB.toLocaleString(undefined, {minimumFractionDigits: 0})}</td>
+                    <td class="p-6 text-center bg-blue-900 text-white border-x border-white/5">
+                        <span class="text-base font-black">${avgMthlyMult.toFixed(2)}x</span>
+                    </td>
+                    <td class="p-6 text-center font-black ${sumVariance >= 0 ? 'text-emerald-400' : 'text-slate-400'}">
+                        ${sumVariance >= 0 ? '+' : ''}$${sumVariance.toLocaleString(undefined, {maximumFractionDigits: 0})}
+                    </td>
+                </tr>
+            `;
+
+            const quarterlyHabeebSaving = 7200; 
+            const utilization = (pool / quarterlyHabeebSaving) * 100;
+            displays.poolVsHabeeb.innerText = `${utilization.toFixed(1)}%`;
+            displays.annualDeficitRecovery.innerText = `$${((surplus - pool) * 4).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+        }
+
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        document.getElementById('payoutTableBody').addEventListener('input', (e) => {
+            if (e.target.tagName === 'INPUT') {
+                calculate();
+            }
+        });
+
+        calculate();
+    </script>
+</body>
+</html>
