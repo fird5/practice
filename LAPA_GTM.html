@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAPA GTM Master Infographic</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D1B3E;
+  --gold: #C9A84C;
+  --gold-light: #F5E6C8;
+  --white: #FAFAF8;
+  --ink: #0D1B3E;
+  --muted: #6B7280;
+  --purple: #534AB7;
+  --teal: #0F6E56;
+  --blue: #185FA5;
+  --amber: #BA7517;
+  --coral: #993C1D;
+  --pink: #993556;
+  --green: #3B6D11;
+  --orange: #854F0B;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+/* ── HEADER ── */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 28px;
+  margin-bottom: 56px;
+  gap: 24px;
+}
+.header-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.0;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+.header h1 span { color: var(--gold); }
+.header-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 2;
+}
+.header-meta strong { color: var(--navy); font-weight: 500; display: block; font-size: 13px; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #E5E7EB;
+}
+
+/* ── STRATEGY FRAME ── */
+.strategy-frame {
+  background: var(--navy);
+  color: var(--white);
+  padding: 36px 40px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.strategy-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 300px; height: 100%;
+  background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.08) 100%);
+}
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  position: relative;
+}
+.strategy-item {}
+.strategy-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--gold);
+  opacity: 0.25;
+  line-height: 1;
+  margin-bottom: -8px;
+}
+.strategy-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.strategy-value {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+.strategy-divider {
+  width: 1px;
+  background: rgba(255,255,255,0.1);
+  display: none;
+}
+
+/* ── GTM TRACKS ── */
+.tracks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.track-card {
+  border: 1px solid #E5E7EB;
+  padding: 28px;
+  position: relative;
+}
+.track-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  margin-bottom: 14px;
+}
+.track-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+.track-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.track-steps {}
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+.step-row:last-child { border-bottom: none; }
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 20px;
+  padding-top: 1px;
+}
+.step-text { font-size: 12px; line-height: 1.5; }
+.step-highlight { font-weight: 500; }
+.track-stat {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: space-between;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  display: block;
+}
+.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.track-uni .track-badge { background: #E1F5EE; color: #0F6E56; }
+.track-uni .track-title { color: #0F6E56; }
+.track-uni .stat-num { color: #0F6E56; }
+.track-uni { border-top: 4px solid #0F6E56; }
+
+.track-corp .track-badge { background: #E6F1FB; color: #185FA5; }
+.track-corp .track-title { color: #185FA5; }
+.track-corp .stat-num { color: #185FA5; }
+.track-corp { border-top: 4px solid #185FA5; }
+
+/* ── FLYWHEEL PRIORITY ── */
+.flywheel-section { margin-bottom: 48px; }
+.flywheel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.fw-card {
+  padding: 18px 16px;
+  border: 1px solid #E5E7EB;
+  position: relative;
+}
+.fw-priority {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  opacity: 0.12;
+  line-height: 1;
+  margin-bottom: -4px;
+}
+.fw-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.fw-when {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding: 2px 6px;
+  display: inline-block;
+}
+.fw-unlock {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.fw-card.p1 { border-top: 3px solid var(--coral); }
+.fw-card.p1 .fw-priority, .fw-card.p1 .fw-name { color: var(--coral); }
+.fw-card.p1 .fw-when { background: #FAECE7; color: var(--coral); }
+.fw-card.p2 { border-top: 3px solid var(--amber); }
+.fw-card.p2 .fw-priority, .fw-card.p2 .fw-name { color: var(--amber); }
+.fw-card.p2 .fw-when { background: #FAEEDA; color: var(--amber); }
+.fw-card.p3 { border-top: 3px solid var(--blue); }
+.fw-card.p3 .fw-priority, .fw-card.p3 .fw-name { color: var(--blue); }
+.fw-card.p3 .fw-when { background: #E6F1FB; color: var(--blue); }
+.fw-card.p4 { border-top: 3px solid var(--teal); }
+.fw-card.p4 .fw-priority, .fw-card.p4 .fw-name { color: var(--teal); }
+.fw-card.p4 .fw-when { background: #E1F5EE; color: var(--teal); }
+.fw-card.p5 { border-top: 3px solid var(--pink); }
+.fw-card.p5 .fw-priority, .fw-card.p5 .fw-name { color: var(--pink); }
+.fw-card.p5 .fw-when { background: #FBEAF0; color: var(--pink); }
+.fw-card.p6 { border-top: 3px solid var(--green); }
+.fw-card.p6 .fw-priority, .fw-card.p6 .fw-name { color: var(--green); }
+.fw-card.p6 .fw-when { background: #EAF3DE; color: var(--green); }
+.fw-card.p7 { border-top: 3px solid var(--orange); }
+.fw-card.p7 .fw-priority, .fw-card.p7 .fw-name { color: var(--orange); }
+.fw-card.p7 .fw-when { background: #FAEEDA; color: var(--orange); }
+.fw-card.p8 { border-top: 3px solid var(--purple); }
+.fw-card.p8 .fw-priority, .fw-card.p8 .fw-name { color: var(--purple); }
+.fw-card.p8 .fw-when { background: #EEEDFE; color: var(--purple); }
+
+/* ── RISK MATRIX ── */
+.risk-section { margin-bottom: 48px; }
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.risk-card {
+  padding: 16px 18px;
+  border-left: 3px solid;
+}
+.risk-level {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.risk-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.risk-mitigation {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.risk-critical { border-color: #C0392B; background: #FDECEA; }
+.risk-critical .risk-level { color: #C0392B; }
+.risk-critical .risk-name { color: #7B241C; }
+.risk-high { border-color: #E67E22; background: #FEF0E3; }
+.risk-high .risk-level { color: #E67E22; }
+.risk-high .risk-name { color: #784212; }
+.risk-medium { border-color: #F1C40F; background: #FEFDE7; }
+.risk-medium .risk-level { color: #B7950B; }
+.risk-medium .risk-name { color: #6E6519; }
+
+/* ── REVENUE ── */
+.revenue-section { margin-bottom: 48px; }
+.revenue-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.rev-card {
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.rev-scenario {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.rev-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.rev-label { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+.rev-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  border-top: 1px solid #E5E7EB;
+  padding-top: 14px;
+}
+.rev-item-label { font-size: 10px; color: var(--muted); text-align: left; }
+.rev-item-val { font-size: 12px; font-weight: 500; text-align: right; }
+.rev-card.conservative .rev-amount { color: #C0392B; }
+.rev-card.base .rev-amount { color: var(--teal); }
+.rev-card.base { border: 2px solid var(--teal); }
+.rev-card.base::before {
+  content: 'TARGET';
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  background: #E1F5EE;
+  padding: 2px 6px;
+}
+.rev-card.optimistic .rev-amount { color: var(--navy); }
+
+/* ── 30 DAY SPRINT ── */
+.sprint-section { margin-bottom: 48px; }
+.sprint-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.sprint-card {
+  background: var(--navy);
+  color: var(--white);
+  padding: 24px;
+}
+.sprint-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--gold);
+  opacity: 0.2;
+  line-height: 1;
+  margin-bottom: -8px;
+}
+.sprint-action {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.sprint-why {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+/* ── BENCHMARKS ── */
+.bench-section { margin-bottom: 48px; }
+.bench-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.bench-card {
+  padding: 16px 18px;
+  border: 1px solid #E5E7EB;
+}
+.bench-cat {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.bench-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.bench-lesson {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 2px solid var(--navy);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.footer-brand span { color: var(--gold); }
+.footer-note {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">MICE Neurol Pte Ltd · Confidential Strategy Document</div>
+      <h1>LAPA<br><span>GTM Master</span><br>Playbook</h1>
+    </div>
+    <div class="header-meta">
+      <strong>Learn AI. Play AI.</strong>
+      Southeast Asia<br>
+      University + Corporate<br>
+      12-Month Strategy<br>
+      MY · PH Markets
+    </div>
+  </div>
+
+  <!-- STRATEGY FRAME -->
+  <div class="section-title">Strategic overview</div>
+  <div class="strategy-frame">
+    <div class="strategy-grid">
+      <div class="strategy-item">
+        <div class="strategy-num">40</div>
+        <div class="strategy-label">University MOUs</div>
+        <div class="strategy-value">20 Malaysia · 20 Philippines<br>50%+ converted to paid by month 9</div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">8</div>
+        <div class="strategy-label">Corporate Clients</div>
+        <div class="strategy-value">GLCs + Banks · MY + PH<br>Avg deal size $50K · HRD Corp eligible</div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">$700K</div>
+        <div class="strategy-label">Blended ARR Target</div>
+        <div class="strategy-value">$300K university · $400K corporate<br>Base case by month 12</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GTM TRACKS -->
+  <div class="section-title">Dual GTM tracks</div>
+  <div class="tracks-grid">
+    <div class="track-card track-uni">
+      <div class="track-badge">University Track</div>
+      <div class="track-title">Dominate SEA Universities</div>
+      <div class="track-subtitle">Malaysia + Philippines · 40 MOUs · $300K ARR</div>
+      <div class="track-steps">
+        <div class="step-row"><div class="step-num">01</div><div class="step-text"><span class="step-highlight">Hire MY + PH Country Leads</span> with existing university networks. Target ex-faculty, ex-student affairs.</div></div>
+        <div class="step-row"><div class="step-num">02</div><div class="step-text"><span class="step-highlight">Launch Campus Rep programme</span> at all existing MOU universities. 2–3 reps per campus.</div></div>
+        <div class="step-row"><div class="step-num">03</div><div class="step-text"><span class="step-highlight">Partner with Student Unions</span> at 5 universities. Bypass faculty bureaucracy entirely.</div></div>
+        <div class="step-row"><div class="step-num">04</div><div class="step-text"><span class="step-highlight">Pitch MDEC (MY) + CHED via SUC presidents (PH)</span> using pilot data as policy evidence.</div></div>
+        <div class="step-row"><div class="step-num">05</div><div class="step-text"><span class="step-highlight">Launch National AI Competition</span> — Malaysia AI League + Philippines AI League. Month 3.</div></div>
+        <div class="step-row"><div class="step-num">06</div><div class="step-text"><span class="step-highlight">Convert pilots to paid</span> at $8–12/user/month. Target 15+ paid contracts by month 9.</div></div>
+      </div>
+      <div class="track-stat">
+        <div class="stat-item"><span class="stat-num">$1–12</span><span class="stat-label">Per user/month</span></div>
+        <div class="stat-item"><span class="stat-num">10–20%</span><span class="stat-label">Activation rate</span></div>
+        <div class="stat-item"><span class="stat-num">5,000+</span><span class="stat-label">Existing students</span></div>
+      </div>
+    </div>
+    <div class="track-card track-corp">
+      <div class="track-badge">Corporate Track</div>
+      <div class="track-title">GLCs + Banks at Scale</div>
+      <div class="track-subtitle">Malaysia + Philippines · 8 clients · $400K ARR</div>
+      <div class="track-steps">
+        <div class="step-row"><div class="step-num">01</div><div class="step-text"><span class="step-highlight">Identify anchor GLC (MY)</span>: Maybank, CIMB, Telekom Malaysia. Free 90-day pilot — bypass procurement.</div></div>
+        <div class="step-row"><div class="step-num">02</div><div class="step-text"><span class="step-highlight">Identify anchor bank (PH)</span>: BDO Unibank, Land Bank. Entry via Head of L&D or Digital Transformation.</div></div>
+        <div class="step-row"><div class="step-num">03</div><div class="step-text"><span class="step-highlight">Apply HRD Corp SBL-Khas</span> (MY). Removes budget objection entirely. Net cost to client: zero.</div></div>
+        <div class="step-row"><div class="step-num">04</div><div class="step-text"><span class="step-highlight">Equip inside champion</span> at each anchor. Give them ROI data + board-ready narrative to sell upward.</div></div>
+        <div class="step-row"><div class="step-num">05</div><div class="step-text"><span class="step-highlight">Publish co-branded case study</span> after first pilot. One Maybank/CIMB logo changes every conversation.</div></div>
+        <div class="step-row"><div class="step-num">06</div><div class="step-text"><span class="step-highlight">Launch talent pipeline proposition</span>. LAPA-certified grads = priority hire. New revenue stream.</div></div>
+      </div>
+      <div class="track-stat">
+        <div class="stat-item"><span class="stat-num">$22K–$250K</span><span class="stat-label">Deal range</span></div>
+        <div class="stat-item"><span class="stat-num">$50K</span><span class="stat-label">Avg deal size</span></div>
+        <div class="stat-item"><span class="stat-num">HRD Corp</span><span class="stat-label">MY subsidy</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLYWHEEL PRIORITY -->
+  <div class="flywheel-section">
+    <div class="section-title">Flywheel priority sequence</div>
+    <div class="flywheel-grid">
+      <div class="fw-card p1">
+        <div class="fw-priority">1</div>
+        <div class="fw-name">Campus Reps</div>
+        <div class="fw-when">Start this week</div>
+        <div class="fw-unlock">Activates dormant MOUs. Peer trust beats any sales team.</div>
+      </div>
+      <div class="fw-card p2">
+        <div class="fw-priority">2</div>
+        <div class="fw-name">Gamification Loop</div>
+        <div class="fw-when">Parallel — now</div>
+        <div class="fw-unlock">Retention engine. Leaderboards must be public and competitive.</div>
+      </div>
+      <div class="fw-card p3">
+        <div class="fw-priority">3</div>
+        <div class="fw-name">Corporate Credibility</div>
+        <div class="fw-when">Parallel — now</div>
+        <div class="fw-unlock">One anchor GLC case study unlocks all corporate conversations.</div>
+      </div>
+      <div class="fw-card p4">
+        <div class="fw-priority">4</div>
+        <div class="fw-name">University Network</div>
+        <div class="fw-when">Month 2–3</div>
+        <div class="fw-unlock">Easier once you have activation data. Don't expand before proving value.</div>
+      </div>
+      <div class="fw-card p5">
+        <div class="fw-priority">5</div>
+        <div class="fw-name">Competition Circuit</div>
+        <div class="fw-when">Month 3</div>
+        <div class="fw-unlock">Needs 200–300 active students first. Launching early to empty leaderboard kills momentum.</div>
+      </div>
+      <div class="fw-card p6">
+        <div class="fw-priority">6</div>
+        <div class="fw-name">Talent Pipeline</div>
+        <div class="fw-when">Month 6+</div>
+        <div class="fw-unlock">Needs certified graduates. Plant seeds now — build it month 6.</div>
+      </div>
+      <div class="fw-card p7">
+        <div class="fw-priority">7</div>
+        <div class="fw-name">Govt Endorsement</div>
+        <div class="fw-when">Month 4–5</div>
+        <div class="fw-unlock">Need data from 5+ universities first. Start relationships now, formal push later.</div>
+      </div>
+      <div class="fw-card p8">
+        <div class="fw-priority">8</div>
+        <div class="fw-name">Master Flywheel</div>
+        <div class="fw-when">Outcome — year 2</div>
+        <div class="fw-unlock">Not activated — it emerges when flywheels 1–7 are working.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVENUE PROJECTION -->
+  <div class="revenue-section">
+    <div class="section-title">12-month revenue projection</div>
+    <div class="revenue-grid">
+      <div class="rev-card conservative">
+        <div class="rev-scenario">Conservative</div>
+        <div class="rev-amount">$87K</div>
+        <div class="rev-label">Blended ARR</div>
+        <div class="rev-breakdown">
+          <div class="rev-item-label">Universities (20, pilot pricing)</div>
+          <div class="rev-item-val">$12K</div>
+          <div class="rev-item-label">Corporate (3 clients)</div>
+          <div class="rev-item-val">$75K</div>
+          <div class="rev-item-label">Activation rate</div>
+          <div class="rev-item-val">10%</div>
+          <div class="rev-item-label">Avg corporate deal</div>
+          <div class="rev-item-val">$25K</div>
+        </div>
+      </div>
+      <div class="rev-card base">
+        <div class="rev-scenario">Base Case</div>
+        <div class="rev-amount">$724K</div>
+        <div class="rev-label">Blended ARR</div>
+        <div class="rev-breakdown">
+          <div class="rev-item-label">Universities (30, blended)</div>
+          <div class="rev-item-val">$324K</div>
+          <div class="rev-item-label">Corporate (8 clients)</div>
+          <div class="rev-item-val">$400K</div>
+          <div class="rev-item-label">Activation rate</div>
+          <div class="rev-item-val">15%</div>
+          <div class="rev-item-label">Avg corporate deal</div>
+          <div class="rev-item-val">$50K</div>
+        </div>
+      </div>
+      <div class="rev-card optimistic">
+        <div class="rev-scenario">Optimistic</div>
+        <div class="rev-amount">$2.35M</div>
+        <div class="rev-label">Blended ARR</div>
+        <div class="rev-breakdown">
+          <div class="rev-item-label">Universities (40, post-pilot)</div>
+          <div class="rev-item-val">$1.15M</div>
+          <div class="rev-item-label">Corporate (15 clients)</div>
+          <div class="rev-item-val">$1.2M</div>
+          <div class="rev-item-label">Activation rate</div>
+          <div class="rev-item-val">20%</div>
+          <div class="rev-item-label">Avg corporate deal</div>
+          <div class="rev-item-val">$80K</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACRO RISKS -->
+  <div class="risk-section">
+    <div class="section-title">Macro risk register</div>
+    <div class="risk-grid">
+      <div class="risk-card risk-critical">
+        <div class="risk-level">Critical</div>
+        <div class="risk-name">AI Literacy Commoditisation</div>
+        <div class="risk-mitigation">Google, Microsoft, LinkedIn all pushing free AI content. Mitigation: LAPA's moat is gamification + certification layer, not content. Differentiate relentlessly.</div>
+      </div>
+      <div class="risk-card risk-critical">
+        <div class="risk-level">Critical</div>
+        <div class="risk-name">University Activation Gap</div>
+        <div class="risk-mitigation">MOUs ≠ revenue. SEA university bureaucracy stalls activation 6–12 months. Mitigation: Campus Reps + Student Union partnerships to drive bottom-up demand.</div>
+      </div>
+      <div class="risk-card risk-critical">
+        <div class="risk-level">Critical</div>
+        <div class="risk-name">Curriculum Obsolescence</div>
+        <div class="risk-mitigation">AI moves faster than any curriculum. Mitigation: Rapid refresh cycle baked into operations from day one. Modular content architecture.</div>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High</div>
+        <div class="risk-name">Govt Endorsement Delays</div>
+        <div class="risk-mitigation">Flywheel depends on MDEC/CHED. If delayed 18 months, mid-year acceleration fails. Mitigation: Flywheel must work without endorsement as base case.</div>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High</div>
+        <div class="risk-name">Copycat Risk</div>
+        <div class="risk-mitigation">Local edtech with govt connections could clone model. Mitigation: Speed of MOU signing is primary moat right now. Move faster than anyone can copy.</div>
+      </div>
+      <div class="risk-card risk-high">
+        <div class="risk-level">High</div>
+        <div class="risk-name">Founder Bandwidth</div>
+        <div class="risk-mitigation">LAPA competing with beingremarkable.co, GeBiz, SkillsFuture advisory. Mitigation: Hard resource allocation decision needed. LAPA needs focused execution.</div>
+      </div>
+      <div class="risk-card risk-medium">
+        <div class="risk-level">Medium</div>
+        <div class="risk-name">Pricing Mismatch</div>
+        <div class="risk-mitigation">$12–15/month is meaningful for MY/PH students. Mitigation: HRD Corp in MY removes cost. Institutional pricing model separates student from university payment.</div>
+      </div>
+      <div class="risk-card risk-medium">
+        <div class="risk-level">Medium</div>
+        <div class="risk-name">Student Drop-off</div>
+        <div class="risk-mitigation">Gamification drives sign-ups but retention post-novelty is hard. Mitigation: Competition circuit + employer badge recognition create ongoing return incentives.</div>
+      </div>
+      <div class="risk-card risk-medium">
+        <div class="risk-level">Medium</div>
+        <div class="risk-name">Credential Inflation</div>
+        <div class="risk-mitigation">If badges are too easy, employers stop valuing them. Mitigation: Rigorous assessment layer required. Maintain difficulty bar even when it hurts enrolment numbers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 30 DAY SPRINT -->
+  <div class="sprint-section">
+    <div class="section-title">Your 30-day immediate actions</div>
+    <div class="sprint-grid">
+      <div class="sprint-card">
+        <div class="sprint-num">01</div>
+        <div class="sprint-action">Recruit Campus Reps at every existing MOU university</div>
+        <div class="sprint-why">2–3 reps per campus. Offer cash per activation + public leaderboard recognition. This activates your dormant MOU pipeline immediately.</div>
+      </div>
+      <div class="sprint-card">
+        <div class="sprint-num">02</div>
+        <div class="sprint-action">Get 200+ students actively using the platform</div>
+        <div class="sprint-why">This is your proof point for everything. Corporate pitches, university renewals, government conversations — all need activation data first.</div>
+      </div>
+      <div class="sprint-card">
+        <div class="sprint-num">03</div>
+        <div class="sprint-action">Secure one warm intro to a GLC or bank for free pilot</div>
+        <div class="sprint-why">Use your SkillsFuture and Singapore network. One Maybank or CIMB free pilot bypasses procurement and opens your first $75K–$250K corporate deal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENCHMARKS -->
+  <div class="bench-section">
+    <div class="section-title">Who to benchmark + learn from</div>
+    <div class="bench-grid">
+      <div class="bench-card">
+        <div class="bench-cat">AI Literacy</div>
+        <div class="bench-name">Workera (Andrew Ng)</div>
+        <div class="bench-lesson">Study enterprise pricing and how DeepLearning.AI credibility halo was built. Your equivalent halo must be engineered.</div>
+      </div>
+      <div class="bench-card">
+        <div class="bench-cat">Govt Contracts</div>
+        <div class="bench-name">Correlation One</div>
+        <div class="bench-lesson">Cracked government AI literacy contracts globally. Their "train workforce, report to ministry" playbook is exactly your MDEC pitch.</div>
+      </div>
+      <div class="bench-card">
+        <div class="bench-cat">B2B2University</div>
+        <div class="bench-name">Coursera for Campus</div>
+        <div class="bench-lesson">Already in MY + PH universities. Study their MOU structure and activation tactics. Position LAPA as gamified, AI-native, SEA-local alternative.</div>
+      </div>
+      <div class="bench-card">
+        <div class="bench-cat">Retention</div>
+        <div class="bench-name">Duolingo</div>
+        <div class="bench-lesson">Gold standard for gamified learning retention. Study streak mechanics, leaderboard psychology, and free-to-paid conversion. Your problem is a Duolingo problem.</div>
+      </div>
+      <div class="bench-card">
+        <div class="bench-cat">Employer Trust</div>
+        <div class="bench-name">HackerRank / Kaggle</div>
+        <div class="bench-lesson">Built credential credibility through assessment rigour. Employers hire based on their score. LAPA Elite certification must aspire to this standard.</div>
+      </div>
+      <div class="bench-card">
+        <div class="bench-cat">SEA Local</div>
+        <div class="bench-name">Mereka (MY) · Eskwelabs (PH)</div>
+        <div class="bench-lesson">Understand HRD Corp and CHED landscape from inside. Closest structural competitors. Watch them closely — and move faster.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">LA<span>PA</span></div>
+    <div class="footer-note">
+      MICE Neurol Pte Ltd · Confidential<br>
+      Learn AI. Play AI. · Southeast Asia
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
