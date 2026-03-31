@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAPA — University Partnership Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0A1628;
+  --navy2: #0F1F3D;
+  --navy3: #162447;
+  --gold: #C9A84C;
+  --gold2: #E8C97A;
+  --gold3: #F5E6C8;
+  --white: #FAFAF8;
+  --muted: #7A8BA8;
+  --border: rgba(201,168,76,0.18);
+  --card: rgba(255,255,255,0.03);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:0.4;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:20px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(10,22,40,0.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:900;
+  color:var(--white);letter-spacing:-0.02em;
+}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-size:13px;font-weight:500;color:var(--muted);
+  text-decoration:none;letter-spacing:0.05em;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{
+  background:var(--gold);color:var(--navy);
+  padding:10px 24px;font-size:13px;font-weight:500;
+  border:none;cursor:pointer;letter-spacing:0.05em;
+  transition:background 0.2s;text-decoration:none;
+}
+.nav-cta:hover{background:var(--gold2);}
+
+/* ── HERO ── */
+.hero{
+  min-height:auto;
+  display:flex;align-items:center;
+  padding:80px 60px 56px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  right:-200px;top:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:500;
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-eyebrow::before{
+  content:'';width:32px;height:1px;background:var(--gold);
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,7vw,90px);
+  font-weight:900;line-height:1.0;
+  letter-spacing:-0.03em;
+  margin-bottom:32px;
+  max-width:800px;
+}
+.hero h1 em{
+  font-style:italic;color:var(--gold);
+}
+.hero-sub{
+  font-size:18px;font-weight:300;color:var(--muted);
+  max-width:520px;margin-bottom:48px;line-height:1.8;
+}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-primary{
+  background:var(--gold);color:var(--navy);
+  padding:16px 36px;font-size:14px;font-weight:500;
+  border:none;cursor:pointer;letter-spacing:0.05em;
+  text-decoration:none;display:inline-block;
+  transition:all 0.2s;
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-outline{
+  border:1px solid var(--border);color:var(--white);
+  padding:16px 36px;font-size:14px;font-weight:500;
+  letter-spacing:0.05em;text-decoration:none;display:inline-block;
+  transition:all 0.2s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{
+  display:flex;gap:48px;margin-top:48px;
+  padding-top:32px;border-top:1px solid var(--border);
+}
+.hero-stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:700;color:var(--gold);
+  display:block;line-height:1;margin-bottom:6px;
+}
+.hero-stat-label{font-size:12px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* ── SECTION BASE ── */
+section{padding:64px 60px;position:relative;}
+.section-tag{
+  font-size:10px;font-weight:500;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;display:block;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,4vw,52px);
+  font-weight:700;line-height:1.1;
+  letter-spacing:-0.02em;margin-bottom:16px;
+}
+.section-title em{font-style:italic;color:var(--gold);}
+.section-sub{
+  font-size:16px;color:var(--muted);
+  max-width:560px;line-height:1.8;margin-bottom:32px;
+}
+
+/* ── PROBLEM ── */
+.problem{background:var(--navy2);}
+.problem-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-top:36px;
+}
+.problem-card{
+  background:var(--navy2);
+  padding:40px 36px;
+}
+.problem-num{
+  font-family:'Playfair Display',serif;
+  font-size:56px;font-weight:900;
+  color:var(--gold);opacity:0.9;
+  line-height:1;display:block;margin-bottom:16px;
+}
+.problem-label{
+  font-size:13px;font-weight:500;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;
+}
+.problem-desc{font-size:15px;color:rgba(250,250,248,0.7);line-height:1.7;}
+
+/* ── WHAT IS LAPA ── */
+.what-lapa{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.lapa-visual{
+  position:relative;
+}
+.lapa-screen{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  padding:32px;
+  position:relative;
+  overflow:hidden;
+}
+.lapa-screen::before{
+  content:'LAPA';
+  position:absolute;top:-20px;right:-10px;
+  font-family:'Playfair Display',serif;
+  font-size:120px;font-weight:900;
+  color:rgba(201,168,76,0.04);
+  pointer-events:none;
+}
+.app-icon-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.app-icon{
+  aspect-ratio:1;
+  background:var(--navy2);
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:8px;padding:12px 8px;
+  font-size:24px;
+  transition:all 0.2s;cursor:default;
+}
+.app-icon:hover{border-color:var(--gold);transform:translateY(-2px);}
+.app-icon-label{font-size:9px;color:var(--muted);text-align:center;letter-spacing:0.05em;line-height:1.3;}
+.lapa-tagline{
+  background:var(--gold);color:var(--navy);
+  padding:16px 24px;margin-top:1px;
+  font-size:13px;font-weight:500;
+  letter-spacing:0.08em;text-align:center;
+}
+
+/* ── MODULES ── */
+.modules-section{background:var(--navy2);}
+.modules-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:16px;margin-top:36px;
+}
+.module-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:28px 20px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;cursor:default;
+}
+.module-card:hover{
+  border-color:var(--gold);
+  transform:translateY(-4px);
+}
+.module-card::before{
+  content:attr(data-num);
+  position:absolute;bottom:-10px;right:-4px;
+  font-family:'Playfair Display',serif;
+  font-size:72px;font-weight:900;
+  opacity:0.06;color:var(--gold);
+  pointer-events:none;
+}
+.module-num{
+  font-size:10px;font-weight:500;
+  letter-spacing:0.2em;color:var(--muted);
+  margin-bottom:20px;display:block;
+}
+.module-icon{font-size:28px;margin-bottom:14px;display:block;}
+.module-name{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;
+  color:var(--white);margin-bottom:12px;
+  line-height:1.2;
+}
+.module-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.module-tag{
+  display:inline-block;
+  font-size:10px;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 10px;
+  border:1px solid var(--border);color:var(--gold);
+}
+.module-lessons{
+  margin-top:16px;padding-top:16px;
+  border-top:1px solid var(--border);
+}
+.module-lesson{
+  font-size:11px;color:rgba(250,250,248,0.5);
+  padding:4px 0;display:flex;align-items:flex-start;gap:8px;
+}
+.module-lesson::before{content:'—';color:var(--gold);flex-shrink:0;}
+
+/* ── FEATURES ── */
+.features-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:24px;margin-top:36px;
+}
+.feature-card{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  padding:36px;
+  display:grid;grid-template-columns:auto 1fr;
+  gap:24px;align-items:start;
+  transition:border-color 0.2s;
+}
+.feature-card:hover{border-color:var(--gold);}
+.feature-icon-wrap{
+  width:56px;height:56px;
+  background:rgba(201,168,76,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;
+}
+.feature-title{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;
+  margin-bottom:10px;line-height:1.2;
+}
+.feature-desc{font-size:14px;color:var(--muted);line-height:1.8;}
+.feature-highlight{
+  display:inline-block;
+  margin-top:12px;
+  font-size:12px;font-weight:500;
+  color:var(--gold);letter-spacing:0.05em;
+}
+
+/* ── GOTCHI FEATURE ── */
+.gotchi-section{
+  background:var(--navy2);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.gotchi-visual{
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;
+}
+.gotchi-face{
+  width:180px;height:180px;
+  background:#C8922A;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  box-shadow:0 0 60px rgba(201,168,76,0.2);
+}
+.gotchi-eyes{
+  display:flex;gap:28px;margin-top:-10px;
+}
+.gotchi-eye{
+  width:28px;height:28px;
+  background:white;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.gotchi-pupil{width:14px;height:14px;background:#111;border-radius:50%;}
+.gotchi-mouth{
+  width:40px;height:4px;background:#333;
+  border-radius:2px;margin-top:14px;
+}
+.gotchi-mood{
+  background:rgba(153,60,29,0.9);
+  padding:8px 20px;border-radius:20px;
+  font-size:13px;font-weight:500;
+}
+.gotchi-stats{
+  width:100%;max-width:320px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.gotchi-stat{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  padding:12px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;
+}
+.gotchi-stat-label{color:var(--muted);}
+.gotchi-stat-val{color:var(--gold);font-weight:500;}
+.gotchi-bar{
+  height:4px;background:rgba(255,255,255,0.1);
+  border-radius:2px;margin-top:4px;overflow:hidden;
+}
+.gotchi-bar-fill{
+  height:100%;background:var(--gold);
+  border-radius:2px;
+  animation:pulse-bar 2s ease-in-out infinite alternate;
+}
+@keyframes pulse-bar{from{opacity:0.6}to{opacity:1}}
+
+/* ── ANAS ── */
+.anas-chat{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.anas-header{
+  background:var(--navy2);
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.anas-avatar{
+  width:36px;height:36px;
+  background:rgba(201,168,76,0.15);
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.anas-name{font-weight:500;font-size:14px;}
+.anas-status{font-size:11px;color:var(--gold);}
+.anas-body{padding:24px;}
+.anas-bubble{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  padding:14px 18px;margin-bottom:10px;
+  font-size:13px;color:rgba(250,250,248,0.8);
+  line-height:1.6;
+}
+.anas-tip{
+  background:rgba(201,168,76,0.08);
+  border-left:3px solid var(--gold);
+  padding:14px 18px;margin-top:16px;
+  font-size:12px;color:var(--muted);
+}
+.anas-tip strong{color:var(--gold);}
+
+/* ── GAMIFICATION ── */
+.gamification-section{background:var(--navy2);}
+.gamification-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:16px;margin-top:36px;
+}
+.game-card{
+  border:1px solid var(--border);
+  padding:28px 24px;text-align:center;
+  background:var(--card);
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+}
+.game-card:hover{border-color:var(--gold);transform:translateY(-4px);}
+.game-card::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;background:var(--gold);
+  transform:scaleX(0);
+  transition:transform 0.3s;
+  transform-origin:left;
+}
+.game-card:hover::after{transform:scaleX(1);}
+.game-icon{font-size:36px;display:block;margin-bottom:16px;}
+.game-val{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--gold);
+  display:block;margin-bottom:8px;
+}
+.game-label{font-size:13px;font-weight:500;margin-bottom:8px;}
+.game-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* ── LEADERBOARD PREVIEW ── */
+.leaderboard{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  margin-top:32px;overflow:hidden;
+}
+.lb-header{
+  background:var(--navy2);
+  padding:14px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+  font-size:12px;font-weight:500;letter-spacing:0.1em;
+  color:var(--muted);text-transform:uppercase;
+}
+.lb-row{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:13px;
+}
+.lb-row:last-child{border-bottom:none;}
+.lb-rank{
+  font-family:'Playfair Display',serif;
+  font-weight:700;color:var(--gold);
+  width:24px;text-align:center;
+}
+.lb-name{flex:1;font-weight:500;}
+.lb-pts{color:var(--gold);font-weight:500;}
+.lb-bar{
+  width:80px;height:3px;background:rgba(255,255,255,0.08);
+  border-radius:2px;overflow:hidden;
+}
+.lb-bar-fill{height:100%;background:var(--gold);border-radius:2px;}
+
+/* ── WEBINARS ── */
+.webinar-list{
+  display:flex;flex-direction:column;gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  margin-top:40px;
+}
+.webinar-item{
+  background:var(--navy2);
+  padding:24px 32px;
+  display:flex;align-items:center;gap:24px;
+  transition:background 0.2s;
+}
+.webinar-item:hover{background:var(--navy3);}
+.webinar-num{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--gold);
+  opacity:0.4;min-width:40px;
+}
+.webinar-info{flex:1;}
+.webinar-title{font-weight:500;font-size:15px;margin-bottom:4px;}
+.webinar-speaker{font-size:12px;color:var(--muted);}
+.webinar-type{
+  font-size:10px;font-weight:500;letter-spacing:0.12em;
+  text-transform:uppercase;padding:4px 10px;
+  border:1px solid var(--border);color:var(--gold);
+  white-space:nowrap;
+}
+
+/* ── PRICING ── */
+.pricing-section{background:var(--navy2);}
+.pricing-hero{
+  text-align:center;
+  padding:40px;
+  border:1px solid var(--border);
+  background:var(--card);
+  margin-bottom:32px;
+  position:relative;overflow:hidden;
+}
+.pricing-hero::before{
+  content:'$0.99';
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:200px;font-weight:900;
+  color:rgba(201,168,76,0.03);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;white-space:nowrap;
+}
+.price-main{
+  font-family:'Playfair Display',serif;
+  font-size:80px;font-weight:900;
+  color:var(--gold);line-height:1;
+}
+.price-per{font-size:18px;color:var(--muted);margin-top:8px;}
+.price-note{
+  font-size:13px;color:var(--muted);
+  margin-top:24px;max-width:480px;margin-left:auto;margin-right:auto;
+}
+
+.tier-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-bottom:28px;
+}
+.tier-card{
+  border:1px solid var(--border);
+  padding:32px 28px;
+  background:var(--card);
+  position:relative;
+}
+.tier-card.featured{
+  border-color:var(--gold);
+  background:rgba(201,168,76,0.05);
+}
+.tier-badge{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--navy);
+  font-size:10px;font-weight:500;letter-spacing:0.1em;
+  padding:4px 16px;white-space:nowrap;
+}
+.tier-name{
+  font-size:11px;font-weight:500;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:8px;margin-top:12px;
+}
+.tier-range{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:var(--white);
+  margin-bottom:12px;
+}
+.tier-rev{
+  font-family:'Playfair Display',serif;
+  font-size:18px;color:var(--gold);
+  margin-bottom:20px;
+}
+.tier-perks{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.tier-perks li{
+  font-size:13px;color:rgba(250,250,248,0.7);
+  display:flex;align-items:flex-start;gap:10px;
+  line-height:1.5;
+}
+.tier-perks li::before{
+  content:'✦';color:var(--gold);font-size:10px;
+  flex-shrink:0;margin-top:3px;
+}
+
+/* ── TERMS ── */
+.terms-section{}
+.terms-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-top:40px;
+}
+.term-item{
+  background:var(--navy);
+  padding:28px 32px;
+  transition:background 0.2s;
+}
+.term-item:hover{background:var(--navy2);}
+.term-label{
+  font-size:10px;font-weight:500;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.term-value{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;
+  margin-bottom:8px;
+}
+.term-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── UNIVERSITY BENEFITS ── */
+.benefits-section{background:var(--navy2);}
+.benefits-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-top:36px;
+}
+.benefit-card{
+  padding:32px 28px;
+  border:1px solid var(--border);
+  background:var(--card);
+  border-left:3px solid var(--gold);
+  transition:all 0.2s;
+}
+.benefit-card:hover{background:rgba(201,168,76,0.04);transform:translateX(4px);}
+.benefit-icon{font-size:28px;display:block;margin-bottom:16px;}
+.benefit-title{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;
+  margin-bottom:10px;line-height:1.2;
+}
+.benefit-desc{font-size:13px;color:var(--muted);line-height:1.8;}
+
+/* ── TIMELINE ── */
+.timeline{
+  display:flex;flex-direction:column;gap:0;
+  margin-top:36px;border:1px solid var(--border);
+}
+.timeline-item{
+  display:grid;grid-template-columns:120px 1fr;
+  gap:0;border-bottom:1px solid var(--border);
+}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-phase{
+  background:var(--navy3);
+  padding:24px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--border);
+}
+.timeline-month{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--gold);
+  line-height:1;
+}
+.timeline-label{font-size:10px;color:var(--muted);margin-top:4px;}
+.timeline-content{
+  padding:24px 32px;background:var(--card);
+}
+.timeline-title{font-weight:500;font-size:15px;margin-bottom:6px;}
+.timeline-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── CTA ── */
+.cta-section{
+  text-align:center;
+  padding:64px 60px;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+.cta-section h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,5vw,64px);
+  font-weight:900;line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+  max-width:700px;margin-left:auto;margin-right:auto;
+}
+.cta-section h2 em{font-style:italic;color:var(--gold);}
+.cta-section p{
+  font-size:17px;color:var(--muted);
+  max-width:480px;margin:0 auto 48px;line-height:1.8;
+}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.contact-info{
+  display:flex;gap:40px;justify-content:center;
+  margin-top:56px;padding-top:40px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.contact-item{text-align:center;}
+.contact-label{font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;}
+.contact-val{font-size:14px;font-weight:500;color:var(--gold);}
+
+/* ── FOOTER ── */
+footer{
+  padding:40px 60px;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-brand{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:900;color:var(--white);
+}
+.footer-brand span{color:var(--gold);}
+.footer-note{font-size:12px;color:var(--muted);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.hero>*{animation:fadeUp 0.8s ease both;}
+.hero-eyebrow{animation-delay:0.1s;}
+.hero h1{animation-delay:0.2s;}
+.hero-sub{animation-delay:0.3s;}
+.hero-actions{animation-delay:0.4s;}
+.hero-stats{animation-delay:0.5s;}
+
+/* ── DIVIDER ── */
+.gold-divider{
+  width:60px;height:2px;background:var(--gold);
+  margin:0 0 40px;
+}
+
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  section{padding:72px 24px;}
+  .hero{padding:120px 24px 72px;}
+  .problem-grid,.modules-grid,.gamification-row,
+  .tier-grid,.benefits-grid{grid-template-columns:1fr;}
+  .features-grid,.tier-grid,.terms-grid{grid-template-columns:1fr;}
+  .what-lapa,.gotchi-section{grid-template-columns:1fr;}
+  .hero-stats{gap:24px;flex-wrap:wrap;}
+  footer{flex-direction:column;text-align:center;}
+}
+
+
+  /* ── SCROLL OFFSET FOR STICKY NAV ── */
+  #directory, #problem, #about, #curriculum, #features,
+  #journey, #pricing, #terms, #benefits, #timeline, #cta {
+    scroll-margin-top: 80px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LA<span>PA</span></div>
+  <ul class="nav-links">
+    <li><a href="#curriculum">Curriculum</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#benefits">Benefits</a></li>
+    <li><a href="#terms">Terms</a></li>
+  </ul>
+  <a href="https://wa.me/639453426781?text=Hi%20Merry%2C%20I%27m%20from%20UST%20Legazpi%20and%20would%20like%20to%20know%20more%20about%20LAPA." target="_blank" class="nav-cta" style="background:#25D366;display:flex;align-items:center;gap:8px;white-space:nowrap;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Chat with Merry
+  </a>
+</nav>
+
+<!-- DIRECTORY CARD GRID -->
+<section id="directory" style="background:#0D1B3E;padding:56px 48px 40px;border-bottom:1px solid rgba(201,168,76,0.15);">
+  <div style="margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">LAPA Partnership Proposal for University of Santo Tomas Legazpi</div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#FAFAF8;line-height:1.1;">This proposal is divided into <em style="color:#C9A84C;">10 sections.</em></div>
+    </div>
+    <div style="font-size:14px;color:#7A8BA8;margin-top:10px;line-height:1.7;">Click any card below to jump directly to that section. Use the <span style="color:#C9A84C;">↑ Contents</span> link inside each section to return here at any time.</div>
+    <div style="height:1px;background:rgba(201,168,76,0.15);margin-top:24px;"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;">
+
+    <a href="#problem" style="text-decoration:none;background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(231,76,60,0.14)';this.style.borderColor='rgba(231,76,60,0.5)'" onmouseout="this.style.background='rgba(231,76,60,0.07)';this.style.borderColor='rgba(231,76,60,0.2)'">
+      <div style="font-size:9px;color:rgba(231,76,60,0.7);letter-spacing:0.15em;margin-bottom:8px;">01</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#9888;&#65039;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">The Challenge</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">Why AI literacy is now urgent for graduates</div>
+    </a>
+
+    <a href="#about" style="text-decoration:none;background:rgba(41,128,185,0.07);border:1px solid rgba(41,128,185,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(41,128,185,0.14)';this.style.borderColor='rgba(41,128,185,0.5)'" onmouseout="this.style.background='rgba(41,128,185,0.07)';this.style.borderColor='rgba(41,128,185,0.2)'">
+      <div style="font-size:9px;color:rgba(41,128,185,0.8);letter-spacing:0.15em;margin-bottom:8px;">02</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#127760;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">What is LAPA</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">Platform overview and core identity</div>
+    </a>
+
+    <a href="#curriculum" style="text-decoration:none;background:rgba(39,174,96,0.07);border:1px solid rgba(39,174,96,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(39,174,96,0.14)';this.style.borderColor='rgba(39,174,96,0.5)'" onmouseout="this.style.background='rgba(39,174,96,0.07)';this.style.borderColor='rgba(39,174,96,0.2)'">
+      <div style="font-size:9px;color:rgba(39,174,96,0.8);letter-spacing:0.15em;margin-bottom:8px;">03</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#128218;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Curriculum</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">5 modules, 15 lessons, all sprint briefs</div>
+    </a>
+
+    <a href="#features" style="text-decoration:none;background:rgba(142,68,173,0.07);border:1px solid rgba(142,68,173,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(142,68,173,0.14)';this.style.borderColor='rgba(142,68,173,0.5)'" onmouseout="this.style.background='rgba(142,68,173,0.07)';this.style.borderColor='rgba(142,68,173,0.2)'">
+      <div style="font-size:9px;color:rgba(142,68,173,0.8);letter-spacing:0.15em;margin-bottom:8px;">04</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#127918;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Platform Features</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">Lapagotchi, ANAS, Learn to Win, Live</div>
+    </a>
+
+    <a href="#journey" style="text-decoration:none;background:rgba(230,126,34,0.07);border:1px solid rgba(230,126,34,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(230,126,34,0.14)';this.style.borderColor='rgba(230,126,34,0.5)'" onmouseout="this.style.background='rgba(230,126,34,0.07)';this.style.borderColor='rgba(230,126,34,0.2)'">
+      <div style="font-size:9px;color:rgba(230,126,34,0.8);letter-spacing:0.15em;margin-bottom:8px;">05</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#127963;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Student Journey</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">Milestone flow from enrolment to employment</div>
+    </a>
+
+    <a href="#pricing" style="text-decoration:none;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.14)';this.style.borderColor='rgba(201,168,76,0.5)'" onmouseout="this.style.background='rgba(201,168,76,0.07)';this.style.borderColor='rgba(201,168,76,0.2)'">
+      <div style="font-size:9px;color:rgba(201,168,76,0.8);letter-spacing:0.15em;margin-bottom:8px;">06</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#128176;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Pricing</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">$0.99 per student + 20% scholarship share</div>
+    </a>
+
+    <a href="#terms" style="text-decoration:none;background:rgba(26,188,156,0.07);border:1px solid rgba(26,188,156,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(26,188,156,0.14)';this.style.borderColor='rgba(26,188,156,0.5)'" onmouseout="this.style.background='rgba(26,188,156,0.07)';this.style.borderColor='rgba(26,188,156,0.2)'">
+      <div style="font-size:9px;color:rgba(26,188,156,0.8);letter-spacing:0.15em;margin-bottom:8px;">07</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#128203;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Key Terms</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">Contract conditions in plain language</div>
+    </a>
+
+    <a href="#benefits" style="text-decoration:none;background:rgba(52,152,219,0.07);border:1px solid rgba(52,152,219,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(52,152,219,0.14)';this.style.borderColor='rgba(52,152,219,0.5)'" onmouseout="this.style.background='rgba(52,152,219,0.07)';this.style.borderColor='rgba(52,152,219,0.2)'">
+      <div style="font-size:9px;color:rgba(52,152,219,0.8);letter-spacing:0.15em;margin-bottom:8px;">08</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#127891;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">UST Benefits</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">What UST Legazpi gains from this partnership</div>
+    </a>
+
+    <a href="#timeline" style="text-decoration:none;background:rgba(241,196,15,0.07);border:1px solid rgba(241,196,15,0.2);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(241,196,15,0.14)';this.style.borderColor='rgba(241,196,15,0.5)'" onmouseout="this.style.background='rgba(241,196,15,0.07)';this.style.borderColor='rgba(241,196,15,0.2)'">
+      <div style="font-size:9px;color:rgba(241,196,15,0.8);letter-spacing:0.15em;margin-bottom:8px;">09</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#128197;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Implementation</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">12-month rollout roadmap for UST Legazpi</div>
+    </a>
+
+    <a href="#cta" style="text-decoration:none;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.35);padding:16px 14px;display:block;transition:all 0.2s;" onmouseover="this.style.background='rgba(37,211,102,0.18)';this.style.borderColor='rgba(37,211,102,0.6)'" onmouseout="this.style.background='rgba(37,211,102,0.1)';this.style.borderColor='rgba(37,211,102,0.35)'">
+      <div style="font-size:9px;color:rgba(37,211,102,0.9);letter-spacing:0.15em;margin-bottom:8px;">10</div>
+      <div style="font-size:20px;margin-bottom:6px;">&#128172;</div>
+      <div style="font-size:12px;font-weight:500;color:#FAFAF8;line-height:1.2;">Contact Merry</div>
+      <div style="font-size:10px;color:#7A8BA8;margin-top:3px;line-height:1.4;">WhatsApp or email — respond within 24h</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Partnership Proposal · University of Santo Tomas Legazpi · Bicol Region · 2025–2026</div>
+    <h1>Learn <em>AI.</em><br>Play <em>AI.</em><br>Lead <em>AI.</em></h1>
+    <p class="hero-sub">A training programme where AI theory meets industrial reality — presented exclusively to the University of Santo Tomas Legazpi, the Premier Dominican University of Bicol.</p>
+    <div class="hero-actions">
+      <a href="#curriculum" class="btn-primary">Explore the Programme</a>
+      <a href="#pricing" class="btn-outline">View Pricing</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="hero-stat-num">5</span>
+        <span class="hero-stat-label">AI Identity Modules</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">$0.99</span>
+        <span class="hero-stat-label">Per student / month</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">20%</span>
+        <span class="hero-stat-label">Scholarship revenue share</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">12</span>
+        <span class="hero-stat-label">Month programme</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem" style="background:linear-gradient(180deg,#0F1A2E 0%,#130D0D 100%);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.6);border-left:4px solid rgba(231,76,60,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(231,76,60,0.6);line-height:1;opacity:0.9;">01</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(231,76,60,0.6);font-weight:500;">Section 01 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">The Challenge</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(231,76,60,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(231,76,60,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">The Challenge</span>
+  <div class="section-title">Your graduates will be asked<br><em>one question.</em></div>
+  <p class="section-sub">"Can you show me what you've built with AI?" Most cannot answer. LAPA changes that.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <span class="problem-num">85%</span>
+      <div class="problem-label">The Employability Gap</div>
+      <p class="problem-desc">Of Southeast Asian graduates enter the workforce with no verified AI competency. Employers are left to train from scratch — at their cost.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-num">&lt;15%</span>
+      <div class="problem-label">The Completion Problem</div>
+      <p class="problem-desc">Average completion rate on traditional digital learning platforms. Students sign up, then disappear. Engagement collapses within two weeks.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-num">0</span>
+      <div class="problem-label">The Portfolio Gap</div>
+      <p class="problem-desc">SEA-built AI literacy platforms designed for Philippine students' real career context and cultural reality. Until now.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS LAPA -->
+<section id="about" style="background:linear-gradient(180deg,#0A1628 0%,#0A1628 100%);border-top:2px solid rgba(41,128,185,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(41,128,185,0.15);border:1px solid rgba(41,128,185,0.6);border-left:4px solid rgba(41,128,185,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(41,128,185,0.6);line-height:1;opacity:0.9;">02</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(41,128,185,0.6);font-weight:500;">Section 02 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">What is LAPA</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(41,128,185,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(41,128,185,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">The Platform</span>
+  <div class="what-lapa">
+    <div>
+      <div class="section-title">One platform.<br><em>Five transformations.</em></div>
+      <p class="section-sub">LAPA is not a course library. It is an AI identity development platform — combining structured learning, emotional engagement mechanics, live expert sessions, and a national competition circuit in one mobile-first experience.</p>
+      <div class="gold-divider"></div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;">Built on the insight that students don't fail to learn AI because the content is unavailable. They fail because nothing keeps them accountable, competitive, or emotionally invested. LAPA solves the engagement problem — not the content problem.</p>
+    </div>
+    <div class="lapa-visual">
+      <div class="lapa-screen">
+        <div class="app-icon-grid">
+          <div class="app-icon">⊞<span class="app-icon-label">Overview</span></div>
+          <div class="app-icon">🐾<span class="app-icon-label">Lapagotchi</span></div>
+          <div class="app-icon">✦<span class="app-icon-label">ANAS Coach</span></div>
+          <div class="app-icon">🔔<span class="app-icon-label">Alerts</span></div>
+          <div class="app-icon">📡<span class="app-icon-label">Live</span></div>
+          <div class="app-icon" style="border-color:rgba(201,168,76,0.4)">①<span class="app-icon-label">Module 1</span></div>
+          <div class="app-icon" style="border-color:rgba(201,168,76,0.4)">②<span class="app-icon-label">Module 2</span></div>
+          <div class="app-icon" style="border-color:rgba(201,168,76,0.4)">③<span class="app-icon-label">Module 3</span></div>
+          <div class="app-icon" style="border-color:rgba(201,168,76,0.4)">④<span class="app-icon-label">Module 4</span></div>
+          <div class="app-icon" style="border-color:rgba(201,168,76,0.4)">⑤<span class="app-icon-label">Module 5</span></div>
+          <div class="app-icon">⏱<span class="app-icon-label">Sprint</span></div>
+          <div class="app-icon">🏆<span class="app-icon-label">Learn to Win</span></div>
+        </div>
+      </div>
+      <div class="lapa-tagline">Learn AI, Play AI · A Training Programme Where AI Theory Meets Industrial Reality</div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM SECTION - DETAILED -->
+<section class="modules-section" id="curriculum" style="padding:64px 60px;background:linear-gradient(180deg,#0C1F14 0%,#0A1628 100%);border-top:2px solid rgba(39,174,96,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.6);border-left:4px solid rgba(39,174,96,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(39,174,96,0.6);line-height:1;opacity:0.9;">03</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(39,174,96,0.6);font-weight:500;">Section 03 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Curriculum</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(39,174,96,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(39,174,96,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Academic Curriculum</span>
+  <div class="section-title">5 AI Identities.<br><em>15 Lessons. Real Industry Sprints.</em></div>
+  <p class="section-sub">Each module is led by a named industry expert. Every lesson follows a Vision → Tooling → Execution structure. Every week ends with a graded industrial sprint on a real SEA business problem.</p>
+
+  <!-- MODULE TABS NAV -->
+  <div style="display:flex;gap:0;margin-top:48px;margin-bottom:0;border:1px solid var(--border);overflow:hidden;">
+    <button class="mod-tab active" data-mod="m1" onclick="showMod('m1',this)" style="flex:1;padding:16px 8px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:0.05em;border-right:1px solid rgba(0,0,0,0.1);">🎨 Creative<br>Disruptor</button>
+    <button class="mod-tab" data-mod="m2" onclick="showMod('m2',this)" style="flex:1;padding:16px 8px;background:var(--navy3);color:var(--muted);border:none;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:0.05em;border-right:1px solid var(--border);">🔬 AI<br>Scholar</button>
+    <button class="mod-tab" data-mod="m3" onclick="showMod('m3',this)" style="flex:1;padding:16px 8px;background:var(--navy3);color:var(--muted);border:none;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:0.05em;border-right:1px solid var(--border);">⚡ Prompt<br>Engineer</button>
+    <button class="mod-tab" data-mod="m4" onclick="showMod('m4',this)" style="flex:1;padding:16px 8px;background:var(--navy3);color:var(--muted);border:none;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:0.05em;border-right:1px solid var(--border);">⚗️ Asset<br>Alchemist</button>
+    <button class="mod-tab" data-mod="m5" onclick="showMod('m5',this)" style="flex:1;padding:16px 8px;background:var(--navy3);color:var(--muted);border:none;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:0.05em;">🛠 Zero-Code<br>Creator</button>
+  </div>
+
+  <!-- MODULE PANELS -->
+  <div id="mod-m1" class="mod-panel" style="border:1px solid var(--border);border-top:none;padding:40px;">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:40px;">
+      <div>
+        <div style="background:var(--gold);padding:24px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--navy);margin-bottom:8px;">MODULE 01</div>
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--navy);line-height:1.1;">The Creative Disruptor</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lead Instructor</div>
+          <div style="font-weight:500;font-size:14px;">Kenny Goh</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Chief Cognitive Architect, AI Esports · Founder, MICE Neurol Pte Ltd · Singapore's Tourism Entrepreneur of the Year (1994)</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Module Details</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Weeks</span><span style="color:var(--gold);">3 Weeks</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Lessons</span><span style="color:var(--gold);">9 Lessons</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Duration/lesson</span><span style="color:var(--gold);">15 minutes</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Total hours</span><span style="color:var(--gold);">~4.5 hours</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Primary tool</span><span style="color:var(--gold);">Gemini (Free)</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Assessment</span><span style="color:var(--gold);">3 Industrial Sprints</span></div>
+          </div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Industry Relevance</div>
+          <div style="font-size:12px;color:rgba(250,250,248,0.7);line-height:1.7;">In an AI-saturated world, human creativity is the last defensible competitive advantage. This module teaches the frameworks — De Bono's Six Thinking Hats, Random Entry, Provocative Operations — that produce ideas AI cannot generate.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:24px;color:var(--gold);">Module Learning Outcomes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:32px;">
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Apply De Bono's Six Thinking Hats to separate emotion, facts and risk in any business problem</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Use the Random Entry technique to generate genuinely novel ideas that AI cannot predict</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Use Provocative Operations (PO) to escape conventional thinking and produce disruptive concepts</div>
+        </div>
+
+        <!-- Week 1 -->
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 1</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Six Thinking Hats 🎩</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:var(--muted);">Sprint Industry</div>
+              <div style="font-size:12px;color:var(--gold);font-weight:500;">Tourism</div>
+            </div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.7;">Orchestrated Perspectives — learn parallel thinking by separating emotion, facts, and risks to unlock ideas that AI cannot produce on its own.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · THE VISION · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">Why Human Creativity Wins</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">Why AI always converges on predictable answers. The "Third Way" framework. Introduction to the Six Hats system and the Quick Reference for each hat.</div>
+              </div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · THE TOOLING · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">Parallel Thinking with Gemini</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">How to run a Six Hats session solo or in groups. Using Gemini as the Blue Hat facilitator. One hat at a time. Segregating thinking modes.</div>
+              </div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · THE EXECUTION · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Demo + Common Mistakes</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">Over-the-shoulder demo on a real SEA problem. The 3 critical mistakes including letting AI collapse all hats. Sprint preparation.</div>
+              </div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;">
+              <span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Tourism:</span> <span style="color:rgba(250,250,248,0.7);">Reinvent a Heritage Cultural Site for Digital Nomads. Use Six Thinking Hats to develop a disruptive repositioning strategy for a SEA heritage site. Deliver 6-hat analysis + one disruptive concept (max 300 words).</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 2</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Lateral Leaps 🎲</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:var(--muted);">Sprint Industry</div>
+              <div style="font-size:12px;color:var(--gold);font-weight:500;">Agri-Tech</div>
+            </div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.7;">Escaping Predictability — master the Random Entry technique to force neural collisions that produce breakthrough ideas AI cannot predict or replicate.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · THE VISION · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Predictability Trap</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">Why AI is a pattern-completion machine. Why predictability is the enemy of disruption. What a Lateral Leap actually is.</div>
+              </div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · THE TOOLING · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">5-Step Random Entry Process</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">Define problem → Generate random stimulus → List attributes → Force connection → Develop concepts. Using Gemini as stimulus engine.</div>
+              </div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);">
+                <div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · THE EXECUTION · 15 MIN</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Demo + Forcing Connections</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6;">Full 5-step Random Entry on a real SEA business problem. What a genuine leap looks like vs a "fake" leap. Critical mistakes.</div>
+              </div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;">
+              <span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Agri-Tech:</span> <span style="color:rgba(250,250,248,0.7);">Disrupt the Farm-to-Table Supply Chain. Use Random Entry to generate a disruptive concept that compresses the 4–6 intermediary SEA supply chain. Minimum 3 rounds of Random Entry required.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div style="border:1px solid var(--border);overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 3</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Provocation (PO) 🔥</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:var(--muted);">Competition</div>
+              <div style="font-size:12px;color:var(--gold);font-weight:500;">The Arena — Top 10</div>
+            </div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7;">Provocative Operations (PO) — the third De Bono tool. Deliberately break the rules of how something works to find the innovation hiding on the other side.</div>
+            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:14px;font-size:12px;color:rgba(250,250,248,0.7);">Module capstone. Top 10 scorers across W1–W3 advance to <strong style="color:var(--gold);">The Arena</strong> — a live AI creativity competition judged in front of an audience. Students compete using all three De Bono tools under time pressure on a mystery brief.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mod-m2" class="mod-panel" style="border:1px solid var(--border);border-top:none;padding:40px;display:none;">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:40px;">
+      <div>
+        <div style="background:var(--navy3);border:3px solid var(--gold);padding:24px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">MODULE 02</div>
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--white);line-height:1.1;">The AI-Powered Scholar</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lead Instructor</div>
+          <div style="font-weight:500;font-size:14px;">Dr. Priya Nanthakumar</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Senior Research Fellow, NUS Centre for Learning Sciences · AI Literacy Consultant · Creator of the Computational Pedagogy framework</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Module Details</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Weeks</span><span style="color:var(--gold);">3 Weeks</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Duration/lesson</span><span style="color:var(--gold);">15 minutes</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Total hours</span><span style="color:var(--gold);">~4.5 hours</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Primary tool</span><span style="color:var(--gold);">NotebookLM + Gemini Gems</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Assessment</span><span style="color:var(--gold);">3 Industrial Sprints</span></div>
+          </div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Industry Relevance</div>
+          <div style="font-size:12px;color:rgba(250,250,248,0.7);line-height:1.7;">Research, synthesis, and structured reasoning are the foundation of every professional knowledge role. This module gives students tools to process information at machine speed while maintaining human-level analytical rigour.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:24px;color:var(--gold);">Module Learning Outcomes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:32px;">
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Use NotebookLM to synthesise up to 50 research sources into a cited, interactive knowledge base with Audio Overview</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Apply the SCOPE framework to decompose complex problems into AI-solvable logic trees with structured outputs</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Build a custom Socratic AI tutor using Gems or GPTs that forces mastery through questioning, not answer-giving</div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 1</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Research Oracle 🔮</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Policy Research</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Synthesis Mastery — turn 200 pages of PDFs, lecture notes, and research papers into an interactive, cited knowledge base using NotebookLM.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Why Synthesis Beats Reading</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The information overload problem. What NotebookLM can ingest. Audio Overviews. Study guides. Source-cited answers.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">5-Step Notebook Setup</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Create Notebook → Upload 5+ sources → Generate Notebook Guide → Ask synthesis questions → Generate Audio Overview.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Demo + Mistakes</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">50-page SEA policy brief built in 15 minutes. Common errors: low-quality scans, single-source questions, ignoring citations.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Policy Research:</span> <span style="color:rgba(250,250,248,0.7);">Synthesise 50 pages of SEA regional policy into a 5-minute Audio Brief. Select a real ASEAN policy document, upload to NotebookLM with 2 supporting sources, produce a cited Audio Overview a non-specialist executive can act on.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 2</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Computational Logic 🧩</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Logistics</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Deconstructing any academic or business problem into a step-by-step logic tree that AI can solve with precision.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Why AI Fails at Complex Problems</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The logic gap. 3-Level Problem Decomposition: What I know → What I need → What's the logic.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The SCOPE Framework</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Situation → Core Question → Output Format → Parameters → Evidence Required. Mapping problems into precision prompts.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Cross-Border Logistics Case</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Live SCOPE demo on a real SEA logistics problem. The difference between a vague query and a precision prompt.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Logistics:</span> <span style="color:rgba(250,250,248,0.7);">Build a Decision Tree for a Cross-Border Logistics Project. Use SCOPE to map key decisions for a Malaysian e-commerce company expanding into PH and Indonesia. Minimum 3 sourced documents required.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 3</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Socratic Tutor 🦉</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Competition</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Knowledge Gauntlet — Top 10</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Active Learning — design custom AI tutors using Gems or GPTs that force mastery through Socratic questioning. Stop being told the answer. Start being forced to find it yourself.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Why Passive AI Creates Shallow Learning</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Active recall beats passive reading by 50%. The Socratic method. Why custom tutors outperform generic AI.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Building a Gem or GPT Tutor</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The Socratic System Prompt template. Never give the answer. Force the student toward it through targeted questioning.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Tutor Demo + Arena Prep</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">CFA Level 1 Socratic session demo. Professional certification use case. Training a tutor for any industry qualification.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">🏆 Final Sprint + Knowledge Gauntlet:</span> <span style="color:rgba(250,250,248,0.7);">Build a Socratic Tutor for a professional certification (PMP, CFA, AWS, ACCA etc). Submit system prompt + 10-exchange transcript proving mastery-forcing behaviour. Top 10 compete in live Knowledge Gauntlet.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mod-m3" class="mod-panel" style="border:1px solid var(--border);border-top:none;padding:40px;display:none;">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:40px;">
+      <div>
+        <div style="background:var(--navy3);border:3px solid var(--gold);padding:24px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">MODULE 03</div>
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--white);line-height:1.1;">The Prompt Engineer</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lead Instructor</div>
+          <div style="font-weight:500;font-size:14px;">Marcus Tan Wei Liang</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Former Head of AI Integration, GovTech Singapore · Creator of the PTC Anchor framework, widely adopted across ASEAN enterprises</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Module Details</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Weeks</span><span style="color:var(--gold);">3 Weeks</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Total hours</span><span style="color:var(--gold);">~4.5 hours</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Primary tool</span><span style="color:var(--gold);">Google AI Studio (Free)</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Assessment</span><span style="color:var(--gold);">3 Sprints + Prompt Poker</span></div>
+          </div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Industry Relevance</div>
+          <div style="font-size:12px;color:rgba(250,250,248,0.7);line-height:1.7;">Prompt engineering is now listed in job descriptions across finance, legal, marketing, and engineering. This module teaches it as a professional discipline with its own grammar, logic, and consequences — not a consumer skill.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:24px;color:var(--gold);">Module Learning Outcomes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:32px;">
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Write PTC Anchor prompts (Persona-Task-Constraint) that prevent AI drift in professional contexts</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Design structured JSON and Markdown output schemas that feed directly into software and databases</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Build Chain-of-Thought reasoning systems that force AI to show its working and self-correct before responding</div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 1</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The PTC Anchor ⚓</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Customer Service</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Persona-Task-Constraint framework that prevents AI drift and locks outputs into professional alignment.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Why AI Drifts</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The cost of vague prompts in professional contexts. The PTC three-component framework. P = Persona, T = Task, C = Constraint.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">PTC in Google AI Studio</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">System vs User prompt split. Writing PTC prompts live. Tested against a real SEA localisation challenge.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Multi-Lingual Support Docs Demo</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Live build of localised support documentation in 3 SEA languages. The 5 most common PTC failures in ASEAN enterprise.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Customer Service:</span> <span style="color:rgba(250,250,248,0.7);">Draft Localised Multi-Lingual Support Docs for a Grab-like App. Build a PTC Anchor prompt producing culturally accurate support documentation in Bahasa Malaysia, Bahasa Indonesia, and one additional SEA language.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 2</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Structural Skeletonics 🦴</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">E-Commerce</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">JSON & Markdown Mastery — structure AI outputs so precisely that they slot directly into software, databases, and dashboards without manual reformatting.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Hidden Bottleneck</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Why unstructured AI output wastes more time than it saves. When to use JSON, Markdown, CSV, and custom schemas.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Schema-First Thinking</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Design output schema before writing the prompt. JSON mode in Google AI Studio. SEO product tagging use case.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live 1,000-Tag Generation Demo</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Full SEA fashion marketplace tagging pipeline. Schema validation self-correction loop. No manual cleanup.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — E-Commerce:</span> <span style="color:rgba(250,250,248,0.7);">Generate 1,000 SEO Product Tags for a Regional Marketplace. Design a JSON schema, build a PTC prompt in JSON mode, generate 20 structured product records with bilingual fields, 5 SEO keywords, price tier, and self-validation step.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 3</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Chain-of-Thought (CoT) 🔗</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Competition</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Prompt Poker — Top 10</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Recursive Reasoning — force AI to think out loud, show its working, and self-correct errors before presenting a final answer.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Hidden Reasoning Layer</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Why AI jumps to answers. The 5-step CoT chain: Restate → Inventory → Reason → Self-Check → Answer.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">CoT System Prompt + Self-Correction</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Full PTC + CoT prompt system. Self-correction loops. Auditable reasoning trails for high-stakes outputs.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Financial Data Extraction Demo</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Extracting structured data from inconsistent multi-format regional receipts in Thai, Bahasa, and Chinese. CoT catching 3 live errors.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">🃏 Final Sprint + Prompt Poker:</span> <span style="color:rgba(250,250,248,0.7);">Extract messy financial data from SEA receipts using PTC + CoT. Top 10 scorers compete in Prompt Poker — a live head-to-head battle where competitors receive identical mystery briefs and are judged on prompt precision in real time.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mod-m4" class="mod-panel" style="border:1px solid var(--border);border-top:none;padding:40px;display:none;">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:40px;">
+      <div>
+        <div style="background:var(--navy3);border:3px solid var(--gold);padding:24px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">MODULE 04</div>
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--white);line-height:1.1;">The Asset Alchemist</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lead Instructor</div>
+          <div style="font-weight:500;font-size:14px;">Siti Rahayu Binte Johari</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Founder, Reka Studio KL · Former Regional Creative Lead, Publicis SEA · 12 years in visual and sonic brand production across Southeast Asia</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Module Details</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Tools</span><span style="color:var(--gold);">Recraft · Suno · Luma</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Total hours</span><span style="color:var(--gold);">~4.5 hours</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Portfolio output</span><span style="color:var(--gold);">Image + Audio + Video</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Competition</span><span style="color:var(--gold);">Multimodal Mogul</span></div>
+          </div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Industry Relevance</div>
+          <div style="font-size:12px;color:rgba(250,250,248,0.7);line-height:1.7;">Every brand, product, and campaign requires visual, sonic, and motion assets. This module teaches students to produce all three at professional quality — in a single session, at zero budget — using tools now standard in SEA creative industry.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:24px;color:var(--gold);">Module Learning Outcomes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:32px;">
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Direct AI image generation using the 6-Layer Visual Prompt Anatomy to produce brand-consistent campaign imagery in Recraft.ai</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Compose custom AI brand soundtracks in Suno AI using BPM, key, instrumentation, and cultural reference variables</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Produce cinematic motion sequences in Luma Dream Machine and integrate image, audio, and video into a full multimodal pipeline</div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 1</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Cinematic Eye 🎬</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Fashion</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Visual Identity — master lighting, lenses, and composition to produce premium AI brand imagery. Stop generating pictures. Start directing them.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Director's Mindset</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Why most AI imagery looks generic. The 3 visual variables: Lighting, Lens, Composition. Prompting like a creative director.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">6-Layer Visual Prompt Anatomy</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Subject → Setting → Lighting → Lens → Mood → Style Reference. Building a Brand Visual Lock for campaign consistency.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Batik Brand Campaign</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">5-image campaign for a modern Batik label. Brand Visual Lock in action. Vector and icon generation in Recraft.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Fashion:</span> <span style="color:rgba(250,250,248,0.7);">Produce a High-End Visual Campaign for a Modern Batik/Silk Brand. 5 campaign images using 6-Layer Visual Prompt Anatomy with a Brand Visual Lock. Must be deployable on Instagram and a fashion lookbook without additional editing.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 2</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Sonic Architecture 🎵</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">FinTech</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Audio Branding — control BPM, key, instrumentation, and emotional descriptors to produce custom brand soundtracks using Suno AI.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Sonic Identity Gap</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">70% of brand recall in video is audio-driven. The 6 sonic variables: BPM, Key, Instrumentation, Mood, Duration, Constraints.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The Sonic Brand Brief</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Writing Suno prompts with all 6 variables. Cultural music elements for SEA (gamelan, kecapi textures). Jingle vs brand track.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live FinTech Sonic Identity</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Complete sonic identity: 30s brand track + 5s notification + 15s loading loop — all from one brief in under 20 minutes.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — FinTech:</span> <span style="color:rgba(250,250,248,0.7);">Develop a Unique Sonic Identity for a SEA Super-App Wallet. Produce a complete sonic identity system: 30s brand track + 5s notification + 15s loading loop. All sonically consistent. Submit Sonic Brand Brief + audio files + rationale.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 3</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Temporal Motion 🎞️</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Competition</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Multimodal Mogul — Top 10</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Video Synthesis — camera movement prompts and frame-rate consistency for high-fidelity social teasers using Luma Dream Machine.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Motion Wins Attention</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Reels generate 3–5x reach of static images. Camera movement vocabulary: Dolly Push, Crane Rise, Orbital Pan, Parallax Drift, Ken Burns.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Luma Motion Prompt Anatomy</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Shot Type → Subject → Motion → Lighting Behaviour → Frame Rate Feel → Constraints. Maintaining visual consistency across a sequence.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Full Multimodal Pipeline</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Recraft hero image + 3 Luma clips + Suno score = 15-second property walkthrough. Full professional pipeline in under 30 minutes.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">🎬 Final Sprint + Multimodal Mogul:</span> <span style="color:rgba(250,250,248,0.7);">Produce a 15-Second Immersive Motion Walkthrough for a City-Centre Condo. Luma + Suno + Recraft full pipeline. Top 10 compete in The Multimodal Mogul — a 2-hour live production sprint streamed publicly.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mod-m5" class="mod-panel" style="border:1px solid var(--border);border-top:none;padding:40px;display:none;">
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:40px;">
+      <div>
+        <div style="background:var(--navy3);border:3px solid var(--gold);padding:24px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">MODULE 05</div>
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--white);line-height:1.1;">The Zero-Code Creator</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lead Instructor</div>
+          <div style="font-weight:500;font-size:14px;">Arjun Krishnaswamy</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Co-Founder, LaunchPad SEA · Venture Partner, Iterative · 2 startups founded and exited · 200+ student founders helped to ship first products at NUS, NTU, and universities across PH and Indonesia</div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);margin-bottom:12px;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Module Details</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Tools</span><span style="color:var(--gold);">Lovable · Cursor · Gumloop</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Total hours</span><span style="color:var(--gold);">~4.5 hours</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Sprint deliverable</span><span style="color:var(--gold);">Live deployed URLs</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Competition</span><span style="color:var(--gold);">The Build-Off</span></div>
+          </div>
+        </div>
+        <div style="background:var(--navy3);padding:20px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Industry Relevance</div>
+          <div style="font-size:12px;color:rgba(250,250,248,0.7);line-height:1.7;">The ability to build and ship a functional product without a developer is now a core employability skill across every industry. From SME owners to corporate innovation teams — the builder wins.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:24px;color:var(--gold);">Module Learning Outcomes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:32px;">
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Build and deploy a functional web application from a plain English description using Lovable.dev in under 30 minutes</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Inject advanced features into existing apps using Cursor's AI-powered natural language code interface without writing code</div>
+          <div style="background:var(--navy3);padding:14px;border:1px solid var(--border);font-size:12px;color:rgba(250,250,248,0.7);">Build automated Gumloop workflows where one product upload triggers landing page, social ads, and email sequences simultaneously</div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 1</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Instant App 🚀</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Marketplace / Circular Economy</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Prompt-to-Production — describe your business idea in plain English and get a live, functional URL in under 30 minutes using Lovable.dev.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Vibe Coding Explained</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The developer bottleneck is over. What Lovable.dev and Bolt.new can build: marketplaces, SaaS tools, interactive experiences, smart landing pages.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">The 30-Minute Build Framework</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">One-sentence brief → 3 core screens → Generate v0.1 → Fix 3 things → Deploy. Writing Lovable prompts from user experience, not features.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Marketplace Build</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Pre-loved goods marketplace from zero to live URL in 30 minutes. The single biggest mistake first-time builders make.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Marketplace:</span> <span style="color:rgba(250,250,248,0.7);">Launch a Live Pre-Loved Marketplace App in 45 Minutes. Build and deploy a functional marketplace for your university community. Deliver live URL + initial prompt + deployed screenshot. A live URL scores higher than a polished mockup.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);margin-bottom:16px;overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 2</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Bi-Coding Hack 🕵️</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Sprint Industry</div><div style="font-size:12px;color:var(--gold);font-weight:500;">Feature Engineering</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">The Code Hunter — scavenge high-end features from anywhere on the web and inject them into your existing app via natural language commands in Cursor.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Code Hunter Mindset</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Everything already exists. Integration beats implementation. What Cursor unlocks beyond Vibe Coding.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">4-Step Code Hunt Process</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Define capability → Find library → Describe injection → Test one thing. Natural language injection into existing app code.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Live Multi-Lingual Chat Injection</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Injecting live Bahasa/English chat into the Week 1 marketplace. AI-assisted debugging — paste error, describe context, fix in 2 messages.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">⚡ Industrial Sprint — Feature Engineering:</span> <span style="color:rgba(250,250,248,0.7);">Inject Live Multi-Lingual Chat into your Marketplace App. Use Cursor with 4-step Code Hunt. Support at least 2 SEA languages. Submit live URL + chat screenshot in both languages + full Code Hunt documentation.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);overflow:hidden;">
+          <div style="background:var(--navy2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+            <div><div style="font-size:10px;color:var(--gold);letter-spacing:0.15em;margin-bottom:4px;">WEEK 3</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">The Viral Factory 🏭</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);">Competition</div><div style="font-size:12px;color:var(--gold);font-weight:500;">The Build-Off — Top 10</div></div>
+          </div>
+          <div style="padding:20px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Ecosystem Orchestration — build automated systems in Gumloop where one product upload triggers the landing page, social ads, email sequence, and checkout link simultaneously.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 01 · VISION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Automation as Leverage</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">The difference between a builder and a founder. One input, many outputs. Trigger-to-action thinking architecture.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 02 · TOOLING · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Building Gumloop Workflows</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Visual canvas of trigger → AI writing → output nodes. One upload → landing page + 3 social ad variants + welcome email sequence.</div></div>
+              <div style="background:var(--navy3);padding:12px;border-left:2px solid var(--gold);"><div style="font-size:10px;color:var(--gold);font-weight:500;margin-bottom:4px;">LESSON 03 · EXECUTION · 15 MIN</div><div style="font-size:12px;font-weight:500;margin-bottom:6px;">Coffee Chain Campaign Factory</div><div style="font-size:11px;color:var(--muted);line-height:1.6;">Full Viral Factory for a new coffee chain launch: landing page + 3 ad variants + TikTok script + launch email — one trigger, zero manual work.</div></div>
+            </div>
+            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);padding:14px;font-size:12px;"><span style="color:var(--gold);font-weight:500;">🛠 Final Sprint + The Build-Off:</span> <span style="color:rgba(250,250,248,0.7);">Create an Automated Viral Campaign for a New Coffee Chain. One product upload triggers landing page + 3 social ad variants + launch email — minimum 3 output channels. Top 10 compete in The Build-Off: a live 2-hour build sprint, same brief for all, streamed publicly.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- STUDENT JOURNEY -->
+<section id="journey" style="padding:64px 60px;background:linear-gradient(180deg,#1A1108 0%,#0F1F3D 100%);border-top:2px solid rgba(230,126,34,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(230,126,34,0.15);border:1px solid rgba(230,126,34,0.6);border-left:4px solid rgba(230,126,34,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(230,126,34,0.6);line-height:1;opacity:0.9;">05</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(230,126,34,0.6);font-weight:500;">Section 05 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Student Journey</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(230,126,34,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(230,126,34,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Student Experience</span>
+  <div class="section-title">The Milestone Journey.<br><em>From enrolled to employed.</em></div>
+  <p class="section-sub">Every stage unlocks the next. Students don't just progress through content — they earn identities, build portfolios, and compete for recognition at each milestone.</p>
+
+  <div style="margin-top:40px;position:relative;">
+    <!-- Vertical line -->
+    <div style="position:absolute;left:40px;top:0;bottom:0;width:1px;background:var(--border);"></div>
+
+    <!-- Stage 1 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">🚪</div>
+      </div>
+      <div style="padding-bottom:48px;border-bottom:1px solid var(--border);margin-bottom:0;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 01 — Enrolment</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">Day 1</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">You enter the platform. Your Lapagotchi is born.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);">
+            <div style="font-size:20px;margin-bottom:8px;">🐾</div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Lapagotchi Created</div>
+            <div style="font-size:11px;color:var(--muted);">Your AI companion is born. It starts ignoring you. Feed it by learning.</div>
+          </div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);">
+            <div style="font-size:20px;margin-bottom:8px;">✦</div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;">ANAS Activated</div>
+            <div style="font-size:11px;color:var(--muted);">Your AI coach is live. Ask it anything about the programme or AI.</div>
+          </div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);">
+            <div style="font-size:20px;margin-bottom:8px;">🏆</div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Leaderboard Visible</div>
+            <div style="font-size:11px;color:var(--muted);">You can see where everyone ranks. Yours says 0. That changes now.</div>
+          </div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);">
+            <div style="font-size:20px;margin-bottom:8px;">📋</div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Module 1 Unlocked</div>
+            <div style="font-size:11px;color:var(--muted);">The Creative Disruptor. Week 1, Lesson 1 is ready. 15 minutes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--navy3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">📖</div>
+      </div>
+      <div style="padding:32px 0 48px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 02 — Learning</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">Weeks 1–9 · 3 lessons per week</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">You work through the 5 modules. Vision → Tooling → Execution.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:var(--gold);">What happens every week:</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">3 lessons of 15 minutes each — Vision, Tooling, Execution</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">ANAS AI Coach available for all questions between lessons</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">Lapagotchi mood reflects your engagement — daily login required to keep it healthy</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">Quiz completions earn points and move you up the leaderboard</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">Live expert webinars accessible directly in the same app</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:var(--gold);">What your lecturer sees:</div>
+            <div style="background:var(--navy3);border:1px solid var(--border);padding:20px;">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:0.05em;text-transform:uppercase;">Faculty Dashboard — Live View</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--muted);">Lessons completed</span><span style="color:var(--gold);">Real-time</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--muted);">Sprint submissions</span><span style="color:var(--gold);">Per student</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--muted);">Module progress</span><span style="color:var(--gold);">% complete</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--muted);">At-risk students</span><span style="color:var(--gold);">Flagged auto</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;"><span style="color:var(--muted);">Leaderboard rank</span><span style="color:var(--gold);">Live ranking</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--navy3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">⚡</div>
+      </div>
+      <div style="padding:32px 0 48px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 03 — Industrial Sprints</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">End of each week · 15 industry sectors</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">You solve real problems. You build your portfolio.</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.8;">Every week ends with an Industrial Sprint — a graded challenge set in a real SEA industry context. Students submit to the app and are ranked publicly. Sprints span Tourism, Agri-Tech, Logistics, Customer Service, E-Commerce, Fashion, FinTech, Real Estate, Product Launch, and more.</div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;">
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🌏 Tourism</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🌾 Agri-Tech</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🚢 Logistics</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">📞 Customer Service</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🛍 E-Commerce</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">👗 Fashion</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">💳 FinTech</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🏙 Real Estate</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">☕ Product Launch</div>
+          <div style="background:var(--navy3);padding:12px;border:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted);">🎓 Certification</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--navy3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">🏆</div>
+      </div>
+      <div style="padding:32px 0 48px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 04 — Live Competitions</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">Top 10 per module · Public events</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">Top 10 compete in live Arena events. Publicly ranked.</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+          <div style="background:var(--navy3);border:1px solid var(--gold);padding:20px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:8px;">🎩</div>
+            <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:4px;">The Arena</div>
+            <div style="font-size:11px;color:var(--muted);">Module 01 · Live creativity battle</div>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--gold);padding:20px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:8px;">🦉</div>
+            <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:4px;">Knowledge Gauntlet</div>
+            <div style="font-size:11px;color:var(--muted);">Module 02 · Socratic AI battle</div>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--gold);padding:20px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:8px;">🃏</div>
+            <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:4px;">Prompt Poker</div>
+            <div style="font-size:11px;color:var(--muted);">Module 03 · Head-to-head prompting</div>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--gold);padding:20px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:8px;">🎬</div>
+            <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:4px;">Multimodal Mogul</div>
+            <div style="font-size:11px;color:var(--muted);">Module 04 · 2-hour production sprint</div>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--gold);padding:20px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:8px;">🛠</div>
+            <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:4px;">The Build-Off</div>
+            <div style="font-size:11px;color:var(--muted);">Module 05 · Live product build, streamed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--navy3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">🎓</div>
+      </div>
+      <div style="padding:32px 0 48px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 05 — Certification</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">On completion of each module</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">You earn your AI Identity. Co-branded with your university.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">LAPA AI Identity Certificate — co-signed by LAPA and your university</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">LinkedIn-shareable badge with employer verification link</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">Portfolio of 15 Industrial Sprint submissions — real work, not simulations</span></div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;"><span style="color:var(--gold);margin-top:2px;">✦</span><span style="color:rgba(250,250,248,0.7);">A named AI Identity: Creative Disruptor, AI Scholar, Prompt Engineer, Asset Alchemist, or Zero-Code Creator</span></div>
+            </div>
+          </div>
+          <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:24px;">
+            <div style="font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Certificate Tiers</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);"><span style="color:rgba(250,250,248,0.7);">Bronze — Complete 1 module</span><span style="color:var(--gold);">LAPA Bronze</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);"><span style="color:rgba(250,250,248,0.7);">Silver — Complete 3 modules</span><span style="color:var(--gold);">LAPA Silver</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);"><span style="color:rgba(250,250,248,0.7);">Gold — Complete all 5 modules</span><span style="color:var(--gold);">LAPA Gold</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:8px 0;"><span style="color:rgba(250,250,248,0.7);">Elite — Gold + Top 10 competition</span><span style="color:var(--gold);">LAPA Elite</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 6 -->
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:32px;">
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;">
+        <div style="width:80px;height:80px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;">💼</div>
+      </div>
+      <div style="padding:32px 0 0;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;">Stage 06 — Employment</div>
+          <div style="height:1px;flex:1;background:var(--border);"></div>
+          <div style="font-size:11px;color:var(--muted);">Graduation → Career</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:12px;">You answer the question every employer will ask.</div>
+        <div style="background:var(--navy3);border:1px solid var(--gold);padding:32px;margin-bottom:20px;">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-style:italic;color:var(--gold);margin-bottom:12px;">"Can you show me what you've built with AI?"</div>
+          <div style="font-size:14px;color:rgba(250,250,248,0.7);line-height:1.8;">Your LAPA-certified graduate answers: <strong style="color:var(--white);">Yes.</strong> They open their portfolio — 15 industrial sprint submissions across Tourism, FinTech, E-Commerce, Real Estate, Fashion, and Logistics. Real outputs. Real industries. Built with real tools. Verified by LAPA and your university.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);text-align:center;"><div style="font-size:20px;margin-bottom:8px;">📂</div><div style="font-size:12px;font-weight:500;margin-bottom:4px;">AI Portfolio</div><div style="font-size:11px;color:var(--muted);">15 sprint deliverables across real industries</div></div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);text-align:center;"><div style="font-size:20px;margin-bottom:8px;">🏅</div><div style="font-size:12px;font-weight:500;margin-bottom:4px;">Verified Badge</div><div style="font-size:11px;color:var(--muted);">LinkedIn-shareable with employer verification</div></div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);text-align:center;"><div style="font-size:20px;margin-bottom:8px;">🤝</div><div style="font-size:12px;font-weight:500;margin-bottom:4px;">Employer Network</div><div style="font-size:11px;color:var(--muted);">Access to LAPA's industry partner hiring pipeline</div></div>
+          <div style="background:var(--navy3);padding:16px;border:1px solid var(--border);text-align:center;"><div style="font-size:20px;margin-bottom:8px;">🇵🇭</div><div style="font-size:12px;font-weight:500;margin-bottom:4px;">National Recognition</div><div style="font-size:11px;color:var(--muted);">Philippines AI League ranking visible to all employers</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function showMod(id, btn) {
+  document.querySelectorAll('.mod-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.mod-tab').forEach(t => {
+    t.style.background = 'var(--navy3)';
+    t.style.color = 'var(--muted)';
+  });
+  document.getElementById('mod-' + id).style.display = 'block';
+  btn.style.background = 'var(--gold)';
+  btn.style.color = 'var(--navy)';
+}
+</script>
+
+<!-- FEATURES -->
+<section id="features" style="background:linear-gradient(180deg,#120D1A 0%,#0A1628 100%);border-top:2px solid rgba(142,68,173,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(142,68,173,0.15);border:1px solid rgba(142,68,173,0.6);border-left:4px solid rgba(142,68,173,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(142,68,173,0.6);line-height:1;opacity:0.9;">04</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(142,68,173,0.6);font-weight:500;">Section 04 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Platform Features</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(142,68,173,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(142,68,173,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Platform Features</span>
+  <div class="section-title">Everything in<br><em>one platform.</em></div>
+  <p class="section-sub">LAPA integrates learning, competition, coaching, and community — so students never need to switch between apps.</p>
+
+  <div class="features-grid">
+
+    <!-- Lapagotchi -->
+    <div style="border:1px solid var(--border);padding:0;background:var(--card);grid-column:span 2;" id="gotchi">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+        <div style="padding:48px;border-right:1px solid var(--border);">
+          <span class="section-tag">USP Feature 01</span>
+          <div class="section-title" style="font-size:36px;">Lapagotchi</div>
+          <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:24px;">The world's first emotional AI learning companion. A Tamagotchi-style creature that reacts to your learning behaviour — it ignores you when inactive, thrives when you engage, and sulks when you skip. Learning neglect now has a face.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:var(--gold);margin-top:2px;">✦</span>
+              <span style="font-size:13px;color:rgba(250,250,248,0.7);">Daily streak mechanics create return habit without reminders</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:var(--gold);margin-top:2px;">✦</span>
+              <span style="font-size:13px;color:rgba(250,250,248,0.7);">Hunger bar and mood states reflect student engagement levels</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:var(--gold);margin-top:2px;">✦</span>
+              <span style="font-size:13px;color:rgba(250,250,248,0.7);">Shareable on social — students show off their Gotchi state</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:var(--gold);margin-top:2px;">✦</span>
+              <span style="font-size:13px;color:rgba(250,250,248,0.7);">No other edtech platform in SEA has this engagement mechanism</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:var(--navy3);">
+          <div class="gotchi-face">
+            <div style="display:flex;flex-direction:column;align-items:center;">
+              <div class="gotchi-eyes">
+                <div class="gotchi-eye"><div class="gotchi-pupil"></div></div>
+                <div class="gotchi-eye"><div class="gotchi-pupil"></div></div>
+              </div>
+              <div class="gotchi-mouth"></div>
+            </div>
+          </div>
+          <div class="gotchi-mood">😤 Ignoring you...</div>
+          <div class="gotchi-stats">
+            <div class="gotchi-stat">
+              <span class="gotchi-stat-label">🔥 Daily Streak</span>
+              <span class="gotchi-stat-val">1 Day</span>
+            </div>
+            <div class="gotchi-stat" style="flex-direction:column;align-items:stretch;">
+              <div style="display:flex;justify-content:space-between;">
+                <span class="gotchi-stat-label">🍽 Hunger</span>
+                <span class="gotchi-stat-val">Peckish</span>
+              </div>
+              <div class="gotchi-bar"><div class="gotchi-bar-fill" style="width:40%"></div></div>
+            </div>
+            <div style="background:var(--gold);padding:12px;text-align:center;cursor:default;">
+              <span style="font-size:13px;font-weight:500;color:var(--navy);letter-spacing:0.08em;">📖 NOURISH</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANAS -->
+    <div style="border:1px solid var(--border);padding:0;background:var(--card);">
+      <div style="padding:36px 36px 24px;">
+        <span class="section-tag">USP Feature 02</span>
+        <div class="feature-title" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:12px;">ANAS AI Coach</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:20px;">Your AI Nanny-Coach-Mentor. Available 24/7. Committed to making every student a better practitioner — without adding load to your faculty.</p>
+      </div>
+      <div class="anas-chat">
+        <div class="anas-header">
+          <div class="anas-avatar">✦</div>
+          <div>
+            <div class="anas-name">ANAS</div>
+            <div class="anas-status">● Active — Ask anything about using AI</div>
+          </div>
+        </div>
+        <div class="anas-body">
+          <div class="anas-bubble">Read the response and ask follow-up questions about anything unclear.</div>
+          <div class="anas-bubble">Try asking the same question in different ways to see how AI adapts.</div>
+          <div class="anas-tip"><strong>PRO TIP:</strong> The more specific your question, the better the answer — try 'What's one way AI is used in BPOs?' instead of 'Tell me about AI'.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learn to Win -->
+    <div style="border:1px solid var(--border);padding:36px;background:var(--card);">
+      <span class="section-tag">USP Feature 03</span>
+      <div class="feature-title" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:12px;">Learn to Win</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:24px;">Competition drives completion. Not reminders. LAPA's full gamification economy keeps students engaged through the entire programme.</p>
+      <div class="gamification-row" style="grid-template-columns:1fr 1fr;gap:12px;margin-top:0;">
+        <div class="game-card" style="padding:20px 16px;">
+          <span class="game-icon">🏆</span>
+          <span class="game-val">Top 10</span>
+          <div class="game-label">Live Leaderboard</div>
+          <div class="game-desc">Real names. Real rankings. National visibility.</div>
+        </div>
+        <div class="game-card" style="padding:20px 16px;">
+          <span class="game-icon">⭐</span>
+          <span class="game-val">Points</span>
+          <div class="game-label">Every Activity</div>
+          <div class="game-desc">Quizzes, sprints, modules, interactions.</div>
+        </div>
+        <div class="game-card" style="padding:20px 16px;">
+          <span class="game-icon">🥇</span>
+          <span class="game-val">Medals</span>
+          <div class="game-label">Skill Badges</div>
+          <div class="game-desc">Earned not given. Verified on LinkedIn.</div>
+        </div>
+        <div class="game-card" style="padding:20px 16px;">
+          <span class="game-icon">🎁</span>
+          <span class="game-val">Prizes</span>
+          <div class="game-label">Real Incentives</div>
+          <div class="game-desc">Tangible rewards tied to milestones.</div>
+        </div>
+      </div>
+      <!-- Leaderboard preview -->
+      <div class="leaderboard" style="margin-top:20px;">
+        <div class="lb-header"><span>Top Students</span><span>Points</span></div>
+        <div class="lb-row"><div class="lb-rank">1</div><div class="lb-name">Maria Santos</div><div class="lb-bar"><div class="lb-bar-fill" style="width:100%"></div></div><div class="lb-pts">20,000</div></div>
+        <div class="lb-row"><div class="lb-rank">2</div><div class="lb-name">Juan Dela Cruz</div><div class="lb-bar"><div class="lb-bar-fill" style="width:100%"></div></div><div class="lb-pts">20,000</div></div>
+        <div class="lb-row"><div class="lb-rank">3</div><div class="lb-name">Ana Reyes</div><div class="lb-bar"><div class="lb-bar-fill" style="width:80%"></div></div><div class="lb-pts">16,200</div></div>
+        <div class="lb-row"><div class="lb-rank">4</div><div class="lb-name">Carlo Mendoza</div><div class="lb-bar"><div class="lb-bar-fill" style="width:50%"></div></div><div class="lb-pts">10,000</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Live Ecosystem -->
+  <div style="margin-top:24px;border:1px solid var(--border);">
+    <div style="padding:36px;border-bottom:1px solid var(--border);">
+      <span class="section-tag">USP Feature 04</span>
+      <div class="feature-title" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;">Live + Async + Social — All in One</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;max-width:600px;margin-top:8px;">Expert webinars, masterclasses, and self-paced modules integrated in the same platform. No link-switching. No separate apps.</p>
+    </div>
+    <div class="webinar-list" style="margin-top:0;border:none;background:none;">
+      <div class="webinar-item">
+        <div class="webinar-num">01</div>
+        <div class="webinar-info">
+          <div class="webinar-title">The Prompt That Pays: Writing AI Instructions That Actually Work in Corporate Settings</div>
+          <div class="webinar-speaker">Speaker: Dr. Kavitha Nair · 7:30pm – 8:30pm</div>
+        </div>
+        <div class="webinar-type">Webinar</div>
+      </div>
+      <div class="webinar-item">
+        <div class="webinar-num">02</div>
+        <div class="webinar-info">
+          <div class="webinar-title">AI Won't Take Your Job — But Someone Using AI Will: Building Your Personal AI Advantage</div>
+          <div class="webinar-speaker">Speaker: Ahmad Fadzillah Rosl · 12:30pm – 1:30pm</div>
+        </div>
+        <div class="webinar-type">Webinar</div>
+      </div>
+      <div class="webinar-item">
+        <div class="webinar-num">M1</div>
+        <div class="webinar-info">
+          <div class="webinar-title">Masterclass: The Creative Disruptor — Strategic AI Mastery</div>
+          <div class="webinar-speaker">Full-Day Intensive · 9:00am – 6:00pm · Friday–Saturday</div>
+        </div>
+        <div class="webinar-type">Masterclass</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing" style="background:linear-gradient(180deg,#1A1608 0%,#0A1628 100%);border-top:2px solid rgba(201,168,76,0.25);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.6);border-left:4px solid rgba(201,168,76,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(201,168,76,0.6);line-height:1;opacity:0.9;">06</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.6);font-weight:500;">Section 06 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Pricing</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(201,168,76,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(201,168,76,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Investment</span>
+  <div class="section-title">Simple, transparent<br><em>pricing.</em></div>
+  <p class="section-sub">One rate. No hidden fees. A revenue share that rewards your university for driving student engagement.</p>
+
+  <div class="pricing-hero">
+    <div class="price-main">$0.99</div>
+    <div class="price-per">per active student · per month · billed monthly</div>
+    <p class="price-note">An active student is any registered user who logs in at least once in the billing month. Registered but inactive accounts are not billed.</p>
+  </div>
+
+  <div class="tier-grid">
+    <div class="tier-card">
+      <div class="tier-name">Seed Tier</div>
+      <div class="tier-range">500 – 999 Students</div>
+      <div class="tier-rev">$495 – $989 / month</div>
+      <ul class="tier-perks">
+        <li>On-ramp phase — first 60 days</li>
+        <li>Full platform access for all students</li>
+        <li>All 5 learning modules activated</li>
+        <li>ANAS AI Coach + Lapagotchi included</li>
+        <li>Lecturer dashboard included</li>
+      </ul>
+    </div>
+    <div class="tier-card featured">
+      <div class="tier-badge">Committed Minimum</div>
+      <div class="tier-name">Growth Tier</div>
+      <div class="tier-range">1,000 – 1,999 Students</div>
+      <div class="tier-rev">$990 – $1,979 / month</div>
+      <ul class="tier-perks">
+        <li>Minimum commitment from Month 3</li>
+        <li>Full platform + live webinar access</li>
+        <li>National AI leaderboard participation</li>
+        <li>Co-branded LAPA certification</li>
+        <li>Sprint of the Week challenges</li>
+        <li>Priority support channel</li>
+      </ul>
+    </div>
+    <div class="tier-card">
+      <div class="tier-name">Revenue Share Tier</div>
+      <div class="tier-range">2,000+ Students</div>
+      <div class="tier-rev">$1,980+ / month</div>
+      <ul class="tier-perks">
+        <li>All Growth Tier features</li>
+        <li style="color:var(--gold);font-weight:500;">20% of monthly fee returned to university</li>
+        <li style="color:var(--gold);font-weight:500;">Designated for student scholarships</li>
+        <li>Philippines AI League eligibility</li>
+        <li>Industry challenge integration</li>
+        <li>Annual LAPA Impact Report</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Revenue share callout -->
+  <div style="border:1px solid var(--gold);padding:40px;background:rgba(201,168,76,0.04);display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <div style="font-size:10px;font-weight:500;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">Scholarship Revenue Share</div>
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin-bottom:12px;">Your university earns when students engage.</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;">When active enrolment reaches 2,000 students in any month, MICE Neurol Pte Ltd remits 20% of that month's gross licence fee back to your institution — designated exclusively for student scholarship purposes. This is paid within 30 days of month-end.</p>
+    </div>
+    <div style="text-align:center;min-width:160px;">
+      <div style="font-family:'Playfair Display',serif;font-size:64px;font-weight:900;color:var(--gold);line-height:1;">20%</div>
+      <div style="font-size:12px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;">Back to University</div>
+      <div style="font-size:11px;color:var(--gold);margin-top:8px;">For student scholarships</div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMS -->
+<section id="terms" style="background:linear-gradient(180deg,#081A16 0%,#0A1628 100%);border-top:2px solid rgba(26,188,156,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(26,188,156,0.15);border:1px solid rgba(26,188,156,0.6);border-left:4px solid rgba(26,188,156,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(26,188,156,0.6);line-height:1;opacity:0.9;">07</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(26,188,156,0.6);font-weight:500;">Section 07 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Key Terms</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(26,188,156,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(26,188,156,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Key Terms</span>
+  <div class="section-title">Clear terms.<br><em>No surprises.</em></div>
+  <p class="section-sub">A summary of the key conditions governing the LAPA University Partnership Agreement.</p>
+  <div class="terms-grid">
+    <div class="term-item">
+      <div class="term-label">Subscription Fee</div>
+      <div class="term-value">USD $0.99 / active user / month</div>
+      <div class="term-desc">Billed monthly in arrears based on verified active user count for that calendar month.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Active User Definition</div>
+      <div class="term-value">Minimum 1 login per month</div>
+      <div class="term-desc">Any registered student who logs in at least once in the billing month. Inactive accounts are not billed.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Minimum Enrolment</div>
+      <div class="term-value">500 students on-ramp</div>
+      <div class="term-desc">500-student on-ramp for the first 60 days. Minimum committed enrolment of 1,000 students from Month 3 onwards.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Agreement Duration</div>
+      <div class="term-value">12 months</div>
+      <div class="term-desc">From date of first student activation. All pricing and revenue share provisions apply throughout the Initial Term.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Revenue Share</div>
+      <div class="term-value">20% at 2,000+ active students</div>
+      <div class="term-desc">Remitted within 30 days of month-end. Designated exclusively for student scholarship purposes as determined by the Institution.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Pricing Protection</div>
+      <div class="term-value">Rate locked for 12 months</div>
+      <div class="term-desc">The $0.99 rate is guaranteed for the full Initial Term. Renewal pricing communicated with 60 days' notice.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Revenue Share Eligibility</div>
+      <div class="term-value">Monthly basis</div>
+      <div class="term-desc">Revenue share applies only to months where active users meet or exceed 2,000. Prior months do not carry forward.</div>
+    </div>
+    <div class="term-item">
+      <div class="term-label">Governing Entity</div>
+      <div class="term-value">MICE Neurol Pte Ltd</div>
+      <div class="term-desc">Registered in Singapore. All commercial agreements governed under Singapore law unless otherwise agreed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIVERSITY BENEFITS -->
+<section class="benefits-section" id="benefits" style="background:linear-gradient(180deg,#081018 0%,#0F1F3D 100%);border-top:2px solid rgba(52,152,219,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(52,152,219,0.15);border:1px solid rgba(52,152,219,0.6);border-left:4px solid rgba(52,152,219,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(52,152,219,0.6);line-height:1;opacity:0.9;">08</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(52,152,219,0.6);font-weight:500;">Section 08 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">UST Benefits</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(52,152,219,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(52,152,219,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">For Your Institution</span>
+  <div class="section-title">What your university<br><em>gains.</em></div>
+  <p class="section-sub">Beyond the platform — a strategic partnership that creates measurable outcomes for your graduates, your faculty, and your institution's reputation.</p>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <span class="benefit-icon">📈</span>
+      <div class="benefit-title">Improved Graduate Employment Outcomes</div>
+      <div class="benefit-desc">Students graduate with verified AI credentials Philippine employers recognise — directly improving your placement statistics and graduate employability data.</div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🏅</span>
+      <div class="benefit-title">Co-Branded National AI Certification</div>
+      <div class="benefit-desc">Your university name on every LAPA certificate and national competition ranking. When your student wins, your institution wins.</div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">👩‍🏫</span>
+      <div class="benefit-title">Zero Additional Faculty Burden</div>
+      <div class="benefit-desc">ANAS handles common student questions. Lecturers receive a clean real-time dashboard showing each student's AI literacy progress — no manual tracking required.</div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🇵🇭</span>
+      <div class="benefit-title">Philippines AI League Participation</div>
+      <div class="benefit-desc">Your students compete in the Philippines national AI competition circuit — public institutional rankings and employer visibility at the national level.</div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🤝</span>
+      <div class="benefit-title">Industry Challenge Integration</div>
+      <div class="benefit-desc">Real companies post AI challenges for your students to solve. Strengthens your faculty-industry relationships and creates internship and hiring pipelines.</div>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🎓</span>
+      <div class="benefit-title">Scholarship Revenue at Scale</div>
+      <div class="benefit-desc">At 2,000+ active students, 20% of monthly licence fees are returned to your institution as scholarship funds — the platform funds itself at scale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPLEMENTATION TIMELINE -->
+<section id="timeline" style="background:linear-gradient(180deg,#151208 0%,#0A1628 100%);border-top:2px solid rgba(241,196,15,0.2);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(241,196,15,0.15);border:1px solid rgba(241,196,15,0.6);border-left:4px solid rgba(241,196,15,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(241,196,15,0.6);line-height:1;opacity:0.9;">09</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(241,196,15,0.6);font-weight:500;">Section 09 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Implementation</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(241,196,15,0.6);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(241,196,15,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag">Implementation</span>
+  <div class="section-title">From MOU to<br><em>full deployment.</em></div>
+  <p class="section-sub">A structured 12-month rollout with clear milestones, managed by LAPA's partnership team.</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M1</div>
+        <div class="timeline-label">Onboarding</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">MOU Signed · Platform Configured · Faculty Briefing</div>
+        <div class="timeline-desc">University branding applied to platform. Faculty and admin onboarding session. Student registration portal activated. First 500-student cohort enrolled.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M2</div>
+        <div class="timeline-label">Activation</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">Campus Reps Recruited · First Sprint Launched · ANAS Live</div>
+        <div class="timeline-desc">Campus Representative programme activated. First Sprint of the Week challenge posted. ANAS AI Coach accessible to all students. Leaderboard goes live.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M3</div>
+        <div class="timeline-label">Growth</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">1,000-Student Commitment · First Webinar · Modules 1–3 Active</div>
+        <div class="timeline-desc">Committed minimum of 1,000 students reached. First expert webinar delivered. Learning Modules 1, 2, and 3 fully activated. Mid-point progress report to faculty.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M6</div>
+        <div class="timeline-label">Milestone</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">6-Month Review · All 5 Modules Active · Certification Round 1</div>
+        <div class="timeline-desc">Half-year platform review with faculty and administration. All 5 learning modules active. First cohort of students eligible for LAPA AI Identity certification.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M9</div>
+        <div class="timeline-label">Scale</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">Revenue Share Threshold Target · Philippines AI League Entry</div>
+        <div class="timeline-desc">Target 2,000 active students — revenue share scholarships begin. University students entered into Philippines AI League national competition. Employer partnerships activated.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">
+        <div class="timeline-month">M12</div>
+        <div class="timeline-label">Completion</div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-title">Annual Report · Graduation Certification · Renewal Discussion</div>
+        <div class="timeline-desc">LAPA Annual AI Literacy Impact Report delivered to university. Final cohort certified. Graduate portfolio showcase for employer partners. Year 2 partnership renewal discussion.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta" style="background:linear-gradient(180deg,#081A10 0%,#0A1628 100%);border-top:2px solid rgba(37,211,102,0.25);">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:12px 18px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.6);border-left:4px solid rgba(37,211,102,0.6);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(37,211,102,0.6);line-height:1;opacity:0.9;">10</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(37,211,102,0.6);font-weight:500;">Section 10 of 10</div>
+        <div style="font-size:13px;color:rgba(250,250,248,0.7);margin-top:2px;">Contact Merry</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;"></div><div style="width:16px;height:3px;background:rgba(37,211,102,0.6);border-radius:2px;"></div>
+    </div>
+    <a href="#directory" style="font-size:11px;color:rgba(37,211,102,0.6);text-decoration:none;opacity:0.7;">&#8593; Contents</a>
+  </div>
+  <span class="section-tag" style="display:block;text-align:center;">Take the Next Step</span>
+  <h2>Ready for <em>UST Legazpi</em><br>to lead Bicol in AI?</h2>
+  <p>UST Legazpi students deserve to graduate AI-ready. Start with a free 30-minute platform walkthrough — no commitment required. Merry is your dedicated Philippines contact.</p>
+  <div class="cta-actions">
+    <a href="mailto:firdaus@micesneurol.com" class="btn-primary">Request a Free Pilot</a>
+    <a href="mailto:Merry@micesneurol.com?subject=LAPA%20Walkthrough%20Request%20-%20UST%20Legazpi&body=Dear%20Merry%2C%0A%0AI%20would%20like%20to%20schedule%20a%20walkthrough%20of%20the%20LAPA%20platform%20for%20our%20faculty%20at%20UST%20Legazpi.%0A%0AMy%20details%3A%0AName%3A%0APosition%3A%0AAvailability%3A%0A%0AThank%20you." class="btn-outline">Schedule a Walkthrough</a>
+  </div>
+  <div class="contact-info">
+    <div class="contact-item">
+      <div class="contact-label">Email</div>
+      <div class="contact-val">firdaus@micesneurol.com</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Company</div>
+      <div class="contact-val">MICE Neurol Pte Ltd</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Registered</div>
+      <div class="contact-val">Singapore</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Programme</div>
+      <div class="contact-val">Learn AI. Play AI.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">LA<span>PA</span></div>
+  <div class="footer-note">© 2025 MICE Neurol Pte Ltd · Partnership Proposal for University of Santo Tomas Legazpi · Rawis, Legazpi City, Albay · Contact: Merry@micesneurol.com</div>
+</footer>
+
+</body>
+</html>
