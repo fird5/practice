@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LAPA × HELP — Week 1 · Beat 1: Reflection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+:root {
+  --ink:          #0D0F1C;
+  --ink-mid:      #3D405A;
+  --ink-light:    #7B7E96;
+  --purple:       #6B3FA0;
+  --purple-mid:   #8B5CC8;
+  --purple-light: #C4A8E8;
+  --purple-bg:    #F5F0FD;
+  --amber:        #E8922A;
+  --amber-light:  #FDF0E0;
+  --green:        #1A7A4A;
+  --green-light:  #E8F5EE;
+  --white:        #FFFFFF;
+  --off-white:    #FAFAF8;
+  --border:       #E4E1EF;
+  --shadow:       0 2px 24px rgba(107,63,160,0.10);
+  --shadow-lg:    0 8px 48px rgba(107,63,160,0.15);
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: #1A0D2E;
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* ── PHONE SHELL ── */
+.phone-shell {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: var(--off-white);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(107,63,160,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107,63,160,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+
+@media (min-width: 421px) {
+  .phone-shell {
+    min-height: 100vh;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 40px 100px rgba(0,0,0,0.5);
+  }
+}
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.25rem 0.8rem;
+  position: sticky; top: 0; z-index: 100;
+}
+.top-row {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 0.65rem;
+}
+.top-brand { display: flex; align-items: center; gap: 0.5rem; }
+.top-brand-mark {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 0.5rem;
+  font-weight: 700; color: var(--white);
+}
+.top-brand-name {
+  font-weight: 800; font-size: 0.88rem;
+  color: var(--ink); letter-spacing: 0.04em;
+}
+.top-brand-sep {
+  color: var(--border); font-size: 0.8rem; margin: 0 0.1rem;
+}
+.top-brand-course {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  color: var(--purple); letter-spacing: 0.08em; text-transform: uppercase;
+}
+.top-beat-badge {
+  display: flex; align-items: center; gap: 0.3rem;
+  background: var(--purple-bg); border: 1px solid var(--purple-light);
+  padding: 0.28rem 0.7rem; border-radius: 99px;
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  font-weight: 700; color: var(--purple); letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Step progress dots */
+.step-dots {
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.step-dot {
+  height: 5px; border-radius: 99px;
+  transition: all 0.3s ease;
+  background: var(--border);
+  width: 20px;
+}
+.step-dot.active {
+  background: var(--purple); width: 28px;
+}
+.step-dot.done {
+  background: var(--green); width: 20px;
+}
+.step-label {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  color: var(--ink-light); margin-left: auto;
+}
+
+/* ── CONTENT AREA ── */
+.content {
+  flex: 1;
+  padding: 1.5rem 1.25rem 6rem;
+  display: flex; flex-direction: column; gap: 1.25rem;
+  position: relative; z-index: 1;
+}
+
+/* ── STEP SCREENS ── */
+.step-screen { display: none; flex-direction: column; gap: 1.25rem; }
+.step-screen.active { display: flex; animation: slideIn 0.35s ease; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── INTRO SCREEN ── */
+.intro-header {
+  background: linear-gradient(135deg, #1A0D2E, #0E1428);
+  border-radius: 20px; padding: 1.5rem 1.25rem;
+  position: relative; overflow: hidden;
+}
+.intro-header::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,146,42,0.12), transparent 70%);
+  pointer-events: none;
+}
+.intro-week-tag {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 0.5rem;
+}
+.intro-title {
+  font-size: 1.35rem; font-weight: 800; color: var(--white);
+  letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 0.5rem;
+}
+.intro-sub {
+  font-size: 0.84rem; color: rgba(255,255,255,0.6); line-height: 1.65;
+}
+.intro-kolb-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(107,63,160,0.3); border: 1px solid rgba(196,168,232,0.25);
+  padding: 0.3rem 0.75rem; border-radius: 99px; margin-top: 0.75rem;
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  color: var(--purple-light); letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+.intro-what {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem;
+}
+.intro-what-title {
+  font-size: 0.82rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.intro-steps { display: flex; flex-direction: column; gap: 0.55rem; }
+.intro-step {
+  display: flex; align-items: flex-start; gap: 0.65rem;
+}
+.intro-step-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 0.58rem; font-weight: 700;
+}
+.intro-step-num.s1 { background: var(--purple-bg); color: var(--purple); border: 1.5px solid var(--purple-light); }
+.intro-step-num.s2 { background: var(--amber-light); color: var(--amber); border: 1.5px solid rgba(232,146,42,0.3); }
+.intro-step-num.s3 { background: var(--green-light); color: var(--green); border: 1.5px solid rgba(26,122,74,0.25); }
+.intro-step-num.s4 { background: var(--off-white); color: var(--ink-light); border: 1.5px solid var(--border); }
+.intro-step-text { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.5; }
+.intro-step-text strong { color: var(--ink); }
+
+.time-pill {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--off-white); border: 1px solid var(--border);
+  border-radius: 99px; padding: 0.4rem 0.85rem;
+  font-size: 0.78rem; color: var(--ink-light);
+}
+.time-pill strong { color: var(--ink); font-weight: 700; }
+
+/* ── SECTION HEADERS ── */
+.section-eyebrow {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 0.25rem;
+}
+.section-title {
+  font-size: 1.05rem; font-weight: 800; color: var(--ink);
+  letter-spacing: -0.02em; line-height: 1.25;
+}
+.section-sub {
+  font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65;
+}
+.section-sub strong { color: var(--ink); }
+
+/* ── SLIDER QUESTIONS ── */
+.slider-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.slider-card.answered { border-color: var(--purple-light); box-shadow: var(--shadow); }
+.slider-q-num {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  color: var(--purple); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.slider-question {
+  font-size: 0.9rem; font-weight: 700; color: var(--ink);
+  line-height: 1.4; margin-bottom: 0.9rem;
+}
+.slider-wrap { position: relative; padding: 0 4px; }
+.slider-labels {
+  display: flex; justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+.slider-label {
+  font-family: 'Space Mono', monospace; font-size: 0.5rem;
+  color: var(--ink-light); letter-spacing: 0.05em;
+}
+
+/* Custom range slider */
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px;
+  border-radius: 99px; outline: none; cursor: pointer;
+  background: var(--border);
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--purple);
+  box-shadow: 0 2px 8px rgba(107,63,160,0.35);
+  cursor: pointer; transition: transform 0.15s;
+  border: 3px solid var(--white);
+}
+input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--purple); border: 3px solid var(--white);
+  box-shadow: 0 2px 8px rgba(107,63,160,0.35); cursor: pointer;
+}
+
+.slider-value-row {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-top: 0.5rem;
+}
+.slider-val-display {
+  font-family: 'Space Mono', monospace; font-size: 0.75rem;
+  font-weight: 700; color: var(--purple);
+  background: var(--purple-bg); border: 1px solid var(--purple-light);
+  padding: 0.2rem 0.6rem; border-radius: 99px; min-width: 42px;
+  text-align: center;
+}
+.slider-descriptor {
+  font-size: 0.72rem; color: var(--ink-light); font-style: italic;
+}
+
+/* ── HONEST MOMENT ── */
+.honest-box {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem;
+}
+.honest-prompt {
+  font-size: 0.88rem; color: var(--ink-mid); line-height: 1.65;
+  margin-bottom: 0.85rem; font-style: italic;
+}
+.honest-prompt strong { color: var(--ink); font-style: normal; }
+.honest-textarea {
+  width: 100%; min-height: 100px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  font-family: 'Sora', sans-serif; font-size: 0.86rem;
+  color: var(--ink); line-height: 1.6;
+  background: var(--off-white); resize: none; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.honest-textarea:focus {
+  border-color: var(--purple); background: var(--white);
+}
+.honest-textarea::placeholder { color: var(--ink-light); }
+.char-count {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  color: var(--ink-light); text-align: right; margin-top: 0.3rem;
+}
+.char-count.warn { color: var(--amber); }
+
+.honest-note {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  background: var(--amber-light); border: 1px solid rgba(232,146,42,0.2);
+  border-radius: 10px; padding: 0.65rem 0.8rem; margin-top: 0.75rem;
+  font-size: 0.78rem; color: var(--ink-mid); line-height: 1.55;
+}
+
+/* ── GAP STATEMENT ── */
+.gap-reveal {
+  background: linear-gradient(135deg, var(--purple-bg), rgba(232,146,42,0.05));
+  border: 1.5px solid var(--purple-light);
+  border-radius: 18px; padding: 1.35rem;
+  position: relative; overflow: hidden;
+}
+.gap-reveal::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--amber));
+}
+.gap-eyebrow {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 0.5rem;
+}
+.gap-title {
+  font-size: 0.95rem; font-weight: 800; color: var(--ink);
+  margin-bottom: 0.75rem; letter-spacing: -0.015em; line-height: 1.3;
+}
+.gap-scores {
+  display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;
+}
+.gap-score-pill {
+  display: flex; align-items: center; gap: 0.35rem;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 99px; padding: 0.3rem 0.75rem;
+  font-size: 0.75rem; font-weight: 600;
+}
+.gap-score-pill .pill-label { color: var(--ink-light); }
+.gap-score-pill .pill-val { color: var(--purple); font-family: 'Space Mono', monospace; font-weight: 700; }
+
+.gap-text {
+  font-size: 0.86rem; color: var(--ink-mid); line-height: 1.72;
+  background: var(--white); border-radius: 12px;
+  padding: 0.9rem 1rem; border: 1px solid var(--border);
+}
+.gap-text strong { color: var(--purple); }
+.gap-text em { color: var(--amber); font-style: normal; font-weight: 600; }
+
+.honest-replay {
+  background: rgba(107,63,160,0.06); border-radius: 12px;
+  padding: 0.85rem 1rem; border-left: 3px solid var(--purple-light);
+  margin-top: 0.75rem;
+}
+.honest-replay-label {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-light); margin-bottom: 0.3rem;
+}
+.honest-replay-text {
+  font-size: 0.84rem; color: var(--ink-mid); font-style: italic; line-height: 1.6;
+}
+
+/* ── INTENTION ── */
+.intention-box {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem;
+}
+.intention-stem {
+  font-size: 0.9rem; font-weight: 700; color: var(--ink);
+  line-height: 1.45; margin-bottom: 0.85rem;
+}
+.intention-stem em { color: var(--purple); font-style: normal; }
+.intention-textarea {
+  width: 100%; min-height: 70px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  font-family: 'Sora', sans-serif; font-size: 0.86rem;
+  color: var(--ink); line-height: 1.6;
+  background: var(--off-white); resize: none; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.intention-textarea:focus {
+  border-color: var(--purple); background: var(--white);
+}
+.intention-textarea::placeholder { color: var(--ink-light); }
+
+.examples-toggle {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  color: var(--purple); letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.35rem 0; display: flex; align-items: center; gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+.examples-list {
+  display: none; flex-direction: column; gap: 0.4rem; margin-top: 0.6rem;
+}
+.examples-list.open { display: flex; }
+.example-intention {
+  background: var(--purple-bg); border: 1px solid var(--purple-light);
+  border-radius: 10px; padding: 0.6rem 0.8rem;
+  font-size: 0.8rem; color: var(--ink-mid); line-height: 1.5;
+  cursor: pointer; transition: background 0.15s;
+}
+.example-intention:hover { background: rgba(107,63,160,0.12); }
+
+/* ── COMPLETION ── */
+.completion-card {
+  background: linear-gradient(135deg, #1A0D2E, #0E1428);
+  border-radius: 20px; padding: 1.5rem 1.25rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.completion-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--amber));
+}
+.completion-card::after {
+  content: '';
+  position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,146,42,0.1), transparent 70%);
+  pointer-events: none;
+}
+.completion-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.completion-title {
+  font-size: 1.2rem; font-weight: 800; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 0.4rem;
+}
+.completion-sub {
+  font-size: 0.84rem; color: rgba(255,255,255,0.6); line-height: 1.6;
+}
+.next-beat-hint {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 0.85rem 1rem; margin-top: 0.75rem;
+  text-align: left;
+}
+.next-beat-icon { font-size: 1.2rem; flex-shrink: 0; }
+.next-beat-text { font-size: 0.8rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+.next-beat-text strong { color: var(--amber); display: block; margin-bottom: 0.1rem; }
+
+/* Export form */
+.export-form {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem;
+}
+.export-title {
+  font-size: 0.84rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem;
+}
+.export-input {
+  width: 100%; padding: 0.72rem 0.9rem;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Sora', sans-serif; font-size: 0.85rem;
+  color: var(--ink); background: var(--off-white);
+  margin-bottom: 0.6rem; outline: none;
+  transition: border-color 0.2s;
+}
+.export-input:focus { border-color: var(--purple); background: var(--white); }
+.export-input::placeholder { color: var(--ink-light); }
+.btn-export {
+  width: 100%; padding: 0.9rem;
+  background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+  color: var(--white); border: none; border-radius: 12px;
+  font-family: 'Sora', sans-serif; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(107,63,160,0.3);
+}
+.btn-export:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(107,63,160,0.4); }
+
+/* ── STICKY BOTTOM BAR ── */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 420px;
+  background: rgba(250,250,248,0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  padding: 0.85rem 1.25rem;
+  z-index: 100;
+}
+.btn-next {
+  width: 100%; padding: 0.95rem;
+  background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+  color: var(--white); border: none; border-radius: 14px;
+  font-family: 'Sora', sans-serif; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(107,63,160,0.3);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,63,160,0.4); }
+.btn-next:disabled {
+  background: var(--border); color: var(--ink-light);
+  cursor: not-allowed; transform: none; box-shadow: none;
+}
+
+/* Save state pulse */
+.save-pulse {
+  text-align: center; margin-top: 0.4rem;
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  color: var(--green); letter-spacing: 0.08em;
+  opacity: 0; transition: opacity 0.3s;
+}
+.save-pulse.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="phone-shell">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-row">
+      <div class="top-brand">
+        <div class="top-brand-mark">LA</div>
+        <span class="top-brand-name">LAPA</span>
+        <span class="top-brand-sep">×</span>
+        <span class="top-brand-course">HELP · Wk 1</span>
+      </div>
+      <div class="top-beat-badge">🪞 Beat 1</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <div class="step-dots">
+        <div class="step-dot active" id="dot-0"></div>
+        <div class="step-dot" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+        <div class="step-dot" id="dot-3"></div>
+        <div class="step-dot" id="dot-4"></div>
+      </div>
+      <span class="step-label" id="step-label">Intro</span>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══ SCREEN 0 · INTRO ═══ -->
+    <div class="step-screen active" id="screen-0">
+      <div class="intro-header">
+        <div class="intro-week-tag">Week 1 · Beat 1 of 5</div>
+        <div class="intro-title">Before you learn anything —<br>let's find out where you are.</div>
+        <div class="intro-sub">This isn't a test. There are no right answers. This is a mirror — a 10-minute honest look at how you currently communicate professionally.</div>
+        <div class="intro-kolb-tag">🔄 Kolb Stage 1 · Concrete Experience</div>
+      </div>
+
+      <div class="intro-what">
+        <div class="intro-what-title">What happens in this reflection:</div>
+        <div class="intro-steps">
+          <div class="intro-step">
+            <div class="intro-step-num s1">1</div>
+            <div class="intro-step-text"><strong>Rate yourself</strong> on 3 communication habits — honestly, not aspirationally.</div>
+          </div>
+          <div class="intro-step">
+            <div class="intro-step-num s2">2</div>
+            <div class="intro-step-text"><strong>One honest moment</strong> — a real situation, in your own words.</div>
+          </div>
+          <div class="intro-step">
+            <div class="intro-step-num s3">3</div>
+            <div class="intro-step-text"><strong>Your gap statement</strong> — generated from your ratings. This is what Week 1 will close.</div>
+          </div>
+          <div class="intro-step">
+            <div class="intro-step-num s4">4</div>
+            <div class="intro-step-text"><strong>Your intention</strong> — one sentence you'll carry into the learning.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+        <div class="time-pill">⏱ <strong>10–15 minutes</strong></div>
+        <div class="time-pill">📱 <strong>Self-directed</strong></div>
+        <div class="time-pill">🔒 <strong>Private to you</strong></div>
+      </div>
+
+      <div style="background:var(--green-light); border:1px solid rgba(26,122,74,0.2); border-radius:12px; padding:0.85rem 1rem; font-size:0.82rem; color:var(--ink-mid); line-height:1.6;">
+        💡 <strong style="color:var(--green);">Why start here?</strong> Research shows you retain information better when you already know why you need it. Your reflection creates that reason — before a single card is shown to you.
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 1 · SELF-RATING ═══ -->
+    <div class="step-screen" id="screen-1">
+      <div>
+        <div class="section-eyebrow">Part 1 of 4 · Self-Rating</div>
+        <div class="section-title">Rate your current communication habits</div>
+        <div class="section-sub" style="margin-top:0.35rem;">Be honest — not how you <em>want</em> to be, but how you <em>actually</em> are right now.</div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="slider-card" id="sc1">
+        <div class="slider-q-num">Question 01</div>
+        <div class="slider-question">How formal is your professional writing when emailing someone senior — a lecturer, manager, or client?</div>
+        <div class="slider-wrap">
+          <div class="slider-labels">
+            <span class="slider-label">Very casual</span>
+            <span class="slider-label">Very formal</span>
+          </div>
+          <input type="range" min="1" max="5" value="3" id="q1"
+            oninput="updateSlider(1, this.value)">
+          <div class="slider-value-row">
+            <div class="slider-val-display" id="q1-val">3/5</div>
+            <div class="slider-descriptor" id="q1-desc">Sometimes formal, sometimes not</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="slider-card" id="sc2">
+        <div class="slider-q-num">Question 02</div>
+        <div class="slider-question">How often do you re-read and edit a message before hitting send?</div>
+        <div class="slider-wrap">
+          <div class="slider-labels">
+            <span class="slider-label">Never — just send</span>
+            <span class="slider-label">Always edit first</span>
+          </div>
+          <input type="range" min="1" max="5" value="3" id="q2"
+            oninput="updateSlider(2, this.value)">
+          <div class="slider-value-row">
+            <div class="slider-val-display" id="q2-val">3/5</div>
+            <div class="slider-descriptor" id="q2-desc">Sometimes — depends on importance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="slider-card" id="sc3">
+        <div class="slider-q-num">Question 03</div>
+        <div class="slider-question">How confident are you asking senior people for things — an extension, feedback, a meeting — via email?</div>
+        <div class="slider-wrap">
+          <div class="slider-labels">
+            <span class="slider-label">Very uncomfortable</span>
+            <span class="slider-label">Completely confident</span>
+          </div>
+          <input type="range" min="1" max="5" value="3" id="q3"
+            oninput="updateSlider(3, this.value)">
+          <div class="slider-value-row">
+            <div class="slider-val-display" id="q3-val">3/5</div>
+            <div class="slider-descriptor" id="q3-desc">Moderately confident</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 2 · HONEST MOMENT ═══ -->
+    <div class="step-screen" id="screen-2">
+      <div>
+        <div class="section-eyebrow">Part 2 of 4 · Honest Moment</div>
+        <div class="section-title">One real situation, in your own words.</div>
+        <div class="section-sub" style="margin-top:0.35rem;">Don't write what sounds good. Write what actually happened.</div>
+      </div>
+
+      <div class="honest-box">
+        <div class="honest-prompt">
+          Complete this sentence honestly:<br>
+          <strong>"The last time I had to send an important professional message — to a lecturer, employer, or client — I felt...</strong>
+        </div>
+        <textarea class="honest-textarea" id="honest-text"
+          placeholder="...nervous and rewrote it three times before sending. I wasn't sure if my tone was right, and I avoided being direct about what I actually needed."
+          oninput="updateCharCount(this)"
+          maxlength="400"></textarea>
+        <div class="char-count" id="char-count">0 / 400</div>
+
+        <div class="honest-note">
+          <span>💬</span>
+          <span>This stays private. It's only used to generate your personal gap statement — and it feeds into your Week 1 Sprint reflection.</span>
+        </div>
+      </div>
+
+      <div style="background:var(--purple-bg); border:1px solid var(--purple-light); border-radius:14px; padding:1rem 1.1rem;">
+        <div style="font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--purple); margin-bottom:0.4rem;">Why this matters</div>
+        <div style="font-size:0.84rem; color:var(--ink-mid); line-height:1.65;">Kolb's model says the deepest learning starts with a <strong style="color:var(--ink);">concrete experience</strong> — a real moment, not a hypothetical. Your answer gives you that anchor. Every concept you learn today will connect back to it.</div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 3 · GAP STATEMENT ═══ -->
+    <div class="step-screen" id="screen-3">
+      <div>
+        <div class="section-eyebrow">Part 3 of 4 · Your Gap Statement</div>
+        <div class="section-title">Here is what your reflection reveals.</div>
+        <div class="section-sub" style="margin-top:0.35rem;">Generated from your ratings. This is the gap that Week 1 is designed to close.</div>
+      </div>
+
+      <div class="gap-reveal">
+        <div class="gap-eyebrow">⚡ Your Communication Profile</div>
+        <div class="gap-title" id="gap-title">Loading your profile...</div>
+        <div class="gap-scores" id="gap-scores"></div>
+        <div class="gap-text" id="gap-text">Calculating...</div>
+
+        <div class="honest-replay">
+          <div class="honest-replay-label">Your honest moment</div>
+          <div class="honest-replay-text" id="honest-replay-text">"..."</div>
+        </div>
+      </div>
+
+      <div style="background:var(--amber-light); border:1px solid rgba(232,146,42,0.25); border-radius:14px; padding:1rem 1.1rem;">
+        <div style="font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); margin-bottom:0.4rem;">🎯 What to watch for today</div>
+        <div style="font-size:0.84rem; color:var(--ink-mid); line-height:1.65;" id="watch-for-text">Pay attention as you work through the micro-cards — you'll encounter the exact tools that address your specific gap.</div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 4 · INTENTION ═══ -->
+    <div class="step-screen" id="screen-4">
+      <div>
+        <div class="section-eyebrow">Part 4 of 4 · Your Intention</div>
+        <div class="section-title">One sentence you'll carry into the learning.</div>
+        <div class="section-sub" style="margin-top:0.35rem;">This becomes the lens through which you watch the videos and complete your Sprint.</div>
+      </div>
+
+      <div class="intention-box">
+        <div class="intention-stem">Complete this sentence:<br><em>"This week I will specifically pay attention to..."</em></div>
+        <textarea class="intention-textarea" id="intention-text"
+          placeholder="...how much context I give when I ask AI to write something for me, and whether the output actually sounds like how I'd want to communicate."
+          maxlength="300"
+          oninput="checkIntentionLength()"></textarea>
+
+        <button class="examples-toggle" onclick="toggleExamples()">
+          <span id="examples-arrow">▸</span> See example intentions
+        </button>
+        <div class="examples-list" id="examples-list">
+          <div class="example-intention" onclick="useExample(this)">
+            ...how I naturally start emails — and whether it's costing me credibility with lecturers or employers.
+          </div>
+          <div class="example-intention" onclick="useExample(this)">
+            ...the difference between what I ask AI to write and what I actually need it to say.
+          </div>
+          <div class="example-intention" onclick="useExample(this)">
+            ...whether I'm being direct enough when I ask senior people for things, or whether I'm hiding behind vague language.
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion summary -->
+      <div class="completion-card">
+        <div class="completion-emoji">🪞</div>
+        <div class="completion-title">Reflection complete.</div>
+        <div class="completion-sub">You've identified your starting point. Now you have a real reason to pay attention to what comes next.</div>
+        <div class="next-beat-hint">
+          <span class="next-beat-icon">📱</span>
+          <div class="next-beat-text">
+            <strong>Next: Beat 2 — Micro-Cards</strong>
+            Open Week 1 · Beat 2 on HELP LMS when you're ready. Your reflection will make those 12 cards hit differently.
+          </div>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="export-form">
+        <div class="export-title">📋 Save your reflection record for HELP LMS</div>
+        <input type="text" class="export-input" id="student-name"
+          placeholder="Your full name (as on student ID)" maxlength="60">
+        <input type="text" class="export-input" id="student-id"
+          placeholder="HELP Student ID (e.g. 123456)" maxlength="20">
+        <button class="btn-export" onclick="exportReflection()">
+          Download Reflection Record →
+        </button>
+      </div>
+
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <button class="btn-next" id="btn-next" onclick="nextStep()">
+      Start Reflection
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="save-pulse" id="save-pulse">✓ Progress saved</div>
+  </div>
+
+</div><!-- /phone-shell -->
+
+<script>
+let currentStep = 0;
+const TOTAL_STEPS = 5;
+
+// Slider descriptors
+const descriptors = {
+  1: ['', 'Very casual — I write how I talk', 'Mostly informal', 'Sometimes formal, sometimes not', 'Usually professional', 'Very formal always'],
+  2: ['', 'Never — I just send it', 'Rarely edit', 'Sometimes — depends on importance', 'Usually re-read once', 'Always edit carefully'],
+  3: ['', 'Very uncomfortable — I avoid it', 'Uncomfortable', 'Moderately confident', 'Usually confident', 'Completely confident'],
+};
+
+const stepLabels = ['Intro', 'Rate', 'Reflect', 'Gap', 'Intend'];
+
+function updateSlider(q, val) {
+  const v = parseInt(val);
+  document.getElementById(`q${q}-val`).textContent = `${v}/5`;
+  document.getElementById(`q${q}-desc`).textContent = descriptors[q][v];
+
+  // Fill colour
+  const pct = ((v - 1) / 4) * 100;
+  const el = document.getElementById(`q${q}`);
+  el.style.background = `linear-gradient(to right, var(--purple) ${pct}%, var(--border) ${pct}%)`;
+
+  document.getElementById(`sc${q}`).classList.add('answered');
+}
+
+function updateCharCount(el) {
+  const count = el.value.length;
+  const cc = document.getElementById('char-count');
+  cc.textContent = `${count} / 400`;
+  cc.classList.toggle('warn', count > 350);
+  checkStep2();
+}
+
+function checkStep2() {
+  const txt = document.getElementById('honest-text').value.trim();
+  const btn = document.getElementById('btn-next');
+  btn.disabled = txt.length < 20;
+}
+
+function checkIntentionLength() {
+  const txt = document.getElementById('intention-text').value.trim();
+  const btn = document.getElementById('btn-next');
+  btn.disabled = txt.length < 10;
+}
+
+function toggleExamples() {
+  const list = document.getElementById('examples-list');
+  const arrow = document.getElementById('examples-arrow');
+  list.classList.toggle('open');
+  arrow.textContent = list.classList.contains('open') ? '▾' : '▸';
+}
+
+function useExample(el) {
+  document.getElementById('intention-text').value = el.textContent.trim();
+  document.getElementById('examples-list').classList.remove('open');
+  document.getElementById('examples-arrow').textContent = '▸';
+  checkIntentionLength();
+}
+
+function generateGapStatement() {
+  const q1 = parseInt(document.getElementById('q1').value);
+  const q2 = parseInt(document.getElementById('q2').value);
+  const q3 = parseInt(document.getElementById('q3').value);
+  const avg = (q1 + q2 + q3) / 3;
+  const honest = document.getElementById('honest-text').value.trim();
+
+  // Scores display
+  const scoresEl = document.getElementById('gap-scores');
+  const labels = ['Formality', 'Edit habit', 'Confidence'];
+  const vals = [q1, q2, q3];
+  scoresEl.innerHTML = labels.map((l, i) =>
+    `<div class="gap-score-pill">
+      <span class="pill-label">${l}</span>
+      <span class="pill-val">${vals[i]}/5</span>
+    </div>`
+  ).join('');
+
+  // Profile title
+  let profileTitle, gapText, watchFor;
+
+  if (avg <= 2) {
+    profileTitle = "You're at the starting line — and that's exactly where this begins.";
+    gapText = `Your ratings suggest that professional communication currently feels <strong>uncertain and effortful</strong> for you. You rate your formality at ${q1}/5, your editing habit at ${q2}/5, and your confidence at ${q3}/5. That's not a weakness — it's an honest baseline. <em>This week you'll learn how AI can remove the uncertainty from every professional message you write.</em> The CARE Framework — Context, Audience, Role, Edit — will give you a repeatable process so you never start from a blank page again.`;
+    watchFor = "Pay close attention to the CARE Framework in Beat 2. It was designed specifically for people who find professional writing effortful. By the end of today, you'll have a template you can use for every professional email you write.";
+  } else if (avg <= 3.5) {
+    profileTitle = "You communicate — but inconsistently. This week makes it systematic.";
+    gapText = `Your ratings show a <strong>mixed picture</strong>: formality at ${q1}/5, editing habit at ${q2}/5, confidence at ${q3}/5. You're not starting from zero — you have instincts. But your communication quality likely depends on how much time you have and how important the message feels. <em>This week you'll learn how to make your best communication your default communication</em> — using AI as a structured thinking partner, not just a writing shortcut.`;
+    watchFor = "Watch for the 'Before and After' card in Beat 2 — it shows exactly what the difference looks like between an AI prompt with no context and a strategic one. That gap will feel very familiar.";
+  } else {
+    profileTitle = "You already communicate well. This week adds strategic leverage.";
+    gapText = `You rated yourself at ${q1}/5 for formality, ${q2}/5 for editing habit, and ${q3}/5 for confidence — above average across the board. The opportunity this week is not to fix a weakness, but to <em>multiply what you already do well</em>. <strong>High-performing communicators who learn to use AI strategically</strong> don't just save time — they produce work at a level their peers cannot reach without the same investment of hours.`;
+    watchFor = "Focus on the CARE Framework's 'Edit' stage in Beat 2. Even strong writers fall into the trap of sending AI output without personalising it. That's the gap between good and exceptional.";
+  }
+
+  document.getElementById('gap-title').textContent = profileTitle;
+  document.getElementById('gap-text').innerHTML = gapText;
+  document.getElementById('watch-for-text').textContent = watchFor;
+
+  // Honest replay
+  const replayText = honest.length > 0
+    ? `"${honest.substring(0, 200)}${honest.length > 200 ? '…' : ''}"`
+    : '"(No response entered)"';
+  document.getElementById('honest-replay-text').textContent = replayText;
+}
+
+function nextStep() {
+  if (currentStep < TOTAL_STEPS - 1) {
+    // Validate step 2
+    if (currentStep === 2) {
+      const txt = document.getElementById('honest-text').value.trim();
+      if (txt.length < 20) return;
+    }
+
+    // Generate gap before showing it
+    if (currentStep === 2) generateGapStatement();
+
+    document.getElementById(`screen-${currentStep}`).classList.remove('active');
+    currentStep++;
+    document.getElementById(`screen-${currentStep}`).classList.add('active');
+
+    updateDots();
+    updateBtn();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Pulse save
+    const pulse = document.getElementById('save-pulse');
+    pulse.classList.add('show');
+    setTimeout(() => pulse.classList.remove('show'), 2000);
+  }
+}
+
+function updateDots() {
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    dot.classList.remove('active', 'done');
+    if (i < currentStep) dot.classList.add('done');
+    if (i === currentStep) dot.classList.add('active');
+  }
+  document.getElementById('step-label').textContent = stepLabels[currentStep];
+}
+
+function updateBtn() {
+  const btn = document.getElementById('btn-next');
+
+  if (currentStep === 0) {
+    btn.innerHTML = 'Start Reflection <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.disabled = false;
+  } else if (currentStep === 1) {
+    btn.innerHTML = 'Continue → Honest Moment <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.disabled = false;
+  } else if (currentStep === 2) {
+    btn.innerHTML = 'Generate My Gap Statement <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.disabled = document.getElementById('honest-text').value.trim().length < 20;
+  } else if (currentStep === 3) {
+    btn.innerHTML = 'Set My Intention <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.disabled = false;
+  } else if (currentStep === 4) {
+    btn.style.display = 'none';
+  }
+}
+
+// Init sliders with fill
+function initSliders() {
+  [1, 2, 3].forEach(q => {
+    const el = document.getElementById(`q${q}`);
+    const val = parseInt(el.value);
+    const pct = ((val - 1) / 4) * 100;
+    el.style.background = `linear-gradient(to right, var(--purple) ${pct}%, var(--border) ${pct}%)`;
+  });
+}
+
+// Export
+function exportReflection() {
+  const name = document.getElementById('student-name').value.trim();
+  const id = document.getElementById('student-id').value.trim();
+  if (!name || !id) {
+    alert('Please enter your full name and student ID.');
+    return;
+  }
+
+  const q1 = document.getElementById('q1').value;
+  const q2 = document.getElementById('q2').value;
+  const q3 = document.getElementById('q3').value;
+  const honest = document.getElementById('honest-text').value.trim();
+  const intention = document.getElementById('intention-text').value.trim();
+  const gapTitle = document.getElementById('gap-title').textContent;
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' });
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LAPA × HELP — Week 1 Beat 1 Reflection Record</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Sora',sans-serif; background:#FAFAF8; margin:0; padding:2rem; color:#0D0F1C; }
+  .doc { max-width:640px; margin:0 auto; background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 48px rgba(107,63,160,0.12); }
+  .hdr { background:linear-gradient(135deg,#6B3FA0,#5028A0); padding:2rem; position:relative; }
+  .hdr::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#6B3FA0,#E8922A,#6B3FA0); }
+  .hdr-tag { font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:0.4rem; }
+  .hdr-title { font-size:1.3rem; font-weight:800; color:white; letter-spacing:-0.02em; margin-bottom:0.25rem; }
+  .hdr-sub { font-size:0.82rem; color:rgba(255,255,255,0.6); }
+  .body { padding:1.75rem; }
+  .field { margin-bottom:1.25rem; padding-bottom:1.25rem; border-bottom:1px solid #E4E1EF; }
+  .field:last-child { border-bottom:none; margin-bottom:0; }
+  .f-label { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:#7B7E96; margin-bottom:0.35rem; }
+  .f-value { font-size:0.95rem; font-weight:600; color:#0D0F1C; }
+  .f-value-body { font-size:0.88rem; color:#3D405A; line-height:1.65; font-style:italic; }
+  .scores { display:flex; gap:0.75rem; flex-wrap:wrap; }
+  .score-pill { background:#F5F0FD; border:1px solid #C4A8E8; border-radius:99px; padding:0.3rem 0.85rem; font-size:0.8rem; }
+  .score-pill strong { color:#6B3FA0; font-family:'Space Mono',monospace; }
+  .gap-box { background:#F5F0FD; border:1.5px solid #C4A8E8; border-radius:12px; padding:1rem; margin-top:0.5rem; font-size:0.88rem; color:#3D405A; line-height:1.65; }
+  .intention-box { background:#FDF0E0; border:1.5px solid rgba(232,146,42,0.3); border-radius:12px; padding:1rem; margin-top:0.5rem; font-size:0.88rem; color:#3D405A; line-height:1.65; font-style:italic; }
+  .status { background:#E8F5EE; border:1px solid rgba(26,122,74,0.25); color:#1A7A4A; padding:0.5rem 1rem; border-radius:99px; font-size:0.78rem; font-weight:700; display:inline-block; }
+  .ftr { background:#F5F0FD; padding:1rem 1.75rem; display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:0.58rem; color:#7B7E96; }
+  @media print { body { background:white; padding:0; } .doc { box-shadow:none; } }
+</style>
+</head>
+<body>
+<div class="doc">
+  <div class="hdr">
+    <div class="hdr-tag">LAPA × HELP University · Week 1 · Beat 1 of 5</div>
+    <div class="hdr-title">Reflection Record</div>
+    <div class="hdr-sub">AI Foundations in Communication — Baseline Self-Assessment</div>
+  </div>
+  <div class="body">
+    <div class="field">
+      <div class="f-label">Student Name</div>
+      <div class="f-value">${name}</div>
+    </div>
+    <div class="field">
+      <div class="f-label">Student ID</div>
+      <div class="f-value">${id}</div>
+    </div>
+    <div class="field">
+      <div class="f-label">Completed</div>
+      <div class="f-value">${dateStr} at ${timeStr}</div>
+    </div>
+    <div class="field">
+      <div class="f-label">Part 1 — Self-Rating Scores</div>
+      <div class="scores">
+        <div class="score-pill">Formality <strong>${q1}/5</strong></div>
+        <div class="score-pill">Edit Habit <strong>${q2}/5</strong></div>
+        <div class="score-pill">Confidence <strong>${q3}/5</strong></div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="f-label">Part 2 — Honest Moment</div>
+      <div class="f-value-body">"${honest || '(Not completed)'}"</div>
+    </div>
+    <div class="field">
+      <div class="f-label">Part 3 — Generated Gap Statement</div>
+      <div class="gap-box">${gapTitle}</div>
+    </div>
+    <div class="field">
+      <div class="f-label">Part 4 — Learning Intention</div>
+      <div class="intention-box">"This week I will specifically pay attention to... ${intention || '(Not completed)'}"</div>
+    </div>
+    <div style="text-align:center; padding-top:0.5rem;">
+      <span class="status">✅ Beat 1 Complete — Ready for Beat 2</span>
+    </div>
+  </div>
+  <div class="ftr">
+    <span>MICE Neurol Pte Ltd · LAPA Platform</span>
+    <span>lapa.ai · © 2026</span>
+  </div>
+</div>
+<p style="text-align:center; margin-top:1.5rem; font-size:0.78rem; color:#7B7E96;">Print or screenshot this page and upload to HELP LMS as your Beat 1 completion record.</p>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `LAPA_W1_Beat1_${id}_${name.replace(/\s+/g,'_')}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Init
+initSliders();
+updateBtn();
+</script>
+</body>
+</html>

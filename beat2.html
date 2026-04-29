@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LAPA × HELP — Week 1: AI Foundations in Communication</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+:root {
+  --ink:          #0D0F1C;
+  --ink-mid:      #3D405A;
+  --ink-light:    #7B7E96;
+  --purple:       #6B3FA0;
+  --purple-mid:   #8B5CC8;
+  --purple-light: #C4A8E8;
+  --purple-bg:    #F5F0FD;
+  --amber:        #E8922A;
+  --amber-light:  #FDF0E0;
+  --green:        #1A7A4A;
+  --green-light:  #E8F5EE;
+  --red:          #C0392B;
+  --red-light:    #FDECEA;
+  --white:        #FFFFFF;
+  --off-white:    #FAFAF8;
+  --border:       #E4E1EF;
+  --card-radius:  20px;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--ink);
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ── PHONE SHELL ── */
+.phone-shell {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  max-height: 900px;
+  background: var(--off-white);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1.25rem 0.75rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+.top-back {
+  background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 0.3rem;
+  font-family: 'Space Mono', monospace; font-size: 0.6rem;
+  color: var(--ink-light); letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.3rem 0;
+}
+.top-back:hover { color: var(--purple); }
+.top-week {
+  font-family: 'Space Mono', monospace; font-size: 0.6rem;
+  color: var(--purple); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.top-xp {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-family: 'Space Mono', monospace; font-size: 0.65rem;
+  font-weight: 700; color: var(--amber);
+}
+.top-xp-icon { font-size: 0.9rem; }
+
+.progress-wrap {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.progress-bar {
+  flex: 1; height: 7px;
+  background: var(--border); border-radius: 99px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--amber));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.progress-count {
+  font-family: 'Space Mono', monospace; font-size: 0.6rem;
+  color: var(--ink-light); white-space: nowrap; min-width: 32px; text-align: right;
+}
+
+/* ── CARD VIEWPORT ── */
+.card-viewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.card-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card {
+  min-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  scroll-behavior: smooth;
+}
+.card::-webkit-scrollbar { display: none; }
+
+/* Card type tag */
+.card-type-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.3rem 0.75rem; border-radius: 99px;
+  width: fit-content; font-weight: 700;
+}
+.tag-hook    { background: var(--ink); color: var(--white); }
+.tag-concept { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-light); }
+.tag-analogy { background: var(--amber-light); color: var(--amber); border: 1px solid rgba(232,146,42,0.3); }
+.tag-example { background: var(--green-light); color: var(--green); border: 1px solid rgba(26,122,74,0.25); }
+.tag-tryit   { background: var(--purple); color: var(--white); }
+.tag-quiz    { background: var(--ink); color: var(--amber); }
+.tag-sprint  { background: linear-gradient(135deg, var(--purple), var(--amber)); color: var(--white); }
+
+/* ── HOOK CARD ── */
+.hook-big {
+  font-size: 1.65rem; font-weight: 800; color: var(--ink);
+  line-height: 1.1; letter-spacing: -0.03em;
+}
+.hook-big .hl-purple { color: var(--purple); }
+.hook-big .hl-amber  { color: var(--amber); }
+.hook-sub {
+  font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7;
+}
+.hook-visual {
+  background: linear-gradient(135deg, #1A0D2E, #0E1428);
+  border-radius: 16px; padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.chat-bubble {
+  border-radius: 12px; padding: 0.65rem 0.9rem;
+  font-size: 0.82rem; line-height: 1.55; max-width: 88%;
+}
+.bubble-ai {
+  background: rgba(107,63,160,0.25); color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(107,63,160,0.3); align-self: flex-start;
+}
+.bubble-human {
+  background: rgba(232,146,42,0.2); color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(232,146,42,0.3); align-self: flex-end;
+}
+.bubble-label {
+  font-family: 'Space Mono', monospace; font-size: 0.5rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35); margin-bottom: 0.2rem;
+}
+
+/* ── CONCEPT CARD ── */
+.concept-icon-wrap {
+  width: 64px; height: 64px;
+  background: var(--purple-bg);
+  border: 2px solid var(--purple-light);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+.concept-title {
+  font-size: 1.2rem; font-weight: 800; color: var(--ink);
+  letter-spacing: -0.02em; line-height: 1.2;
+}
+.concept-body {
+  font-size: 0.88rem; color: var(--ink-mid); line-height: 1.72;
+}
+.concept-body strong { color: var(--ink); font-weight: 700; }
+.concept-callout {
+  background: var(--purple-bg); border-left: 3px solid var(--purple);
+  border-radius: 0 10px 10px 0; padding: 0.75rem 1rem;
+  font-size: 0.84rem; color: var(--ink-mid); line-height: 1.6;
+}
+.concept-callout strong { color: var(--purple); }
+
+/* Key-value list */
+.kv-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.kv-item {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.75rem 0.9rem;
+}
+.kv-emoji { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.kv-text { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.55; }
+.kv-text strong { color: var(--ink); display: block; font-size: 0.86rem; margin-bottom: 0.15rem; }
+
+/* ── ANALOGY CARD ── */
+.analogy-vs {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: center;
+}
+.analogy-side {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 0.85rem; text-align: center;
+}
+.analogy-side-icon { font-size: 1.6rem; margin-bottom: 0.35rem; }
+.analogy-side-label {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-light); margin-bottom: 0.25rem;
+}
+.analogy-side-val { font-size: 0.8rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.analogy-vs-badge {
+  background: var(--ink); color: var(--white);
+  font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700;
+  padding: 0.3rem 0.5rem; border-radius: 8px; text-align: center;
+}
+.analogy-body {
+  font-size: 0.88rem; color: var(--ink-mid); line-height: 1.7;
+  background: var(--amber-light); border-radius: 12px; padding: 0.9rem 1rem;
+  border: 1px solid rgba(232,146,42,0.2);
+}
+.analogy-body strong { color: var(--amber); }
+
+/* ── EXAMPLE CARD ── */
+.example-scenario {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1rem;
+}
+.example-label {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-light); margin-bottom: 0.5rem;
+}
+.example-text {
+  font-size: 0.85rem; color: var(--ink-mid); line-height: 1.65;
+}
+.example-text strong { color: var(--ink); }
+.before-after {
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.ba-box {
+  border-radius: 12px; padding: 0.85rem 1rem;
+}
+.ba-box.before {
+  background: var(--red-light); border: 1px solid rgba(192,57,43,0.2);
+}
+.ba-box.after {
+  background: var(--green-light); border: 1px solid rgba(26,122,74,0.2);
+}
+.ba-label {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+.ba-box.before .ba-label { color: var(--red); }
+.ba-box.after  .ba-label { color: var(--green); }
+.ba-content { font-size: 0.82rem; line-height: 1.6; color: var(--ink-mid); font-style: italic; }
+
+/* ── TRY-IT CARD ── */
+.tryit-box {
+  background: linear-gradient(135deg, var(--purple), #5028A0);
+  border-radius: 16px; padding: 1.1rem;
+  position: relative; overflow: hidden;
+}
+.tryit-box::after {
+  content: '';
+  position: absolute; bottom: -30px; right: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(232,146,42,0.15); pointer-events: none;
+}
+.tryit-label {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); margin-bottom: 0.5rem;
+}
+.tryit-title {
+  font-size: 1rem; font-weight: 800; color: var(--white);
+  margin-bottom: 0.65rem; line-height: 1.2;
+}
+.tryit-prompt {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px; padding: 0.75rem 0.85rem;
+  font-size: 0.8rem; color: rgba(255,255,255,0.9);
+  line-height: 1.6; font-style: italic; position: relative; z-index: 1;
+}
+.tryit-prompt em { color: var(--amber); font-style: normal; font-weight: 700; }
+.tryit-steps {
+  display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.75rem;
+  position: relative; z-index: 1;
+}
+.tryit-step {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.8rem; color: rgba(255,255,255,0.75);
+}
+.tryit-step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 0.58rem; font-weight: 700; color: var(--white);
+}
+.tryit-tool-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(232,146,42,0.25); border: 1px solid rgba(232,146,42,0.4);
+  color: var(--amber); font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em;
+  padding: 0.25rem 0.6rem; border-radius: 99px; margin-top: 0.6rem;
+  position: relative; z-index: 1;
+}
+
+/* ── QUIZ CARD ── */
+.quiz-question {
+  font-size: 1rem; font-weight: 700; color: var(--ink);
+  line-height: 1.45; letter-spacing: -0.01em;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+.quiz-option {
+  background: var(--white); border: 2px solid var(--border);
+  border-radius: 14px; padding: 0.85rem 1rem;
+  font-size: 0.86rem; color: var(--ink-mid);
+  cursor: pointer; transition: all 0.18s; line-height: 1.4;
+  text-align: left; font-family: 'Sora', sans-serif;
+}
+.quiz-option:hover:not(.disabled) { border-color: var(--purple-light); background: var(--purple-bg); color: var(--ink); }
+.quiz-option.selected-correct {
+  border-color: var(--green); background: var(--green-light);
+  color: var(--green);
+}
+.quiz-option.selected-wrong {
+  border-color: var(--red); background: var(--red-light);
+  color: var(--red);
+}
+.quiz-option.reveal-correct {
+  border-color: var(--green); background: var(--green-light);
+  color: var(--green);
+}
+.quiz-option.disabled { cursor: default; }
+
+.quiz-feedback {
+  border-radius: 12px; padding: 0.85rem 1rem;
+  font-size: 0.84rem; line-height: 1.6; display: none;
+}
+.quiz-feedback.correct { background: var(--green-light); border: 1px solid rgba(26,122,74,0.25); color: var(--green); }
+.quiz-feedback.wrong   { background: var(--red-light);   border: 1px solid rgba(192,57,43,0.2);  color: var(--red); }
+.quiz-feedback.show    { display: block; }
+.quiz-feedback strong  { font-weight: 700; }
+
+.xp-pop {
+  display: none; align-items: center; gap: 0.4rem;
+  font-family: 'Space Mono', monospace; font-size: 0.72rem;
+  font-weight: 700; color: var(--amber);
+}
+.xp-pop.show { display: flex; }
+
+/* ── SPRINT CARD ── */
+.sprint-hero {
+  background: linear-gradient(135deg, #1A0D2E, #0E1428);
+  border-radius: 20px; padding: 1.5rem 1.25rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.sprint-hero::before {
+  content: '';
+  position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,146,42,0.15), transparent 70%);
+  pointer-events: none;
+}
+.sprint-icon { font-size: 2.5rem; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+.sprint-tag {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 0.5rem; position: relative; z-index: 1;
+}
+.sprint-title {
+  font-size: 1.2rem; font-weight: 800; color: var(--white);
+  letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.5rem;
+  position: relative; z-index: 1;
+}
+.sprint-brief {
+  font-size: 0.84rem; color: rgba(255,255,255,0.65);
+  line-height: 1.65; position: relative; z-index: 1;
+}
+.sprint-deliverables {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.sprint-deliverable {
+  display: flex; align-items: flex-start; gap: 0.65rem;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.75rem 0.9rem;
+  font-size: 0.83rem; color: var(--ink-mid); line-height: 1.5;
+}
+.sprint-deliverable-icon { font-size: 1rem; flex-shrink: 0; }
+.sprint-deliverable strong { color: var(--ink); display: block; font-size: 0.85rem; }
+
+/* ── COMPLETION CARD ── */
+.completion-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 1rem 0;
+  gap: 1rem; flex: 1; justify-content: center;
+}
+.completion-trophy { font-size: 3.5rem; animation: bounce 0.6s ease; }
+@keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+.completion-title {
+  font-size: 1.4rem; font-weight: 800; color: var(--ink);
+  letter-spacing: -0.025em; line-height: 1.15;
+}
+.completion-sub { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.65; }
+.score-display {
+  background: linear-gradient(135deg, var(--purple-bg), var(--amber-light));
+  border: 1.5px solid var(--purple-light); border-radius: 18px;
+  padding: 1.25rem 1.5rem; width: 100%;
+}
+.score-num {
+  font-size: 2.5rem; font-weight: 800; color: var(--purple);
+  font-family: 'Space Mono', monospace; letter-spacing: -0.02em;
+}
+.score-label { font-size: 0.75rem; color: var(--ink-light); margin-top: 0.2rem; }
+.xp-earned {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'Space Mono', monospace; font-size: 0.82rem;
+  font-weight: 700; color: var(--amber);
+}
+
+/* Export form */
+.export-form {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem; width: 100%;
+}
+.export-title {
+  font-size: 0.82rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.export-input {
+  width: 100%; padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Sora', sans-serif; font-size: 0.85rem;
+  color: var(--ink); background: var(--off-white);
+  margin-bottom: 0.6rem; outline: none;
+  transition: border-color 0.2s;
+}
+.export-input:focus { border-color: var(--purple); background: var(--white); }
+.export-input::placeholder { color: var(--ink-light); }
+.btn-export {
+  width: 100%; padding: 0.85rem;
+  background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+  color: var(--white); border: none; border-radius: 12px;
+  font-family: 'Sora', sans-serif; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(107,63,160,0.3);
+}
+.btn-export:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(107,63,160,0.4); }
+
+/* ── BOTTOM NAV ── */
+.bottom-bar {
+  background: var(--white); border-top: 1px solid var(--border);
+  padding: 0.85rem 1.25rem;
+  flex-shrink: 0;
+}
+.btn-next {
+  width: 100%; padding: 0.95rem;
+  background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+  color: var(--white); border: none; border-radius: 14px;
+  font-family: 'Sora', sans-serif; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(107,63,160,0.3);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,63,160,0.4); }
+.btn-next:disabled {
+  background: var(--border); color: var(--ink-light);
+  cursor: not-allowed; box-shadow: none; transform: none;
+}
+.btn-next svg { transition: transform 0.2s; }
+.btn-next:hover:not(:disabled) svg { transform: translateX(3px); }
+
+/* ── XP BURST ANIMATION ── */
+.xp-burst {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Space Mono', monospace; font-size: 1.5rem; font-weight: 700;
+  color: var(--amber); pointer-events: none; z-index: 999;
+  opacity: 0;
+}
+.xp-burst.fire {
+  animation: burstAnim 0.7s ease forwards;
+}
+@keyframes burstAnim {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+  50%  { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%, -130%) scale(0.8); }
+}
+
+/* ── RESPONSIVE for real phones ── */
+@media (max-width: 420px) {
+  .phone-shell { max-height: 100vh; border-radius: 0; }
+}
+@media (min-width: 421px) {
+  body { background: #1A0D2E; }
+  .phone-shell {
+    border-radius: 40px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 8px rgba(255,255,255,0.05);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="phone-shell" id="app">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-row">
+      <button class="top-back" onclick="goBack()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Exit
+      </button>
+      <span class="top-week">Week 1 · AI Foundations</span>
+      <div class="top-xp">
+        <span class="top-xp-icon">⚡</span>
+        <span id="xp-display">0 XP</span>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-count" id="progress-count">0 / 12</div>
+    </div>
+  </div>
+
+  <!-- CARD VIEWPORT -->
+  <div class="card-viewport">
+    <div class="card-track" id="card-track">
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 1 · HOOK -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-0">
+        <span class="card-type-tag tag-hook">🔥 Hook</span>
+        <h1 class="hook-big">Your email tone is costing you <span class="hl-amber">opportunities.</span></h1>
+        <p class="hook-sub">Before AI, poor communication lost deals, damaged reputations, and ended careers. Now AI can help — but only if you know <strong>how to use it strategically.</strong></p>
+        <div class="hook-visual">
+          <div class="bubble-label">Bad AI prompt → Generic output</div>
+          <div class="chat-bubble bubble-human">"Write an email to my lecturer asking for an extension."</div>
+          <div class="chat-bubble bubble-ai">"Dear Lecturer, I am writing to request an extension for my assignment. I hope this is acceptable. Thank you."</div>
+          <div class="bubble-label" style="margin-top:0.4rem;">Strategic AI prompt → Professional output</div>
+          <div class="chat-bubble bubble-human">"Write a professional email to my IT lecturer requesting a 3-day extension for my database project. Reason: group member was hospitalised. Tone: respectful, accountable."</div>
+          <div class="chat-bubble bubble-ai">"Dear Dr. Lim, I hope this message finds you well. I am writing to respectfully request a 3-day extension for our database project submission. Unfortunately, one of our group members was hospitalised on Monday…"</div>
+        </div>
+        <p class="hook-sub">This week you'll learn <strong>what AI actually does</strong> when it generates business messages — and why that knowledge makes you a better communicator than 90% of your peers.</p>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 2 · CONCEPT — What is AI in communication? -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-1">
+        <span class="card-type-tag tag-concept">💡 Concept</span>
+        <div class="concept-icon-wrap">🤖</div>
+        <h2 class="concept-title">What AI actually does when it writes for you</h2>
+        <p class="concept-body">AI language models like ChatGPT and Gemini are trained on <strong>billions of text examples</strong> — emails, reports, articles, and conversations. When you ask them to write something, they predict the most statistically <strong>likely</strong> next word, over and over.</p>
+        <div class="concept-callout">
+          <strong>Key insight:</strong> AI doesn't "understand" your situation. It matches patterns from its training data. That's why your input — the prompt — is everything.
+        </div>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="kv-emoji">📊</span>
+            <div class="kv-text"><strong>Pattern matching</strong>AI predicts text based on what it has seen before — not what it "knows" is true.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🎯</span>
+            <div class="kv-text"><strong>Context is critical</strong>The more context you give, the more accurate and professional the output becomes.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">⚠️</span>
+            <div class="kv-text"><strong>It can be wrong</strong>AI confidently generates plausible-sounding text — even when the facts are incorrect.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 3 · ANALOGY -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-2">
+        <span class="card-type-tag tag-analogy">💬 Analogy</span>
+        <h2 class="concept-title">Think of AI like a brilliant intern</h2>
+        <div class="analogy-vs">
+          <div class="analogy-side">
+            <div class="analogy-side-icon">🧑‍💼</div>
+            <div class="analogy-side-label">Intern (AI)</div>
+            <div class="analogy-side-val">Smart, fast, eager to help</div>
+          </div>
+          <div class="analogy-vs-badge">VS</div>
+          <div class="analogy-side">
+            <div class="analogy-side-icon">👨‍💻</div>
+            <div class="analogy-side-label">You</div>
+            <div class="analogy-side-val">Strategic, contextual, accountable</div>
+          </div>
+        </div>
+        <div class="analogy-body">
+          Imagine a new intern joins your company. They're <strong>highly capable</strong> — can write fast, knows business language, never gets tired. But they don't know your client's history, your company's tone, or what you actually need. <br><br>If you say <em>"write a client email"</em> — you'll get something generic. If you brief them properly — context, audience, goal, tone — you get something excellent. <br><br><strong>That's exactly how AI works.</strong> You are the manager. The brief you give determines the quality of the output.
+        </div>
+        <div class="concept-callout">
+          In professional communication, <strong>you are always responsible</strong> for what gets sent — whether AI helped write it or not.
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 4 · CONCEPT — Strengths & Limitations -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-3">
+        <span class="card-type-tag tag-concept">💡 Concept</span>
+        <div class="concept-icon-wrap">⚖️</div>
+        <h2 class="concept-title">What AI is good at — and where it fails</h2>
+        <p class="concept-body">Strategic communicators know when to use AI and when to rely on their own judgment. Here's the honest breakdown:</p>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="kv-emoji">✅</span>
+            <div class="kv-text"><strong>AI excels at: Structure & drafting</strong>First drafts, formatting reports, suggesting subject lines, tone adjustments, grammar and clarity fixes.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">✅</span>
+            <div class="kv-text"><strong>AI excels at: Speed & volume</strong>What takes you 20 minutes to draft, AI produces in 20 seconds — giving you time to refine and improve.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">❌</span>
+            <div class="kv-text"><strong>AI fails at: Real-time facts</strong>AI doesn't know what happened last week. It can fabricate statistics, names, and citations that sound real but aren't.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">❌</span>
+            <div class="kv-text"><strong>AI fails at: Your context</strong>It doesn't know your relationship with the reader, your company's history, or the nuance of a sensitive situation.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 5 · EXAMPLE — Real student scenario -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-4">
+        <span class="card-type-tag tag-example">📋 Real Example</span>
+        <h2 class="concept-title">Amirah's internship application email</h2>
+        <div class="example-scenario">
+          <div class="example-label">The situation</div>
+          <div class="example-text">Amirah, a Year 3 IT student at HELP, needed to email a KL tech startup for an internship. She used ChatGPT — but with two very different prompts.</div>
+        </div>
+        <div class="before-after">
+          <div class="ba-box before">
+            <div class="ba-label">❌ Weak prompt output</div>
+            <div class="ba-content">"Dear Hiring Manager, I am a student seeking an internship opportunity at your company. I am hardworking and eager to learn. Please consider my application. Thank you."</div>
+          </div>
+          <div class="ba-box after">
+            <div class="ba-label">✅ Strategic prompt output</div>
+            <div class="ba-content">"Dear Ms. Tan, I am a Year 3 IT student at HELP University with a 3.7 GPA, specialising in full-stack development. I was impressed by Fusionex's recent work in Malaysian SME digitalisation and would welcome the opportunity to contribute to your engineering team this July…"</div>
+          </div>
+        </div>
+        <div class="concept-callout">
+          Same tool. Same AI. <strong>Completely different result.</strong> The only difference was the quality of the brief Amirah gave it.
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 6 · CONCEPT — The CARE framework -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-5">
+        <span class="card-type-tag tag-concept">💡 Concept</span>
+        <div class="concept-icon-wrap">🧩</div>
+        <h2 class="concept-title">The CARE Framework for AI communication</h2>
+        <p class="concept-body">When using AI for any business message, run it through CARE before sending:</p>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="kv-emoji">🎯</span>
+            <div class="kv-text"><strong>C — Context</strong>Who is the reader? What is your relationship? What situation are you in? Give this to the AI.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🎯</span>
+            <div class="kv-text"><strong>A — Audience</strong>What does this person care about? What do they need to hear? What tone do they expect?</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🎯</span>
+            <div class="kv-text"><strong>R — Role</strong>Tell AI to adopt a role: "Act as a professional IT graduate applying for…" This sharpens the output dramatically.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🎯</span>
+            <div class="kv-text"><strong>E — Edit</strong>Never send AI output raw. Read it out loud. Make it sound like you. Remove anything that feels generic.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 7 · TRY IT -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-6">
+        <span class="card-type-tag tag-tryit">🛠 Try It Now</span>
+        <h2 class="concept-title">Write your first strategic AI brief</h2>
+        <p class="concept-body">Apply the CARE Framework to this real scenario:</p>
+        <div class="example-scenario">
+          <div class="example-label">Your scenario</div>
+          <div class="example-text">You need to email your IT lecturer, <strong>Dr. Rahman</strong>, to request feedback on your System Analysis assignment before the final submission deadline on Friday.</div>
+        </div>
+        <div class="tryit-box">
+          <div class="tryit-label">Your prompt template</div>
+          <div class="tryit-title">Copy, fill in the blanks, paste into ChatGPT or Gemini</div>
+          <div class="tryit-prompt">
+            "Act as <em>[a Year _ IT student at HELP University]</em>. Write a professional email to <em>[Dr. Rahman]</em> requesting feedback on my <em>[System Analysis assignment]</em> before <em>[Friday's deadline]</em>. Tone: <em>[respectful, specific]</em>. Include: a brief mention of what aspect I most need feedback on — <em>[my ER diagram logic]</em>."
+          </div>
+          <div class="tryit-steps">
+            <div class="tryit-step"><div class="tryit-step-num">1</div>Open ChatGPT or Gemini on your phone</div>
+            <div class="tryit-step"><div class="tryit-step-num">2</div>Paste and personalise the prompt above</div>
+            <div class="tryit-step"><div class="tryit-step-num">3</div>Read the output — would you actually send this?</div>
+            <div class="tryit-step"><div class="tryit-step-num">4</div>Edit 2–3 lines to make it sound like you</div>
+          </div>
+          <div class="tryit-tool-badge">⚡ ChatGPT · Google Gemini (both free)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 8 · CONCEPT — Reading AI output critically -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-7">
+        <span class="card-type-tag tag-concept">💡 Concept</span>
+        <div class="concept-icon-wrap">🔍</div>
+        <h2 class="concept-title">Never send AI output without reading it critically</h2>
+        <p class="concept-body">AI produces fluent, confident text — but that doesn't mean it's accurate, appropriate, or genuinely yours. Professionals spot AI-written content by these red flags:</p>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="kv-emoji">🚩</span>
+            <div class="kv-text"><strong>Generic opener</strong>"I hope this message finds you well" — every AI uses this. Delete it.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🚩</span>
+            <div class="kv-text"><strong>Hollow praise</strong>"Your company does excellent work in the field." — vague, unresearched, meaningless.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🚩</span>
+            <div class="kv-text"><strong>Missing specifics</strong>No names, dates, project details — AI fills gaps with generic filler when you don't provide them.</div>
+          </div>
+          <div class="kv-item">
+            <span class="kv-emoji">🚩</span>
+            <div class="kv-text"><strong>Over-formal tone</strong>"I am writing to humbly request your esteemed guidance…" — no real professional writes like this.</div>
+          </div>
+        </div>
+        <div class="concept-callout">
+          <strong>Your edit pass</strong> is what separates a strategic communicator from someone who just copies and pastes AI output.
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 9 · QUIZ 1 -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-8">
+        <span class="card-type-tag tag-quiz">🧠 Quiz 1 of 3</span>
+        <p class="quiz-question">An AI language model generates business text by:</p>
+        <div class="quiz-options" id="q1-options">
+          <button class="quiz-option" onclick="answerQuiz(1, 0, false)">Searching the internet for the most accurate answer</button>
+          <button class="quiz-option" onclick="answerQuiz(1, 1, true)">Predicting likely words based on patterns in its training data</button>
+          <button class="quiz-option" onclick="answerQuiz(1, 2, false)">Reading your company's previous emails and copying the style</button>
+          <button class="quiz-option" onclick="answerQuiz(1, 3, false)">Connecting to a live database of professional communication examples</button>
+        </div>
+        <div class="quiz-feedback" id="q1-feedback"></div>
+        <div class="xp-pop" id="q1-xp"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 10 · QUIZ 2 -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-9">
+        <span class="card-type-tag tag-quiz">🧠 Quiz 2 of 3</span>
+        <p class="quiz-question">Amirah uses AI to write an internship email. She should:</p>
+        <div class="quiz-options" id="q2-options">
+          <button class="quiz-option" onclick="answerQuiz(2, 0, false)">Send the first AI draft immediately — it's professional enough</button>
+          <button class="quiz-option" onclick="answerQuiz(2, 1, false)">Only use AI if she has no time to write it herself</button>
+          <button class="quiz-option" onclick="answerQuiz(2, 2, true)">Give AI a detailed brief with context, audience, role, then edit the output</button>
+          <button class="quiz-option" onclick="answerQuiz(2, 3, false)">Ask AI to write it, then ask AI to check it — no human edit needed</button>
+        </div>
+        <div class="quiz-feedback" id="q2-feedback"></div>
+        <div class="xp-pop" id="q2-xp"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 11 · QUIZ 3 -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-10">
+        <span class="card-type-tag tag-quiz">🧠 Quiz 3 of 3</span>
+        <p class="quiz-question">Which of these is a red flag that an email was written carelessly with AI?</p>
+        <div class="quiz-options" id="q3-options">
+          <button class="quiz-option" onclick="answerQuiz(3, 0, false)">The email has a clear subject line and professional sign-off</button>
+          <button class="quiz-option" onclick="answerQuiz(3, 1, true)">"I hope this message finds you well. Your company does excellent work in the field."</button>
+          <button class="quiz-option" onclick="answerQuiz(3, 2, false)">The email mentions a specific project name and deadline</button>
+          <button class="quiz-option" onclick="answerQuiz(3, 3, false)">The tone matches the seniority of the recipient</button>
+        </div>
+        <div class="quiz-feedback" id="q3-feedback"></div>
+        <div class="xp-pop" id="q3-xp"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 12 · SPRINT GATE -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-11">
+        <span class="card-type-tag tag-sprint">🏁 Sprint Challenge</span>
+        <div class="sprint-hero">
+          <div class="sprint-icon">⚡</div>
+          <div class="sprint-tag">Week 1 · Industry Challenge</div>
+          <div class="sprint-title">The Communication Audit Sprint</div>
+          <div class="sprint-brief">You've learned how AI generates business messages and where it fails. Now apply it. This sprint is your first graded deliverable.</div>
+        </div>
+        <div class="sprint-deliverables">
+          <div class="sprint-deliverable">
+            <span class="sprint-deliverable-icon">📧</span>
+            <div><strong>Deliverable 1: The Smart Brief</strong>Use the CARE Framework to write a prompt brief for one of these: internship email, lecturer follow-up, or client introduction.</div>
+          </div>
+          <div class="sprint-deliverable">
+            <span class="sprint-deliverable-icon">✍️</span>
+            <div><strong>Deliverable 2: AI Draft + Your Edit</strong>Generate the email using ChatGPT or Gemini. Screenshot the raw AI output. Then write your edited, personalised version.</div>
+          </div>
+          <div class="sprint-deliverable">
+            <span class="sprint-deliverable-icon">🔍</span>
+            <div><strong>Deliverable 3: Reflection (150 words)</strong>What did AI get right? What did you have to fix? What would a recruiter notice about the raw vs. edited version?</div>
+          </div>
+        </div>
+        <div class="concept-callout" style="margin-top:0.25rem;">
+          <strong>Submit to:</strong> HELP LMS under Week 1 Assignment. Deadline as per your lecturer's instructions.
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- CARD 13 · COMPLETION + EXPORT -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="card" id="card-12">
+        <div class="completion-wrap">
+          <div class="completion-trophy">🏆</div>
+          <h2 class="completion-title">Week 1 Complete!</h2>
+          <p class="completion-sub">You've completed <strong>AI Foundations in Communication</strong>. You now understand how AI generates business messages and how to use it strategically.</p>
+          <div class="score-display">
+            <div class="score-num" id="final-score">0/3</div>
+            <div class="score-label">Quiz Score</div>
+            <div class="xp-earned" style="margin-top:0.5rem;">
+              <span>⚡</span>
+              <span id="final-xp">0 XP earned</span>
+            </div>
+          </div>
+          <div class="export-form">
+            <div class="export-title">📋 Generate your completion certificate for LMS submission</div>
+            <input type="text" class="export-input" id="student-name" placeholder="Your full name (as on student ID)" maxlength="60">
+            <input type="text" class="export-input" id="student-id" placeholder="HELP Student ID (e.g. 123456)" maxlength="20">
+            <button class="btn-export" onclick="exportResult()">Download Completion Record →</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /card-track -->
+  </div><!-- /card-viewport -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <button class="btn-next" id="btn-next" onclick="nextCard()">
+      Continue
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+</div><!-- /phone-shell -->
+
+<!-- XP burst element -->
+<div class="xp-burst" id="xp-burst"></div>
+
+<script>
+const TOTAL_CARDS = 13;
+let currentCard = 0;
+let totalXP = 0;
+let quizScores = { 1: null, 2: null, 3: null };
+
+const quizFeedback = {
+  1: {
+    correct: "✅ Correct! AI predicts text by matching patterns — it doesn't search the web or access live data. That's why giving it context in your prompt is the only way to get relevant output.",
+    wrong: "❌ Not quite. AI doesn't search the internet or access external databases. It predicts the next likely word based on patterns learned during training on billions of text examples."
+  },
+  2: {
+    correct: "✅ Exactly right! The CARE Framework — Context, Audience, Role, Edit — is what separates strategic AI use from lazy copy-paste. Editing the output is non-negotiable.",
+    wrong: "❌ That's not the best approach. Sending raw AI output without a detailed brief or edit pass is the most common professional mistake students make. Always brief, always edit."
+  },
+  3: {
+    correct: "✅ Spot on! Generic openers like 'I hope this message finds you well' combined with hollow praise are instant AI red flags that experienced recruiters and lecturers recognise immediately.",
+    wrong: "❌ Not this one. Generic openers ('I hope this message finds you well') and vague, hollow statements ('Your company does excellent work') are the clearest signs of unedited AI output."
+  }
+};
+
+function updateProgress() {
+  const pct = (currentCard / (TOTAL_CARDS - 1)) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-count').textContent = currentCard + ' / ' + (TOTAL_CARDS - 1);
+  document.getElementById('xp-display').textContent = totalXP + ' XP';
+}
+
+function nextCard() {
+  if (currentCard >= TOTAL_CARDS - 1) return;
+  currentCard++;
+  document.getElementById('card-track').style.transform = `translateX(-${currentCard * 100}%)`;
+  updateProgress();
+  updateNextBtn();
+
+  // Update final score on last card
+  if (currentCard === TOTAL_CARDS - 1) {
+    const correct = Object.values(quizScores).filter(v => v === true).length;
+    document.getElementById('final-score').textContent = correct + '/3';
+    document.getElementById('final-xp').textContent = totalXP + ' XP earned';
+  }
+
+  // Scroll card to top
+  setTimeout(() => {
+    const card = document.getElementById('card-' + currentCard);
+    if (card) card.scrollTop = 0;
+  }, 50);
+}
+
+function goBack() {
+  if (currentCard === 0) {
+    if (confirm('Exit Week 1? Your progress will be saved.')) {
+      // In production: navigate back to LMS
+      alert('Returning to LAPA dashboard…');
+    }
+    return;
+  }
+  currentCard--;
+  document.getElementById('card-track').style.transform = `translateX(-${currentCard * 100}%)`;
+  updateProgress();
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('btn-next');
+  // Quiz cards — disable until answered
+  const quizCards = { 8: 1, 9: 2, 10: 3 };
+  if (quizCards[currentCard] !== undefined) {
+    const qNum = quizCards[currentCard];
+    if (quizScores[qNum] === null) {
+      btn.disabled = true;
+      btn.innerHTML = 'Choose an answer above';
+      return;
+    }
+  }
+  // Last card — hide next button
+  if (currentCard === TOTAL_CARDS - 1) {
+    btn.style.display = 'none';
+    return;
+  }
+  btn.disabled = false;
+  btn.style.display = 'flex';
+  btn.innerHTML = (currentCard === TOTAL_CARDS - 2)
+    ? 'Complete Week 1 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+    : 'Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+}
+
+function answerQuiz(qNum, optionIndex, isCorrect) {
+  if (quizScores[qNum] !== null) return; // Already answered
+  quizScores[qNum] = isCorrect;
+
+  const optionsEl = document.getElementById('q' + qNum + '-options');
+  const feedbackEl = document.getElementById('q' + qNum + '-feedback');
+  const xpEl = document.getElementById('q' + qNum + '-xp');
+  const buttons = optionsEl.querySelectorAll('.quiz-option');
+
+  // Disable all options
+  buttons.forEach(b => b.classList.add('disabled'));
+
+  // Find the correct option index
+  const correctIndices = { 1: 1, 2: 2, 3: 1 };
+  const correctIdx = correctIndices[qNum];
+
+  if (isCorrect) {
+    buttons[optionIndex].classList.add('selected-correct');
+    feedbackEl.className = 'quiz-feedback correct show';
+    feedbackEl.innerHTML = quizFeedback[qNum].correct;
+    totalXP += 50;
+    xpEl.innerHTML = '⚡ +50 XP';
+    xpEl.classList.add('show');
+    fireXPBurst('+50 XP');
+  } else {
+    buttons[optionIndex].classList.add('selected-wrong');
+    buttons[correctIdx].classList.add('reveal-correct');
+    feedbackEl.className = 'quiz-feedback wrong show';
+    feedbackEl.innerHTML = quizFeedback[qNum].wrong;
+  }
+
+  document.getElementById('xp-display').textContent = totalXP + ' XP';
+  updateNextBtn();
+}
+
+function fireXPBurst(text) {
+  const el = document.getElementById('xp-burst');
+  el.textContent = text;
+  el.classList.remove('fire');
+  void el.offsetWidth; // reflow
+  el.classList.add('fire');
+}
+
+function exportResult() {
+  const name = document.getElementById('student-name').value.trim();
+  const id = document.getElementById('student-id').value.trim();
+  if (!name || !id) {
+    alert('Please enter your full name and student ID to generate your completion record.');
+    return;
+  }
+
+  const correct = Object.values(quizScores).filter(v => v === true).length;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' });
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LAPA × HELP — Week 1 Completion Record</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Sora', sans-serif; background: #FAFAF8; margin: 0; padding: 2rem; color: #0D0F1C; }
+  .cert { max-width: 680px; margin: 0 auto; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 48px rgba(107,63,160,0.15); }
+  .cert-header { background: linear-gradient(135deg, #6B3FA0, #5028A0); padding: 2.5rem 2rem; text-align: center; position: relative; }
+  .cert-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #6B3FA0, #E8922A, #6B3FA0); }
+  .cert-logo { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; }
+  .cert-title { font-size: 1.4rem; font-weight: 800; color: white; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+  .cert-sub { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+  .cert-body { padding: 2rem; }
+  .cert-field { margin-bottom: 1.25rem; }
+  .cert-label { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: #7B7E96; margin-bottom: 0.3rem; }
+  .cert-value { font-size: 1rem; font-weight: 700; color: #0D0F1C; }
+  .cert-score { display: flex; gap: 1rem; margin: 1.5rem 0; }
+  .score-box { flex: 1; text-align: center; background: #F5F0FD; border: 1px solid #C4A8E8; border-radius: 14px; padding: 1rem; }
+  .score-num { font-size: 1.8rem; font-weight: 800; color: #6B3FA0; font-family: 'Space Mono', monospace; }
+  .score-lbl { font-size: 0.68rem; color: #7B7E96; margin-top: 0.2rem; }
+  .xp-box { flex: 1; text-align: center; background: #FDF0E0; border: 1px solid rgba(232,146,42,0.3); border-radius: 14px; padding: 1rem; }
+  .xp-num { font-size: 1.8rem; font-weight: 800; color: #E8922A; font-family: 'Space Mono', monospace; }
+  .cert-footer { background: #F5F0FD; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #7B7E96; letter-spacing: 0.06em; }
+  .status-badge { background: #E8F5EE; border: 1px solid rgba(26,122,74,0.25); color: #1A7A4A; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; }
+  @media print { body { background: white; padding: 0; } .cert { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="cert-header">
+    <div class="cert-logo">LAPA × HELP University · ODL Programme</div>
+    <div class="cert-title">Week 1 Completion Record</div>
+    <div class="cert-sub">AI Foundations in Communication</div>
+  </div>
+  <div class="cert-body">
+    <div class="cert-field">
+      <div class="cert-label">Student Name</div>
+      <div class="cert-value">${name}</div>
+    </div>
+    <div class="cert-field">
+      <div class="cert-label">Student ID</div>
+      <div class="cert-value">${id}</div>
+    </div>
+    <div class="cert-field">
+      <div class="cert-label">Programme</div>
+      <div class="cert-value">Professional Communication for Business (IT Students)</div>
+    </div>
+    <div class="cert-field">
+      <div class="cert-label">Module</div>
+      <div class="cert-value">Week 1 — AI Foundations in Communication (12 learning cards)</div>
+    </div>
+    <div class="cert-score">
+      <div class="score-box">
+        <div class="score-num">${correct}/3</div>
+        <div class="score-lbl">Quiz Score</div>
+      </div>
+      <div class="xp-box">
+        <div class="xp-num">${totalXP}</div>
+        <div class="score-lbl">XP Earned</div>
+      </div>
+    </div>
+    <div class="cert-field">
+      <div class="cert-label">Completion Date &amp; Time</div>
+      <div class="cert-value">${dateStr} at ${timeStr}</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:1rem;">
+      <span class="status-badge">✅ Week 1 Complete — Ready for Sprint Submission</span>
+    </div>
+  </div>
+  <div class="cert-footer">
+    <span>MICE Neurol Pte Ltd · LAPA Platform</span>
+    <span>lapa.ai · © 2026</span>
+  </div>
+</div>
+<p style="text-align:center;margin-top:1.5rem;font-size:0.8rem;color:#7B7E96;">Print this page or take a screenshot to submit to your HELP LMS as proof of completion.</p>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `LAPA_Week1_${id}_${name.replace(/\s+/g, '_')}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    const btn = document.getElementById('btn-next');
+    if (!btn.disabled && btn.style.display !== 'none') nextCard();
+  }
+  if (e.key === 'ArrowLeft') goBack();
+});
+
+// Touch swipe (left = next, right = back)
+let touchStartX = 0;
+document.querySelector('.card-viewport').addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+document.querySelector('.card-viewport').addEventListener('touchend', e => {
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 60) {
+    if (dx > 0) {
+      const btn = document.getElementById('btn-next');
+      if (!btn.disabled && btn.style.display !== 'none') nextCard();
+    } else {
+      goBack();
+    }
+  }
+}, { passive: true });
+
+// Init
+updateProgress();
+updateNextBtn();
+</script>
+</body>
+</html>

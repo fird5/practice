@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>LAPA x HELP | Wk 1 Beat 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D0F1C;
+            --ink-mid: #3D405A;
+            --ink-light: #7B7E96;
+            --purple: #6B3FA0;
+            --green: #1A7A4A;
+            --green-light: #E8F5EE;
+            --white: #FFFFFF;
+            --off-white: #FAFAF8;
+            --border: #E4E1EF;
+            --shadow: 0 2px 24px rgba(26, 122, 74, 0.10);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            margin: 0; padding: 0; background-color: #0D1A12; 
+            font-family: 'Sora', sans-serif; color: var(--ink); 
+            overflow-x: hidden;
+        }
+
+        .shell {
+            max-width: 420px; margin: 0 auto; min-height: 100vh;
+            background: var(--off-white); position: relative;
+            display: flex; flex-direction: column;
+            padding-bottom: 8rem;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo-mark { 
+            width: 28px; height: 28px; background: linear-gradient(135deg, var(--green), #2ECC71);
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 12px;
+        }
+        .beat-badge {
+            background: var(--green-light); color: var(--green);
+            padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* Video Header */
+        .header-section { padding: 1.25rem 1.25rem 0.5rem; }
+        .step-indicator { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green); font-weight: 700; margin-bottom: 4px; display: block; }
+        h1 { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; letter-spacing: -0.5px; }
+
+        /* Watch Brief Card */
+        .brief-card {
+            margin: 1rem 1.25rem; background: var(--white);
+            border: 1px solid var(--border); border-radius: 16px;
+            padding: 1rem; position: relative; overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .timer-bar {
+            position: absolute; top: 0; left: 0; height: 3px;
+            background: var(--green); width: 100%;
+            transform-origin: left;
+        }
+        .timer-active { animation: drain 5s linear forwards; }
+        @keyframes drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+        .brief-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; display: block; }
+        .brief-list { margin: 0; padding: 0; list-style: none; }
+        .brief-list li { 
+            font-size: 12px; color: var(--ink-mid); margin-bottom: 4px;
+            display: flex; align-items: flex-start; gap: 8px;
+        }
+        .brief-list li::before { content: "•"; color: var(--green); font-weight: bold; }
+
+        /* Video Container */
+        .video-stage {
+            margin: 0 1.25rem; position: relative;
+            border-radius: 12px; overflow: hidden;
+            background: #000; box-shadow: var(--shadow);
+            aspect-ratio: 9 / 16;
+        }
+        .video-stage iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: none; z-index: 2;
+        }
+        
+        .lock-overlay {
+            position: absolute; inset: 0; background: rgba(13, 15, 28, 0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; color: white; text-align: center; padding: 2rem;
+            transition: opacity 0.5s ease;
+        }
+        .lock-overlay.hidden { opacity: 0; pointer-events: none; }
+        .lock-icon { font-size: 24px; margin-bottom: 12px; }
+        .lock-text { font-size: 12px; font-weight: 600; font-family: 'Space Mono', monospace; opacity: 0.8; }
+
+        /* Fallback UI */
+        .fallback-box {
+            position: absolute; inset: 0;
+            background: #111; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: white; padding: 2rem; z-index: 1;
+        }
+        .fallback-box.force-front { z-index: 15; }
+        .fallback-box p { font-size: 13px; margin-bottom: 1.5rem; line-height: 1.4; color: #aaa; }
+        .btn-yt { 
+            background: #FF0000; color: white; text-decoration: none;
+            padding: 14px 28px; border-radius: 12px; font-size: 13px;
+            font-weight: 800; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 8px 24px rgba(255, 0, 0, 0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s ease;
+        }
+        .btn-yt:active { transform: scale(0.95); }
+
+        .troubleshoot-btn {
+            text-align: center; display: block; margin: 12px auto 0;
+            font-size: 11px; color: var(--ink-light); 
+            background: none; border: none; text-decoration: underline;
+            cursor: pointer; font-family: 'Space Mono', monospace;
+        }
+
+        /* Reflection Area */
+        .reflection-area { 
+            padding: 1.5rem 1.25rem; 
+            transition: opacity 0.3s ease;
+            opacity: 0.3; pointer-events: none;
+        }
+        .reflection-area.active { opacity: 1; pointer-events: all; }
+        
+        .label-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
+        label { font-size: 13px; font-weight: 700; }
+        .char-count { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--ink-light); }
+
+        textarea {
+            width: 100%; border-radius: 12px; border: 1px solid var(--border);
+            padding: 1rem; font-family: 'Sora', sans-serif; font-size: 14px;
+            resize: none; background: var(--white); min-height: 80px;
+            transition: border-color 0.2s ease;
+        }
+        textarea:focus { outline: none; border-color: var(--green); }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: fixed; bottom: 0; width: 100%; max-width: 420px;
+            padding: 1.25rem; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px); border-top: 1px solid var(--border);
+            display: flex; gap: 0.75rem; z-index: 100;
+        }
+        .btn-primary { 
+            flex: 1; padding: 1rem; border-radius: 12px; border: none;
+            font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px;
+            background: linear-gradient(135deg, var(--green), #2ECC71); 
+            color: white; box-shadow: 0 4px 12px rgba(26, 122, 74, 0.2);
+            cursor: pointer;
+        }
+        .btn-primary:disabled { 
+            background: var(--border); color: var(--ink-light); 
+            box-shadow: none; cursor: not-allowed;
+        }
+
+        /* Success Screen Styles */
+        .success-screen {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; padding: 2.5rem;
+            min-height: 80vh; animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .success-icon { font-size: 64px; margin-bottom: 1.5rem; }
+        .success-title { font-size: 24px; font-weight: 800; color: var(--green); margin-bottom: 0.5rem; }
+        .success-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 2rem; }
+        .btn-next-beat {
+            width: 100%; padding: 1.25rem; border-radius: 16px;
+            background: var(--ink); color: var(--white);
+            text-decoration: none; font-weight: 700; font-size: 15px;
+            box-shadow: 0 12px 24px rgba(13, 15, 28, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="logo-mark">LA</div>
+                <span style="font-size: 12px; font-weight: 600; color: var(--ink-mid);">LAPA LMS · Wk 1</span>
+            </div>
+            <div class="beat-badge">BEAT 3: SEE IT</div>
+        </div>
+
+        <div id="main-content">
+            <div class="header-section">
+                <span class="step-indicator" id="step-count">VIDEO 1 OF 3</span>
+                <h1 id="video-title">AI Foundations</h1>
+            </div>
+
+            <div class="brief-card">
+                <div class="timer-bar" id="timer-bar"></div>
+                <span class="brief-title">Watch Brief</span>
+                <ul class="brief-list" id="brief-list">
+                    <li>Note the distinction between AI and ML</li>
+                    <li>Identify what Machine Learning involves</li>
+                    <li>Find Harper's academic background in AI</li>
+                </ul>
+            </div>
+
+            <div class="video-stage">
+                <div class="fallback-box" id="fallback-box">
+                    <p>Security settings blocked the player.<br>Watch on YouTube, then return here to reflect.</p>
+                    <a href="#" target="_blank" id="yt-link" class="btn-yt">
+                        <span>▶</span> Watch on YouTube
+                    </a>
+                </div>
+
+                <div class="lock-overlay" id="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lock-text">SCANNING BRIEF...</div>
+                </div>
+                
+                <iframe id="video-player" 
+                        src="" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <button class="troubleshoot-btn" id="troubleshoot">Video not playing? Tap here.</button>
+
+            <div class="reflection-area" id="reflection-area">
+                <div class="label-row">
+                    <label id="reflection-label">What surprised you about this?</label>
+                    <span class="char-count" id="char-count">0 / 10 chars</span>
+                </div>
+                <textarea id="reflection-input" placeholder="Type your observation here..."></textarea>
+            </div>
+        </div>
+
+        <div class="bottom-bar" id="bottom-bar">
+            <button class="btn-primary" id="next-btn" disabled>Next Video</button>
+        </div>
+    </div>
+
+    <script>
+        const videoData = [
+            {
+                id: "VJoVEMYOW-o", 
+                title: "AI Foundations",
+                brief: ["Note the distinction between AI and ML", "Identify what Machine Learning involves", "Find Harper's academic background in AI"],
+                prompt: "What is the key difference between AI and Machine Learning?"
+            },
+            {
+                id: "9lQpF3_WmkI", 
+                title: "AI Pattern Matching",
+                brief: ["Spot where input quality matters", "Notice what AI cannot do", "Find one common analogy"],
+                prompt: "What is one thing you learned about how AI generates text?"
+            },
+            {
+                id: "sIxFjKpSKhA", 
+                title: "Strategy > Tools",
+                brief: ["Notice impact on hiring", "Spot the career separator", "Find the main takeaway"],
+                prompt: "How will you change your approach this week?"
+            }
+        ];
+
+        let currentStep = 0;
+
+        function initStep(index) {
+            const data = videoData[index];
+            document.getElementById('step-count').innerText = `VIDEO ${index + 1} OF 3`;
+            document.getElementById('video-title').innerText = data.title;
+            document.getElementById('reflection-label').innerText = data.prompt;
+            document.getElementById('brief-list').innerHTML = data.brief.map(i => `<li>${i}</li>`).join('');
+            
+            const embedUrl = `https://www.youtube-nocookie.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1`;
+            document.getElementById('video-player').src = embedUrl;
+            document.getElementById('yt-link').href = `https://youtube.com/shorts/${data.id}`;
+
+            document.getElementById('lock-overlay').classList.remove('hidden');
+            document.getElementById('fallback-box').style.zIndex = "1";
+            document.getElementById('reflection-area').classList.remove('active');
+            document.getElementById('reflection-input').value = '';
+            document.getElementById('next-btn').disabled = true;
+
+            const bar = document.getElementById('timer-bar');
+            bar.classList.remove('timer-active');
+            void bar.offsetWidth; 
+            bar.classList.add('timer-active');
+
+            setTimeout(() => {
+                document.getElementById('lock-overlay').classList.add('hidden');
+                document.getElementById('reflection-area').classList.add('active');
+            }, 5000);
+        }
+
+        document.getElementById('troubleshoot').addEventListener('click', () => {
+            document.getElementById('fallback-box').style.zIndex = "20";
+            document.getElementById('lock-overlay').classList.add('hidden');
+        });
+
+        document.getElementById('reflection-input').addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            document.getElementById('char-count').innerText = `${val.length} / 10 chars`;
+            document.getElementById('next-btn').disabled = val.length < 10;
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentStep < videoData.length - 1) {
+                currentStep++;
+                initStep(currentStep);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showSuccess();
+            }
+        });
+
+        function showSuccess() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="success-screen">
+                    <div class="success-icon">🎯</div>
+                    <h2 class="success-title">Beat 3 Complete!</h2>
+                    <p class="success-desc">You've finished your Video Touchpoints for Week 1. You're now ready to move to the Weekly Quiz.</p>
+                    <a href="#" class="btn-next-beat">Continue to Weekly Quiz</a>
+                </div>
+            `;
+            document.getElementById('bottom-bar').style.display = 'none';
+        }
+
+        window.onload = () => initStep(0);
+    </script>
+</body>
+</html>

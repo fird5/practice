@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAPA LMS | Wk 1 Beat 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D0F1C;
+            --ink-mid: #3D405A;
+            --ink-light: #7B7E96;
+            --amber: #E8922A;
+            --amber-mid: #F39C12;
+            --amber-light: #FDF0E0;
+            --white: #FFFFFF;
+            --off-white: #FAFAF8;
+            --border: #E4E1EF;
+            --shadow: 0 8px 32px rgba(232, 146, 42, 0.15);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            margin: 0; padding: 0; background-color: #1A0D2E; 
+            font-family: 'Sora', sans-serif; color: var(--ink); 
+        }
+
+        .shell {
+            max-width: 420px; margin: 0 auto; min-height: 100vh;
+            background: var(--off-white); position: relative;
+            display: flex; flex-direction: column;
+            padding-bottom: 8rem;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo-mark { 
+            width: 28px; height: 28px; background: linear-gradient(135deg, var(--amber), var(--amber-mid));
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 12px;
+        }
+        .beat-badge {
+            background: var(--amber-light); color: var(--amber);
+            padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* Header Section */
+        .header {
+            padding: 2rem 1.5rem 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 100%);
+        }
+        .step-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--amber); font-weight: 700; margin-bottom: 8px; display: block; }
+        h1 { font-size: 24px; font-weight: 800; margin: 0; line-height: 1.1; letter-spacing: -0.5px; }
+        .subtitle { font-size: 14px; color: var(--ink-mid); margin-top: 8px; line-height: 1.5; }
+
+        /* Content Sections */
+        .section { padding: 0 1.5rem 1.5rem; }
+        
+        .card {
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: 20px; padding: 1.25rem; margin-bottom: 1rem;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--amber);
+        }
+
+        .deliverable-num {
+            font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+            color: var(--amber); margin-bottom: 4px; display: block;
+        }
+        h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px 0; }
+        p { font-size: 13px; line-height: 1.6; color: var(--ink-mid); margin: 0; }
+
+        /* The Framework Box */
+        .framework-box {
+            background: var(--ink); color: var(--white);
+            border-radius: 12px; padding: 1rem; margin-top: 12px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .framework-item { font-family: 'Space Mono', monospace; font-size: 11px; }
+        .framework-item strong { color: var(--amber); }
+
+        /* Alignment Warning */
+        .alignment-callout {
+            background: var(--amber-light); border: 1.5px dashed var(--amber);
+            border-radius: 16px; padding: 1rem; margin: 0.5rem 0 1.5rem;
+            display: flex; gap: 12px; align-items: flex-start;
+        }
+        .warning-icon { font-size: 20px; }
+        .warning-text { font-size: 12px; font-weight: 600; color: #8E5400; line-height: 1.5; }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: fixed; bottom: 0; width: 100%; max-width: 420px;
+            padding: 1.25rem; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px); border-top: 1px solid var(--border);
+            z-index: 100;
+        }
+        .btn-submit {
+            width: 100%; padding: 1.1rem; border-radius: 14px; border: none;
+            background: linear-gradient(135deg, var(--amber), #D35400);
+            color: white; font-weight: 800; font-size: 15px; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(232, 146, 42, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none;
+        }
+
+        .slide-up { animation: slideUp 0.5s ease-out forwards; opacity: 0; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="logo-mark">LA</div>
+                <span style="font-size: 12px; font-weight: 600; color: var(--ink-mid);">LAPA LMS · Wk 1</span>
+            </div>
+            <div class="beat-badge">BEAT 4: BUILD IT</div>
+        </div>
+
+        <div class="header slide-up">
+            <span class="step-label">SOLO SPRINT BRIEF</span>
+            <h1>The Communication Audit Sprint</h1>
+            <p class="subtitle">Time to apply the CARE framework to a real-world professional reach-out.</p>
+        </div>
+
+        <div class="section slide-up" style="animation-delay: 0.1s;">
+            <div class="alignment-callout">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-text">
+                    <strong>Check your Baseline:</strong> Your output must address the "Gap" you identified in Beat 1. Don't just prompt; solve your specific weakness.
+                </div>
+            </div>
+
+            <!-- Deliverable 1 -->
+            <div class="card">
+                <span class="deliverable-num">DELIVERABLE 1</span>
+                <h3>The Smart Brief</h3>
+                <p>Use the <strong>CARE Framework</strong> to write a prompt brief for an internship inquiry, a lecturer follow-up, or a client intro.</p>
+                <div class="framework-box">
+                    <div class="framework-item"><strong>C</strong> Context</div>
+                    <div class="framework-item"><strong>A</strong> Audience</div>
+                    <div class="framework-item"><strong>R</strong> Role</div>
+                    <div class="framework-item"><strong>E</strong> Edit</div>
+                </div>
+            </div>
+
+            <!-- Deliverable 2 -->
+            <div class="card">
+                <span class="deliverable-num">DELIVERABLE 2</span>
+                <h3>Draft + Human Edit</h3>
+                <p>Generate the response with AI. Take a screenshot of the <strong>raw output</strong>, then provide your <strong>final edited version</strong>. Show us your "Human-in-the-loop" value.</p>
+            </div>
+
+            <!-- Deliverable 3 -->
+            <div class="card">
+                <span class="deliverable-num">DELIVERABLE 3</span>
+                <h3>The 150-Word Reflection</h3>
+                <p>Break it down: What did the AI nail? What did you have to fix to make it appropriate for a Malaysian business context? How does this version better serve your audience?</p>
+            </div>
+        </div>
+
+        <!-- Submission Bar -->
+        <div class="bottom-bar">
+            <a href="#" class="btn-submit">
+                Submit on LAPA App
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
