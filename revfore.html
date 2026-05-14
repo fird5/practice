@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAPA & AIES Revenue Forecast Engine (Portfolio Mode)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .accent-cyan { color: #22d3ee; }
+        .bg-cyan { background-color: #22d3ee; }
+        .input-dark { background: #0f172a; border: 1px solid #334155; color: white; transition: all 0.2s; font-size: 1rem; } /* Better for mobile zoom prevention */
+        .input-dark:focus { border-color: #22d3ee; outline: none; box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2); }
+        .stat-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
+        
+        /* Mobile-Friendly Toggle */
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #22d3ee; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Custom Scrollbar for mobile table */
+        .custom-scroll::-webkit-scrollbar { height: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen p-3 md:p-6 lg:p-8">
+    <div class="max-w-[1400px] mx-auto">
+        <!-- Header: Responsive Layout -->
+        <div class="flex flex-col gap-6 mb-8">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl md:text-4xl font-bold tracking-tight">Portfolio <span class="accent-cyan">Revenue Engine</span></h1>
+                <p class="text-slate-400 text-xs md:text-sm mt-1 uppercase tracking-wider font-semibold">Scalability & USD Reporting</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-4 glass-card p-3 rounded-2xl w-full justify-between">
+                <div class="flex items-center gap-6 w-full sm:w-auto justify-around sm:justify-start">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-bold" id="viewLabel">MONTHLY</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="annualToggle" onchange="calculate()">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="text-[10px] font-bold">ANNUAL</span>
+                    </div>
+                    <div class="h-6 w-px bg-slate-700 hidden sm:block"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="stat-label">FX</span>
+                        <input type="number" id="fxRate" value="4.40" step="0.05" class="input-dark w-14 p-1 rounded-lg text-center font-bold" oninput="calculate()">
+                    </div>
+                </div>
+                
+                <div class="w-full sm:w-auto mt-2 sm:mt-0">
+                    <select id="marketSelector" onchange="switchMarket()" class="input-dark w-full sm:w-auto rounded-xl px-4 py-2 bg-slate-900 font-bold border-slate-700 text-sm">
+                        <option value="ALL">🌎 Global Portfolio</option>
+                        <option value="MY">🇲🇾 Malaysia Only</option>
+                        <option value="PH">🇵🇭 Philippines Only</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- LEFT: PARTNER MIX (Stacked on Mobile) -->
+            <div class="lg:col-span-4 space-y-4">
+                
+                <!-- MY Portfolio -->
+                <div id="ctrlMY" class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-blue-500 transition-all">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-bold text-sm flex items-center gap-2">🇲🇾 MALAYSIA</h2>
+                        <span class="text-[9px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full font-bold uppercase">RM Split Logic</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <p class="stat-label mb-2">Alpha Partners</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">COUNT</label>
+                                    <input type="number" id="myAlphaCount" value="1" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">AVG MAU</label>
+                                    <input type="number" id="myAlphaMAU" value="1000" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <p class="stat-label mb-2">Standard Partners</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">COUNT</label>
+                                    <input type="number" id="myStdCount" value="0" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">AVG MAU</label>
+                                    <input type="number" id="myStdMAU" value="1000" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                                <label class="stat-label block mb-1 text-[9px]">Full Modules /Uni</label>
+                                <input type="number" id="myFullQty" value="1" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                            </div>
+                            <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                                <label class="stat-label block mb-1 text-[9px]">AI Injections /Uni</label>
+                                <input type="number" id="myEnhQty" value="1" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PH Portfolio -->
+                <div id="ctrlPH" class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-red-500 transition-all">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-bold text-sm flex items-center gap-2">🇵🇭 PHILIPPINES</h2>
+                        <span class="text-[9px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold uppercase">USD Baseline</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <p class="stat-label mb-2">Alpha Cohort</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">COUNT</label>
+                                    <input type="number" id="phAlphaCount" value="1" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">AVG MAU</label>
+                                    <input type="number" id="phAlphaMAU" value="1000" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <p class="stat-label mb-2">Standard Partners</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">COUNT</label>
+                                    <input type="number" id="phStdCount" value="0" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] text-slate-500 font-bold">AVG MAU</label>
+                                    <input type="number" id="phStdMAU" value="1000" class="input-dark w-full p-2 rounded-lg" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/50 flex justify-between items-center">
+                            <label class="stat-label font-bold text-[9px]">Small Colleges ($500 Flat)</label>
+                            <input type="number" id="phSmallCount" value="0" class="input-dark w-16 p-2 rounded-lg text-center" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: SUMMARY & CHART (Dynamic Layout) -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="glass-card p-4 rounded-2xl border-b-2 border-b-blue-500 col-span-2 md:col-span-1">
+                        <p class="stat-label">Total MAU</p>
+                        <h3 class="text-xl md:text-2xl font-bold mt-1" id="resTotalMAU">--</h3>
+                        <p class="text-[9px] text-slate-500 mt-1 font-bold" id="mauBreakdown">--</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border-b-2 border-b-cyan-500">
+                        <p class="stat-label">Licensing</p>
+                        <h3 class="text-xl md:text-2xl font-bold mt-1 text-cyan-400" id="resLicensing">--</h3>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border-b-2 border-b-green-500">
+                        <p class="stat-label">Sponsorship</p>
+                        <h3 class="text-xl md:text-2xl font-bold mt-1 text-green-400" id="resSponsor">--</h3>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border-b-2 border-b-purple-500 col-span-2 md:col-span-1">
+                        <p class="stat-label">Net AIES</p>
+                        <h3 class="text-xl md:text-2xl font-bold mt-1 text-purple-400" id="resNetFinalHeader">--</h3>
+                    </div>
+                </div>
+
+                <!-- Visual Chart -->
+                <div class="glass-card p-4 md:p-6 rounded-2xl">
+                    <div class="h-[250px] md:h-[300px]">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown: Scrollable on Mobile -->
+                <div class="glass-card overflow-hidden rounded-2xl shadow-xl">
+                    <div class="overflow-x-auto custom-scroll">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
+                            <thead class="bg-slate-800/80">
+                                <tr>
+                                    <th class="p-3 text-[10px] md:stat-label">Line Item</th>
+                                    <th class="p-3 text-[10px] md:stat-label text-right">Gross USD</th>
+                                    <th class="p-3 text-[10px] md:stat-label text-right">AIES Net USD</th>
+                                </tr>
+                            </thead>
+                            <tbody id="breakdownTable" class="divide-y divide-slate-700/50 text-[11px] md:text-xs"></tbody>
+                            <tfoot>
+                                <tr class="bg-cyan-500/10 font-bold">
+                                    <td class="p-4 text-cyan-400 text-sm">Portfolio Total Net</td>
+                                    <td colspan="2" class="p-4 text-right text-lg md:text-2xl text-cyan-400" id="resNetFinal">--</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chart;
+
+        function switchMarket() {
+            const market = document.getElementById('marketSelector').value;
+            const ctrlMY = document.getElementById('ctrlMY');
+            const ctrlPH = document.getElementById('ctrlPH');
+
+            if (market === 'MY') {
+                ctrlMY.style.opacity = "1";
+                ctrlPH.style.opacity = "0.3";
+            } else if (market === 'PH') {
+                ctrlMY.style.opacity = "0.3";
+                ctrlPH.style.opacity = "1";
+            } else {
+                ctrlMY.style.opacity = "1";
+                ctrlPH.style.opacity = "1";
+            }
+            calculate();
+        }
+
+        function getSponsorship(mau, market) {
+            if (market === 'MY') {
+                if (mau >= 50000) return 57500;
+                if (mau >= 15000) return 23000;
+                if (mau >= 5000) return 8500;
+                if (mau >= 1000) return 3500;
+                return 0;
+            } else {
+                if (mau >= 100000) return 66500;
+                if (mau >= 50000) return 33000;
+                if (mau >= 15000) return 13500;
+                if (mau >= 5000) return 5500;
+                return 0;
+            }
+        }
+
+        function calculate() {
+            const marketMode = document.getElementById('marketSelector').value;
+            const isAnnual = document.getElementById('annualToggle').checked;
+            const multiplier = isAnnual ? 12 : 1;
+            const fx = parseFloat(document.getElementById('fxRate').value) || 4.40;
+
+            let allItems = [];
+            let totalMY_MAU = 0;
+            let totalPH_MAU = 0;
+
+            // --- MALAYSIA LOGIC ---
+            if (marketMode === 'MY' || marketMode === 'ALL') {
+                const alphaCount = parseInt(document.getElementById('myAlphaCount').value) || 0;
+                const alphaMAU = parseInt(document.getElementById('myAlphaMAU').value) || 0;
+                const stdCount = parseInt(document.getElementById('myStdCount').value) || 0;
+                const stdMAU = parseInt(document.getElementById('myStdMAU').value) || 0;
+                const fullQty = parseInt(document.getElementById('myFullQty').value) || 0;
+                const enhQty = parseInt(document.getElementById('myEnhQty').value) || 0;
+
+                totalMY_MAU = (alphaCount * alphaMAU) + (stdCount * stdMAU);
+                const isRemitMY = totalMY_MAU >= 1000;
+
+                if (alphaCount > 0) {
+                    const appGross = (alphaCount * alphaMAU * 6.00 * multiplier) / fx;
+                    const appNet = isRemitMY ? ((alphaCount * alphaMAU * (6.00 - 1.20) * multiplier) / fx) : appGross;
+                    allItems.push({ name: `MY Alpha (${alphaCount} Unis)`, gross: appGross, net: appNet });
+
+                    const fullGross = (alphaCount * fullQty * 2520 * multiplier) / fx;
+                    const fullNet = isRemitMY ? (fullGross * 0.70) : fullGross;
+                    allItems.push({ name: `MY Alpha Modules`, gross: fullGross, net: fullNet });
+
+                    const enhGross = (alphaCount * enhQty * 450 * multiplier) / fx;
+                    const enhNet = isRemitMY ? (enhGross * 0.80) : enhGross;
+                    allItems.push({ name: `MY Alpha AI Injections`, gross: enhGross, net: enhNet });
+                }
+
+                if (stdCount > 0) {
+                    const appGross = (stdCount * stdMAU * 12.00 * multiplier) / fx;
+                    allItems.push({ name: `MY Std (${stdCount} Unis)`, gross: appGross, net: appGross });
+
+                    const fullGross = (stdCount * fullQty * 2840 * multiplier) / fx;
+                    const fullNet = isRemitMY ? (fullGross * 0.75) : fullGross;
+                    allItems.push({ name: `MY Std Modules`, gross: fullGross, net: fullNet });
+
+                    const enhGross = (stdCount * enhQty * 550 * multiplier) / fx;
+                    const enhNet = isRemitMY ? (enhGross * 0.85) : enhGross;
+                    allItems.push({ name: `MY Std AI Injections`, gross: enhGross, net: enhNet });
+                }
+
+                const mySponsorUSD = getSponsorship(totalMY_MAU, 'MY') * multiplier;
+                if (mySponsorUSD > 0) allItems.push({ name: 'MY Sponsorship', gross: mySponsorUSD, net: mySponsorUSD });
+            }
+
+            // --- PHILIPPINES LOGIC ---
+            if (marketMode === 'PH' || marketMode === 'ALL') {
+                const alphaCount = parseInt(document.getElementById('phAlphaCount').value) || 0;
+                const alphaMAU = parseInt(document.getElementById('phAlphaMAU').value) || 0;
+                const stdCount = parseInt(document.getElementById('phStdCount').value) || 0;
+                const stdMAU = parseInt(document.getElementById('phStdMAU').value) || 0;
+                const smallCount = parseInt(document.getElementById('phSmallCount').value) || 0;
+
+                totalPH_MAU = (alphaCount * alphaMAU) + (stdCount * stdMAU) + (smallCount * 250);
+
+                if (alphaCount > 0) {
+                    const appGross = alphaCount * alphaMAU * 0.99 * multiplier;
+                    const cashback = (alphaMAU * alphaCount >= 5000) ? (appGross * 0.20) : 0;
+                    allItems.push({ name: `PH Alpha (${alphaCount} Unis)`, gross: appGross, net: appGross - cashback });
+                }
+                if (stdCount > 0) {
+                    const appGross = stdCount * stdMAU * 1.50 * multiplier;
+                    const cashback = (stdMAU * stdCount >= 10000) ? (appGross * 0.20) : 0;
+                    allItems.push({ name: `PH Std (${stdCount} Unis)`, gross: appGross, net: appGross - cashback });
+                }
+                if (smallCount > 0) {
+                    const appGross = smallCount * 500 * multiplier;
+                    allItems.push({ name: `PH Small Colleges`, gross: appGross, net: appGross });
+                }
+
+                const phSponsorUSD = getSponsorship(totalPH_MAU, 'PH') * multiplier;
+                if (phSponsorUSD > 0) allItems.push({ name: 'PH Sponsorship', gross: phSponsorUSD, net: phSponsorUSD });
+            }
+
+            let finalGross = allItems.reduce((a, b) => a + b.gross, 0);
+            let finalNet = allItems.reduce((a, b) => a + b.net, 0);
+            let sponsorOnly = allItems.filter(i => i.name.includes('Sponsorship')).reduce((a, b) => a + b.gross, 0);
+            
+            document.getElementById('resTotalMAU').innerText = (totalMY_MAU + totalPH_MAU).toLocaleString();
+            document.getElementById('mauBreakdown').innerText = `MY: ${totalMY_MAU} | PH: ${totalPH_MAU}`;
+            document.getElementById('resLicensing').innerText = `$ ${(finalGross - sponsorOnly).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+            document.getElementById('resSponsor').innerText = `$ ${sponsorOnly.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+            document.getElementById('resNetFinalHeader').innerText = `$ ${finalNet.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+            document.getElementById('resNetFinal').innerText = `$ ${finalNet.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+
+            document.getElementById('breakdownTable').innerHTML = allItems.map(i => `
+                <tr class="hover:bg-slate-800/30">
+                    <td class="p-3 text-slate-300">${i.name}</td>
+                    <td class="p-3 text-right text-slate-500">$ ${i.gross.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                    <td class="p-3 text-right font-bold text-cyan-400">$ ${i.net.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                </tr>
+            `).join('');
+
+            updateChart(marketMode, multiplier, fx);
+        }
+
+        function updateChart(marketMode, multiplier, fx) {
+            const labels = ['Now', '+20%', '+50%', '+100%'];
+            let netData = [];
+            const scales = [1, 1.2, 1.5, 2];
+            
+            scales.forEach(s => {
+                let currentNet = 0;
+                // Simplified projection math for visual bar context
+                const totalLicensingRaw = (parseFloat(document.getElementById('resLicensing').innerText.replace(/[^0-9.-]+/g,"")) || 0);
+                const totalSponsorRaw = (parseFloat(document.getElementById('resSponsor').innerText.replace(/[^0-9.-]+/g,"")) || 0);
+                
+                // Assume 15% efficiency growth on net as scale increases
+                currentNet = (totalLicensingRaw + totalSponsorRaw) * s;
+                netData.push(currentNet);
+            });
+
+            if (chart) chart.destroy();
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Net USD Projection',
+                        data: netData,
+                        backgroundColor: '#22d3ee',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            grid: { color: 'rgba(255,255,255,0.05)' }, 
+                            ticks: { color: '#64748b', font: { size: 9 }, callback: (v) => '$' + v/1000 + 'k' } 
+                        },
+                        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 9 } } }
+                    }
+                }
+            });
+        }
+
+        window.onload = switchMarket;
+    </script>
+</body>
+</html>
