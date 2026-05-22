@@ -48,20 +48,20 @@
                 <div class="border-2 border-slate-200 rounded-3xl p-6 bg-white text-center">
                     <div class="text-4xl mb-4">🛡️</div>
                     <h3 class="font-bold text-lg mb-1">Amanah</h3>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase mb-4">Surplus: &lt; $25k</p>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase mb-4">Surplus: &lt; $16k</p>
                     <p class="text-sm text-slate-600">Safeguarding the trust. All surplus is retained for reserves.</p>
                 </div>
                 <div class="border-2 border-blue-500 rounded-3xl p-6 bg-blue-50 text-center shadow-lg">
                     <div class="text-4xl mb-4">🎯</div>
                     <h3 class="font-bold text-lg mb-1">Barakah</h3>
-                    <p class="text-[11px] font-bold text-blue-600 uppercase mb-4">Surplus: $25k - $84.9k</p>
-                    <p class="text-sm text-slate-700"><strong>10%</strong> of surplus shared among staff.</p>
+                    <p class="text-[11px] font-bold text-blue-600 uppercase mb-4">Surplus: $16k - $84.9k</p>
+                    <p class="text-sm text-slate-700"><strong>13%</strong> of surplus shared among staff.</p>
                 </div>
                 <div class="border-2 border-emerald-500 rounded-3xl p-6 bg-emerald-50 text-center shadow-lg">
                     <div class="text-4xl mb-4">🚀</div>
                     <h3 class="font-bold text-lg mb-1">Ihsan</h3>
                     <p class="text-[11px] font-bold text-emerald-600 uppercase mb-4">Surplus: $85k+</p>
-                    <p class="text-sm text-slate-700"><strong>12.5%</strong> of surplus shared among staff.</p>
+                    <p class="text-sm text-slate-700"><strong>15%</strong> of surplus shared among staff.</p>
                 </div>
             </div>
         </section>
@@ -85,22 +85,37 @@
         <section class="bg-slate-900 rounded-3xl p-8 text-white">
             <h2 class="text-xl font-bold mb-2 text-center">Bonus Calculator</h2>
             <p class="text-center text-slate-400 text-sm mb-8">Calculates your share based on individual weight.</p>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="space-y-4">
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Monthly Base Salary ($)</label>
+                        <input type="number" id="calc-salary" step="100" value="3000" class="w-full bg-slate-800 rounded-lg p-3 text-white font-bold">
+                    </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Your Individual Weight (Base 1.0)</label>
                         <input type="number" id="calc-weight" step="0.1" value="1.0" class="w-full bg-slate-800 rounded-lg p-3 text-white font-bold">
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Mosque Quarterly Surplus</label>
-                        <input type="range" id="calc-surplus" min="0" max="150000" step="5000" value="40000" class="w-full">
+                        <input type="range" id="calc-surplus" min="0" max="150000" step="1000" value="40000" class="w-full">
                         <div class="text-lg font-bold text-blue-400" id="res-surplus">$40,000</div>
                     </div>
                 </div>
-                <div class="bg-white/10 rounded-2xl p-6 text-center">
-                    <p class="text-xs uppercase font-bold text-blue-200 mb-1">Your Bonus Share</p>
-                    <div class="text-5xl font-black" id="res-payout">$0</div>
-                    <p class="text-xs text-slate-400 mt-4" id="res-tier-msg">Adjust weight and surplus to see share</p>
+                <div class="bg-white/10 rounded-2xl p-6 text-center h-full flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs uppercase font-bold text-blue-200 mb-1">Your Bonus Share</p>
+                        <div class="text-5xl font-black" id="res-payout">$0</div>
+                        <p class="text-xs text-slate-400 mt-2" id="res-tier-msg">Adjust weight and surplus to see share</p>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-white/10 text-left space-y-2">
+                        <p class="text-[10px] uppercase font-bold text-slate-500 tracking-widest mb-3 text-center">Projected Annual Total</p>
+                        <div class="flex justify-between text-xs text-slate-300"><span>Annual Base (x12)</span> <span id="res-base-total">$36,000</span></div>
+                        <div class="flex justify-between text-xs text-slate-300"><span>AWS (x1)</span> <span id="res-aws">$3,000</span></div>
+                        <div class="flex justify-between text-xs text-slate-300"><span>Allowances (Fixed)</span> <span>$800</span></div>
+                        <div class="flex justify-between text-xs text-blue-300 font-bold"><span>Est. Annual QPB (x4)</span> <span id="res-annual-qpb">$0</span></div>
+                        <div class="flex justify-between text-sm text-white font-black pt-2 border-t border-white/10 mt-2"><span>Grand Total</span> <span id="res-grand-total">$39,800</span></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -108,6 +123,7 @@
 
     <script>
         function update() {
+            const salary = parseFloat(document.getElementById('calc-salary').value) || 0;
             const weight = parseFloat(document.getElementById('calc-weight').value) || 1.0;
             const surplus = parseFloat(document.getElementById('calc-surplus').value);
             
@@ -115,15 +131,28 @@
             
             let pool = 0;
             let tier = "";
-            if (surplus >= 85000) { pool = surplus * 0.125; tier = "Ihsan (12.5% Pool)"; }
-            else if (surplus >= 25000) { pool = surplus * 0.10; tier = "Barakah (10% Pool)"; }
+            if (surplus >= 85000) { pool = surplus * 0.15; tier = "Ihsan (15% Pool)"; }
+            else if (surplus >= 16000) { pool = surplus * 0.13; tier = "Barakah (13% Pool)"; }
             else { pool = 0; tier = "Amanah (0%)"; }
             
             const payout = (pool / totalWeights) * weight;
             document.getElementById('res-surplus').innerText = '$' + surplus.toLocaleString();
             document.getElementById('res-payout').innerText = '$' + Math.round(payout).toLocaleString();
             document.getElementById('res-tier-msg').innerText = tier;
+
+            // Total Comp Calculation
+            const annualBase = salary * 12;
+            const aws = salary;
+            const allowances = 800; // 500 Ramadan + 300 Flexi
+            const annualQPB = payout * 4;
+            const grandTotal = annualBase + aws + allowances + annualQPB;
+
+            document.getElementById('res-base-total').innerText = '$' + annualBase.toLocaleString();
+            document.getElementById('res-aws').innerText = '$' + aws.toLocaleString();
+            document.getElementById('res-annual-qpb').innerText = '$' + Math.round(annualQPB).toLocaleString();
+            document.getElementById('res-grand-total').innerText = '$' + Math.round(grandTotal).toLocaleString();
         }
+        document.getElementById('calc-salary').addEventListener('input', update);
         document.getElementById('calc-weight').addEventListener('input', update);
         document.getElementById('calc-surplus').addEventListener('input', update);
         update();
