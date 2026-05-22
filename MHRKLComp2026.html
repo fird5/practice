@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHRKL Staff Compensation Guide 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-4xl mx-auto space-y-12">
+        
+        <!-- HEADER -->
+        <header class="text-center space-y-2">
+            <h1 class="text-4xl font-black tracking-tight text-slate-900">2026 Compensation Plan</h1>
+            <p class="text-slate-500">Simple, transparent, and fair: When the Mosque wins, we all win together.</p>
+        </header>
+
+        <!-- TOTAL COMP STRUCTURE -->
+        <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-6 text-center">Your Total Compensation Package</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">1. Guaranteed Foundation</h3>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex justify-between"><span>Monthly Base Salary</span> <span>12 Months</span></li>
+                        <li class="flex justify-between"><span>Annual Wage Supplement (AWS)</span> <span>1 Month Salary</span></li>
+                        <li class="flex justify-between"><span>Ramadan Allowance</span> <span>$500 Fixed</span></li>
+                        <li class="flex justify-between font-bold text-slate-800"><span>Flexi-Benefit</span> <span>$300 Fixed</span></li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                    <h3 class="font-bold text-blue-900 mb-4 border-b border-blue-200 pb-2">2. Performance Bonus (QPB)</h3>
+                    <p class="text-xs text-blue-700">Variable bonus shared based on quarterly surplus targets, adjusted by individual performance weights.</p>
+                    <div class="mt-4 text-xs font-bold text-blue-800">Earn up to 4x per year.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMPLIFIED VISUAL -->
+        <section>
+            <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 text-center">Quarterly Performance Tiers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border-2 border-slate-200 rounded-3xl p-6 bg-white text-center">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="font-bold text-lg mb-1">Amanah</h3>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase mb-4">Surplus: &lt; $25k</p>
+                    <p class="text-sm text-slate-600">Safeguarding the trust. All surplus is retained for reserves.</p>
+                </div>
+                <div class="border-2 border-blue-500 rounded-3xl p-6 bg-blue-50 text-center shadow-lg">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="font-bold text-lg mb-1">Barakah</h3>
+                    <p class="text-[11px] font-bold text-blue-600 uppercase mb-4">Surplus: $25k - $84.9k</p>
+                    <p class="text-sm text-slate-700"><strong>10%</strong> of surplus shared among staff.</p>
+                </div>
+                <div class="border-2 border-emerald-500 rounded-3xl p-6 bg-emerald-50 text-center shadow-lg">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="font-bold text-lg mb-1">Ihsan</h3>
+                    <p class="text-[11px] font-bold text-emerald-600 uppercase mb-4">Surplus: $85k+</p>
+                    <p class="text-sm text-slate-700"><strong>12.5%</strong> of surplus shared among staff.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RULES OF THE PLAN -->
+        <section class="bg-slate-50 border border-slate-200 rounded-3xl p-8">
+            <h2 class="text-lg font-black text-slate-800 mb-6">Rules of the Plan</h2>
+            <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-600">
+                <ul class="space-y-3 list-disc pl-5">
+                    <li><strong>Eligibility:</strong> Only full-time staff who have successfully completed their probation period are eligible for the QPB. Staff must be actively employed for the full quarter to qualify.</li>
+                    <li><strong>Transparency:</strong> Surplus figures are calculated and verified by the Mosque Management Board (MMB) after each quarter.</li>
+                </ul>
+                <ul class="space-y-3 list-disc pl-5">
+                    <li><strong>Leading Performance Discussions:</strong> Performance weights are assigned <em>before</em> the quarter ends. Adjustments are discussed proactively between the KAH and the staff member.</li>
+                    <li><strong>MMB Governance:</strong> All weight adjustments are subject to MMB review. The Board reserves the right to adjust calculations based on extraordinary financial events.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CALCULATOR -->
+        <section class="bg-slate-900 rounded-3xl p-8 text-white">
+            <h2 class="text-xl font-bold mb-2 text-center">Bonus Calculator</h2>
+            <p class="text-center text-slate-400 text-sm mb-8">Calculates your share based on individual weight.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Your Individual Weight (Base 1.0)</label>
+                        <input type="number" id="calc-weight" step="0.1" value="1.0" class="w-full bg-slate-800 rounded-lg p-3 text-white font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Mosque Quarterly Surplus</label>
+                        <input type="range" id="calc-surplus" min="0" max="150000" step="5000" value="40000" class="w-full">
+                        <div class="text-lg font-bold text-blue-400" id="res-surplus">$40,000</div>
+                    </div>
+                </div>
+                <div class="bg-white/10 rounded-2xl p-6 text-center">
+                    <p class="text-xs uppercase font-bold text-blue-200 mb-1">Your Bonus Share</p>
+                    <div class="text-5xl font-black" id="res-payout">$0</div>
+                    <p class="text-xs text-slate-400 mt-4" id="res-tier-msg">Adjust weight and surplus to see share</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function update() {
+            const weight = parseFloat(document.getElementById('calc-weight').value) || 1.0;
+            const surplus = parseFloat(document.getElementById('calc-surplus').value);
+            
+            const totalWeights = 5.0; 
+            
+            let pool = 0;
+            let tier = "";
+            if (surplus >= 85000) { pool = surplus * 0.125; tier = "Ihsan (12.5% Pool)"; }
+            else if (surplus >= 25000) { pool = surplus * 0.10; tier = "Barakah (10% Pool)"; }
+            else { pool = 0; tier = "Amanah (0%)"; }
+            
+            const payout = (pool / totalWeights) * weight;
+            document.getElementById('res-surplus').innerText = '$' + surplus.toLocaleString();
+            document.getElementById('res-payout').innerText = '$' + Math.round(payout).toLocaleString();
+            document.getElementById('res-tier-msg').innerText = tier;
+        }
+        document.getElementById('calc-weight').addEventListener('input', update);
+        document.getElementById('calc-surplus').addEventListener('input', update);
+        update();
+    </script>
+</body>
+</html>
