@@ -180,30 +180,33 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
     <div id="reminder"></div>
     <div class="status"><span class="dot" id="dot"></span><span id="statusTxt">Live</span></div>
   </div>
+  <div style="text-align:center;font-size:0.85vw;color:var(--slate-soft);margin-top:1.5vh;letter-spacing:.08em">
+    <span style="opacity:0.6">β Version designed by Firdaus • August 21, 2026</span>
+  </div>
 </section>
 
 <!-- PRE-ADHAN -->
 <section id="preadhan" class="screen focus">
-  <div class="eyebrow">Persiapan Solat</div>
+  <div class="eyebrow">Prepare for Prayer</div>
   <div class="head" id="paName">—<span class="en" id="paNameEn">—</span></div>
   <div class="big" id="paCount">3:00</div>
-  <div class="sub">Sila matikan telefon bimbit anda dan bersiap untuk berwudhu.<br><span style="font-size:1.7vw;opacity:.75">Please silence your mobile phones and prepare for wudhu.</span></div>
+  <div class="sub">Please silence your mobile phones and prepare for wudhu.<br><span style="font-size:1.7vw;opacity:.75">Sila matikan telefon bimbit anda dan bersiap untuk berwudhu.</span></div>
 </section>
 
 <!-- ADHAN -->
 <section id="adhan" class="screen focus">
-  <div class="eyebrow">Masuk Waktu Solat</div>
+  <div class="eyebrow">Prayer Time Entered</div>
   <div class="head" id="adName">—<span class="en" id="adNameEn">—</span></div>
   <div class="arblock">اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ<br>آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ</div>
-  <div class="sub" style="margin-top:2.4vh">Ya Allah, Tuhan seruan yang sempurna dan solat yang didirikan ini, kurniakanlah kepada Nabi Muhammad wasilah dan kelebihan, dan bangkitkanlah baginda pada maqam terpuji yang Engkau janjikan.
-  <br><span style="font-size:1.6vw;opacity:.75">O Allah, Lord of this perfect call and established prayer, grant Muhammad the intercession and favour, and raise him to the praised station You promised him.</span></div>
+  <div class="sub" style="margin-top:2.4vh">O Allah, Lord of this perfect call and established prayer, grant Muhammad the intercession and favour, and raise him to the praised station You promised him.
+  <br><span style="font-size:1.6vw;opacity:.75">Ya Allah, Tuhan seruan yang sempurna dan solat yang didirikan ini, kurniakanlah kepada Nabi Muhammad wasilah dan kelebihan, dan bangkitkanlah baginda pada maqam terpuji yang Engkau janjikan.</span></div>
 </section>
 
 <!-- IQAMAH -->
 <section id="iqamah" class="screen focus">
-  <div class="eyebrow">Masa Solat Sunat &amp; Doa</div>
-  <div class="big" id="iqCount">9:00</div>
-  <div class="quiet">Time for sunnah prayer &amp; supplication — Iqamah for <b id="iqName">—</b></div>
+  <div class="eyebrow">Time for Sunnah &amp; Dua</div>
+  <div class="big" id="iqCount">0:30</div>
+  <div class="quiet">Prepare yourself — Iqamah will be called for <b id="iqName">—</b></div>
   <div class="hadith">
     <div class="txt" id="hadithTxt"></div>
     <div class="src" id="hadithSrc"></div>
@@ -214,16 +217,16 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
 <section id="saf" class="screen focus">
   <div class="glow"></div>
   <div style="position:relative">
-    <div class="eyebrow">Iqamah</div>
-    <div class="head">Rapatkan Saf<span class="en">Straighten and close the rows</span></div>
-    <div class="sub">Bahu ke bahu, tumit ke tumit. <span style="opacity:.7">Shoulder to shoulder, heel to heel.</span></div>
+    <div class="eyebrow">Iqamah Called</div>
+    <div class="head">Straighten the Rows<span class="en">Close all gaps</span></div>
+    <div class="sub">Shoulder to shoulder, heel to heel. <span style="opacity:.7">Bahu ke bahu, tumit ke tumit.</span></div>
   </div>
 </section>
 
 <!-- STEALTH -->
 <section id="stealth" class="screen focus">
   <div id="stealthClock">--:--</div>
-  <div id="stealthName">Solat berjemaah</div>
+  <div id="stealthName">Congregational Prayer</div>
 </section>
 
 <div id="corner"></div>
@@ -233,8 +236,8 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
   <h3>Display settings</h3>
   <label>Mosque name shown on screen</label>
   <input type="text" id="cfgName" placeholder="Masjid …">
-  <label>Minutes from adhan to iqamah, per prayer (minimum 2)</label>
-  <div class="grid5" id="iqGrid"></div>
+  <label>Iqamah duration in seconds (default: 30)</label>
+  <input type="number" id="cfgIqSec" min="10" max="300" value="30">
   <label>Minutes before adhan to show the preparation screen</label>
   <input type="number" id="cfgPre" min="1" max="15">
   <label>Chime at adhan and iqamah <input type="checkbox" id="cfgChime" style="width:auto;vertical-align:middle"></label>
@@ -253,9 +256,8 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
 <script>
 /* ---------------- config ---------------- */
 const KEY_CFG='masjid.cfg.v1', KEY_DATA='masjid.times.v1';
-const DEF={name:'Masjid', pre:3, chime:true, iq:{Subuh:9,Zohor:9,Asar:9,Maghrib:4,Isyak:9}};
+const DEF={name:'Masjid', pre:3, chime:true, iqSec:30};
 let cfg=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY_CFG)||'{}'));
-cfg.iq=Object.assign({},DEF.iq,cfg.iq||{});
 const ORDER=[['Subuh','Fajr','الفجر','Fajr'],['Zohor','Dhuhr','الظهر','Dhuhr'],['Asar','Asr','العصر','Asr'],['Maghrib','Maghrib','المغرب','Maghrib'],['Isyak','Isha','العشاء','Isha']];
 const ALIGN_S=90, STEALTH_MIN=15, ADHAN_S=60;
 
@@ -322,7 +324,7 @@ function currentState(){
   if(!TIMES)return{mode:'IDLE'};
   const s=secsOfDay(now());
   for(const [my] of ORDER){
-    const T=TIMES[my], iqS=cfg.iq[my]*60;
+    const T=TIMES[my], iqS=cfg.iqSec||30;
     const preS=T-cfg.pre*60;
     // iqamah is called at T + gap; the adhan screen eats the first minute of that gap
     const adEnd=T+ADHAN_S, iqEnd=Math.max(adEnd,T+iqS), safEnd=iqEnd+ALIGN_S, stEnd=safEnd+STEALTH_MIN*60;
@@ -352,10 +354,10 @@ function show(id){ if(shown===id)return; shown=id;
 }
 
 function buildCards(){
-  $('cards').innerHTML=ORDER.map(([my,,ar])=>`<div class="card" data-p="${my}">
-    <div class="name">${my}</div><div class="name-ar ar">${ar}</div>
+  $('cards').innerHTML=ORDER.map(([my,,ar,en])=>`<div class="card" data-p="${my}">
+    <div class="name">${en}</div><div class="name-ar ar">${ar}</div>
     <div class="t"><span class="v">--:--</span><span class="mer"></span></div>
-    <div class="iq"></div></div>`).join('');
+    <div class="iq">Iqamah: +${cfg.iqSec}s</div></div>`).join('');
 }
 
 function render(){
@@ -377,11 +379,11 @@ function render(){
   document.querySelectorAll('.card').forEach(c=>{
     const my=c.dataset.p, [v,mer]=fmt12(TIMES[my]);
     c.querySelector('.v').textContent=v; c.querySelector('.mer').textContent=mer;
-    c.querySelector('.iq').textContent='Iqamah '+fmt12(TIMES[my]+cfg.iq[my]*60).join(' ');
+    c.querySelector('.iq').textContent='Iqamah: +'+(cfg.iqSec||30)+'s';
     c.classList.toggle('past',TIMES[my]<s);
     const isNext=my===nx.my; c.classList.toggle('next',isNext);
     let pill=c.querySelector('.pill');
-    if(isNext){ if(!pill){pill=document.createElement('div');pill.className='pill';c.appendChild(pill);} 
+    if(isNext){ if(!pill){pill=document.createElement('div');pill.className='pill';c.appendChild(pill);}
       const h=Math.floor(nx.in/3600),m=Math.floor(nx.in/60)%60;
       pill.textContent= h? `in ${h} hr ${m} min` : `in ${m} min`;
     } else if(pill) pill.remove();
@@ -444,8 +446,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 
 /* ---------------- admin ---------------- */
 function buildAdmin(){
-  $('iqGrid').innerHTML=ORDER.map(([my])=>`<div><span>${my}</span><input type="number" min="2" max="30" data-iq="${my}" value="${cfg.iq[my]}"></div>`).join('');
-  $('cfgName').value=cfg.name; $('cfgPre').value=cfg.pre; $('cfgChime').checked=cfg.chime;
+  $('cfgName').value=cfg.name; $('cfgIqSec').value=cfg.iqSec||30; $('cfgPre').value=cfg.pre; $('cfgChime').checked=cfg.chime;
   $('jump').innerHTML=ORDER.map(([my])=>`<button data-jump="${my}">${my} preview</button>`).join('')+
     `<button data-jump="__off">Clear</button>`;
 }
@@ -458,8 +459,7 @@ $('slider').oninput=e=>{ demoOffset=+e.target.value*60; $('offLbl').textContent=
 $('reset').onclick=()=>{ demoOffset=0;$('slider').value=0;$('offLbl').textContent='0 min';$('demoNote').textContent='';render(); };
 $('refetch').onclick=()=>loadTimes(true);
 $('save').onclick=()=>{
-  cfg.name=$('cfgName').value.trim()||'Masjid'; cfg.pre=Math.max(1,+$('cfgPre').value||3); cfg.chime=$('cfgChime').checked;
-  document.querySelectorAll('[data-iq]').forEach(i=>{const v=Math.max(2,+i.value||2);cfg.iq[i.dataset.iq]=v;i.value=v;});
+  cfg.name=$('cfgName').value.trim()||'Masjid'; cfg.iqSec=Math.max(10,+$('cfgIqSec').value||30); cfg.pre=Math.max(1,+$('cfgPre').value||3); cfg.chime=$('cfgChime').checked;
   localStorage.setItem(KEY_CFG,JSON.stringify(cfg)); render(); $('demoNote').textContent='Settings saved.';
   setTimeout(()=>{if($('demoNote').textContent==='Settings saved.')$('demoNote').textContent=''},2500);
 };
