@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paparan Waktu Solat — Masjid Display</title>
+<title>Prayer Times — Masjid Display</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -112,6 +112,7 @@ body{
 .arblock{font-family:'Amiri',serif;direction:rtl;font-size:4.2vw;line-height:1.85;margin-top:2vh}
 .hadith{max-width:64vw;margin-top:4vh;padding-top:3vh;border-top:1px solid var(--line)}
 .hadith .txt{font-size:1.9vw;line-height:1.55;font-weight:500}
+.hadith .txt .ms{font-size:1.5vw;color:var(--slate-soft);font-weight:500}
 .hadith .src{font-size:1.25vw;color:var(--sage-text);margin-top:1.4vh;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
 
 #preadhan{background:linear-gradient(170deg,var(--cream),var(--sage-pale))}
@@ -267,19 +268,19 @@ const ORDER=[['Subuh','Fajr','الفجر','Fajr'],['Zohor','Dhuhr','الظهر',
 const STEALTH_MIN=15, ADHAN_S=60;
 
 const REMINDERS=[
- ['Solat adalah tiang agama.','Prayer is the pillar of faith.'],
- ['Sesungguhnya solat itu mencegah perbuatan keji dan mungkar.','Prayer restrains one from shameful and unjust deeds. — Al-Ankabut 29:45'],
- ['Amalan yang mula-mula dihisab pada hari kiamat ialah solat.','The first deed a servant is called to account for on the Day of Judgement is the prayer. — Tirmidhi'],
- ['Jagalah solat, terutama solat pertengahan.','Guard strictly the prayers, especially the middle prayer. — Al-Baqarah 2:238'],
- ['Bersihkan hati sebelum masuk ke rumah Allah.','Come to the house of Allah with a quiet heart.'],
- ['Sila tutup telefon bimbit anda semasa berada di dalam masjid.','Kindly silence your phone inside the mosque.']
+ ['Prayer is the pillar of faith.','Solat adalah tiang agama.'],
+ ['Prayer restrains one from shameful and unjust deeds. — Al-Ankabut 29:45','Sesungguhnya solat itu mencegah perbuatan keji dan mungkar.'],
+ ['The first deed a servant is called to account for on the Day of Judgement is the prayer. — Tirmidhi','Amalan yang mula-mula dihisab pada hari kiamat ialah solat.'],
+ ['Guard strictly the prayers, especially the middle prayer. — Al-Baqarah 2:238','Jagalah solat, terutama solat pertengahan.'],
+ ['Come to the house of Allah with a quiet heart.','Bersihkan hati sebelum masuk ke rumah Allah.'],
+ ['Kindly silence your phone inside the mosque.','Sila tutup telefon bimbit anda semasa berada di dalam masjid.']
 ];
 const HADITHS=[
- ['Solat berjemaah lebih afdal daripada solat bersendirian sebanyak dua puluh tujuh darjat.','Sahih al-Bukhari 645'],
- ['Sesiapa yang berwudhu dengan sempurna lalu berjalan ke masjid, setiap langkahnya mengangkat satu darjat dan menghapus satu dosa.','Sahih Muslim 666'],
- ['Berilah khabar gembira kepada mereka yang berjalan ke masjid dalam kegelapan dengan cahaya yang sempurna pada hari kiamat.','Sunan Abu Dawud 561'],
- ['Malaikat mendoakan seseorang selagi dia duduk di tempat solatnya: Ya Allah, ampunilah dia, rahmatilah dia.','Sahih al-Bukhari 445'],
- ['Antara seorang hamba dengan kekufuran adalah meninggalkan solat.','Sahih Muslim 82']
+ ['Prayer in congregation is twenty-seven times more rewarding than prayer performed alone.','Solat berjemaah lebih afdal daripada solat bersendirian sebanyak dua puluh tujuh darjat.','Sahih al-Bukhari 645'],
+ ['Whoever performs wudhu perfectly then walks to the mosque, each step raises him a degree and erases a sin.','Sesiapa yang berwudhu dengan sempurna lalu berjalan ke masjid, setiap langkahnya mengangkat satu darjat dan menghapus satu dosa.','Sahih Muslim 666'],
+ ['Give glad tidings to those who walk to the mosques in darkness, of perfect light on the Day of Resurrection.','Berilah khabar gembira kepada mereka yang berjalan ke masjid dalam kegelapan dengan cahaya yang sempurna pada hari kiamat.','Sunan Abu Dawud 561'],
+ ['The angels continue to pray for a person as long as he remains in his place of prayer: O Allah, forgive him, have mercy on him.','Malaikat mendoakan seseorang selagi dia duduk di tempat solatnya: Ya Allah, ampunilah dia, rahmatilah dia.','Sahih al-Bukhari 445'],
+ ['Between a man and disbelief is the abandonment of prayer.','Antara seorang hamba dengan kekufuran adalah meninggalkan solat.','Sahih Muslim 82']
 ];
 
 /* ---------------- time helpers ---------------- */
@@ -402,7 +403,7 @@ function render(){
     show('adhan'); }
   else if(st.mode==='IQAMAH'){ $('iqCount').textContent=mmss(st.left); $('iqName').textContent=st.my; show('iqamah'); }
   else if(st.mode==='SAF'){ show('saf'); }
-  else if(st.mode==='STEALTH'){ $('stealthName').textContent='Solat '+st.my; show('stealth'); }
+  else if(st.mode==='STEALTH'){ $('stealthName').textContent='Prayer • '+st.my; show('stealth'); }
 }
 
 /* rotating footer text + hadith, changed only between prayers */
@@ -411,7 +412,8 @@ setInterval(()=>{ const r=$('reminder'); r.style.opacity=0;
     r.innerHTML=`<b>${REMINDERS[remIdx][0]}</b><br>${REMINDERS[remIdx][1]}`; r.style.opacity=1;},900);
 },18000);
 function setHadith(){ hadithIdx=(hadithIdx+1)%HADITHS.length;
-  $('hadithTxt').textContent=HADITHS[hadithIdx][0]; $('hadithSrc').textContent=HADITHS[hadithIdx][1]; }
+  $('hadithTxt').innerHTML=HADITHS[hadithIdx][0]+'<br><span class="ms">'+HADITHS[hadithIdx][1]+'</span>';
+  $('hadithSrc').textContent=HADITHS[hadithIdx][2]; }
 
 /* ---------------- chime (synthesised, no audio file) ---------------- */
 let actx=null;
