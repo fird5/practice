@@ -10,13 +10,15 @@
 <style>
 :root{
   --sage:#8A9A86;
+  --sage-text:#3F5B3A;
   --sage-pale:#E8EFE9;
   --cream:#FDFBF7;
   --gold:#D4A373;
+  --gold-text:#9C6A32;
   --slate:#203027;
-  --slate-soft:rgba(32,48,39,.62);
-  --line:rgba(32,48,39,.10);
-  --shadow:0 1.6vh 5vh -1.6vh rgba(32,48,39,.18);
+  --slate-soft:rgba(32,48,39,.80);
+  --line:rgba(32,48,39,.22);
+  --shadow:0 1.6vh 5vh -1.6vh rgba(32,48,39,.24);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -46,18 +48,18 @@ body{
 /* ---------- IDLE ---------- */
 #idle{padding:3.2vh 3vw 2.4vh}
 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:3vw}
-.mosque{font-size:1.5vw;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--sage)}
+.mosque{font-size:1.5vw;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--sage-text)}
 .dates{margin-top:.6vh;font-size:1.35vw;color:var(--slate-soft);font-weight:500}
 .hijri{font-size:1.8vw;margin-top:.4vh}
 .clock{font-size:9.4vw;font-weight:800;line-height:.86;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
-.clock .sec{font-size:3.4vw;font-weight:500;color:var(--sage);vertical-align:top;margin-left:.6vw}
+.clock .sec{font-size:3.4vw;font-weight:600;color:var(--sage-text);vertical-align:top;margin-left:.6vw}
 .syuruk{margin-top:.8vh;font-size:1.25vw;color:var(--slate-soft);text-align:right}
 
 .rule{height:1px;background:var(--line);margin:3vh 0}
 
 .cards{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:1.4vw;align-content:center}
 .card{
-  background:rgba(255,255,255,.62);
+  background:rgba(255,255,255,.82);
   border:1px solid var(--line);
   border-radius:2.6vh;
   padding:3.4vh 1.2vw;
@@ -67,41 +69,41 @@ body{
   transition:transform .6s ease, background .6s ease, border-color .6s ease;
   position:relative;
 }
-.card .name{font-size:1.55vw;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--slate-soft)}
-.card .name-ar{font-size:2vw;color:var(--sage);margin-top:.4vh}
-.card .t{font-size:4.6vw;font-weight:700;line-height:1.05;margin-top:1.4vh;font-variant-numeric:tabular-nums}
-.card .mer{font-size:1.4vw;font-weight:500;color:var(--slate-soft);margin-left:.35vw}
-.card .iq{font-size:1.05vw;color:var(--slate-soft);margin-top:1vh;letter-spacing:.08em}
+.card .name{font-size:1.55vw;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--slate-soft)}
+.card .name-ar{font-size:2vw;color:var(--sage-text);margin-top:.4vh}
+.card .t{font-size:4.6vw;font-weight:700;line-height:1.05;margin-top:1.4vh;font-variant-numeric:tabular-nums;color:var(--slate)}
+.card .mer{font-size:1.4vw;font-weight:600;color:var(--slate-soft);margin-left:.35vw}
+.card .iq{font-size:1.05vw;color:var(--slate-soft);font-weight:600;margin-top:1vh;letter-spacing:.08em}
 .card.next{
   background:linear-gradient(160deg,#fff,var(--sage-pale));
-  border-color:rgba(138,154,134,.55);
+  border-color:var(--sage-text);
   transform:translateY(-1.4vh);
 }
 .card.next .name,.card.next .t{color:var(--slate)}
 .card.next::after{
   content:'';position:absolute;inset:-.35vh;border-radius:2.9vh;
-  border:.25vh solid var(--sage);opacity:.35;
+  border:.28vh solid var(--sage-text);opacity:.45;
   animation:breathe 5.5s ease-in-out infinite;pointer-events:none
 }
-@keyframes breathe{0%,100%{opacity:.18}50%{opacity:.5}}
+@keyframes breathe{0%,100%{opacity:.28}50%{opacity:.65}}
 .pill{
   position:absolute;top:-1.7vh;left:50%;transform:translateX(-50%);
   background:var(--slate);color:var(--cream);
   padding:.7vh 1.1vw;border-radius:99px;
   font-size:1.05vw;font-weight:600;white-space:nowrap;letter-spacing:.04em
 }
-.card.past{opacity:.42}
+.card.past{opacity:.6}
 
 .foot{display:flex;align-items:center;justify-content:space-between;gap:2vw;margin-top:2.6vh;padding-top:2vh;border-top:1px solid var(--line)}
 #reminder{font-size:1.5vw;color:var(--slate-soft);font-weight:500;transition:opacity .9s ease;line-height:1.5}
-#reminder b{color:var(--sage);font-weight:600}
-.status{display:flex;align-items:center;gap:.6vw;font-size:1vw;color:var(--slate-soft);white-space:nowrap}
-.dot{width:.75vw;height:.75vw;border-radius:99px;background:var(--sage)}
-.dot.stale{background:var(--gold)}
+#reminder b{color:var(--sage-text);font-weight:700}
+.status{display:flex;align-items:center;gap:.6vw;font-size:1vw;color:var(--slate-soft);font-weight:600;white-space:nowrap}
+.dot{width:.75vw;height:.75vw;border-radius:99px;background:var(--sage-text)}
+.dot.stale{background:var(--gold-text)}
 
 /* ---------- FOCUS SCREENS ---------- */
 .focus{align-items:center;justify-content:center;text-align:center;padding:0 8vw}
-.eyebrow{font-size:1.6vw;font-weight:600;letter-spacing:.4em;text-transform:uppercase;color:var(--sage);margin-bottom:2.4vh}
+.eyebrow{font-size:1.6vw;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--sage-text);margin-bottom:2.4vh}
 .head{font-size:6.4vw;font-weight:800;line-height:1.02;letter-spacing:-.03em}
 .head .en{display:block;font-size:2.6vw;font-weight:500;color:var(--slate-soft);margin-top:1.4vh;letter-spacing:0}
 .big{font-size:19vw;font-weight:800;line-height:.9;font-variant-numeric:tabular-nums;letter-spacing:-.05em}
@@ -110,7 +112,7 @@ body{
 .arblock{font-family:'Amiri',serif;direction:rtl;font-size:4.2vw;line-height:1.85;margin-top:2vh}
 .hadith{max-width:64vw;margin-top:4vh;padding-top:3vh;border-top:1px solid var(--line)}
 .hadith .txt{font-size:1.9vw;line-height:1.55;font-weight:500}
-.hadith .src{font-size:1.25vw;color:var(--sage);margin-top:1.4vh;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.hadith .src{font-size:1.25vw;color:var(--sage-text);margin-top:1.4vh;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
 
 #preadhan{background:linear-gradient(170deg,var(--cream),var(--sage-pale))}
 #adhan{background:linear-gradient(170deg,#fff,#F6EFE4)}
@@ -133,7 +135,7 @@ body{
   padding:2.4vh 1.8vw;display:none;cursor:auto;font-size:14px
 }
 #admin.on{display:block}
-#admin h3{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:1.4vh}
+#admin h3{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-text);margin-bottom:1.4vh}
 #admin label{display:block;font-size:13px;color:var(--slate-soft);margin:1.2vh 0 .5vh}
 #admin input[type=number],#admin input[type=text]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-family:inherit}
 #admin input[type=range]{width:100%;accent-color:var(--sage)}
@@ -144,7 +146,7 @@ button{font:inherit;font-weight:600;padding:8px 12px;border-radius:10px;border:1
 button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate)}
 #jump{display:flex;gap:6px;flex-wrap:wrap;margin-top:1vh}
 #jump button{font-size:12px;padding:6px 9px}
-#demoNote{margin-top:1.2vh;font-size:12px;color:var(--gold);font-weight:600;min-height:16px}
+#demoNote{margin-top:1.2vh;font-size:12px;color:var(--gold-text);font-weight:600;min-height:16px}
 #corner{position:fixed;left:0;top:0;width:8vw;height:8vh;z-index:60}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -205,8 +207,8 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
 <!-- IQAMAH -->
 <section id="iqamah" class="screen focus">
   <div class="eyebrow">Time for Sunnah &amp; Dua</div>
-  <div class="big" id="iqCount">0:30</div>
-  <div class="quiet">Prepare yourself — Iqamah will be called for <b id="iqName">—</b></div>
+  <div class="big" id="iqCount">9:00</div>
+  <div class="quiet">Time for sunnah prayer &amp; supplication — Iqamah for <b id="iqName">—</b></div>
   <div class="hadith">
     <div class="txt" id="hadithTxt"></div>
     <div class="src" id="hadithSrc"></div>
@@ -236,8 +238,10 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
   <h3>Display settings</h3>
   <label>Mosque name shown on screen</label>
   <input type="text" id="cfgName" placeholder="Masjid …">
-  <label>Iqamah duration in seconds (default: 30)</label>
-  <input type="number" id="cfgIqSec" min="10" max="300" value="30">
+  <label>Minutes from adhan to iqamah, per prayer (minimum 2)</label>
+  <div class="grid5" id="iqGrid"></div>
+  <label>"Straighten the Rows" screen duration, seconds (default: 30)</label>
+  <input type="number" id="cfgSafSec" min="5" max="300">
   <label>Minutes before adhan to show the preparation screen</label>
   <input type="number" id="cfgPre" min="1" max="15">
   <label>Chime at adhan and iqamah <input type="checkbox" id="cfgChime" style="width:auto;vertical-align:middle"></label>
@@ -256,10 +260,11 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
 <script>
 /* ---------------- config ---------------- */
 const KEY_CFG='masjid.cfg.v1', KEY_DATA='masjid.times.v1';
-const DEF={name:'Masjid', pre:3, chime:true, iqSec:30};
+const DEF={name:'Masjid', pre:3, chime:true, safSec:30, iq:{Subuh:9,Zohor:9,Asar:9,Maghrib:4,Isyak:9}};
 let cfg=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY_CFG)||'{}'));
+cfg.iq=Object.assign({},DEF.iq,cfg.iq||{});
 const ORDER=[['Subuh','Fajr','الفجر','Fajr'],['Zohor','Dhuhr','الظهر','Dhuhr'],['Asar','Asr','العصر','Asr'],['Maghrib','Maghrib','المغرب','Maghrib'],['Isyak','Isha','العشاء','Isha']];
-const ALIGN_S=90, STEALTH_MIN=15, ADHAN_S=60;
+const STEALTH_MIN=15, ADHAN_S=60;
 
 const REMINDERS=[
  ['Solat adalah tiang agama.','Prayer is the pillar of faith.'],
@@ -324,10 +329,10 @@ function currentState(){
   if(!TIMES)return{mode:'IDLE'};
   const s=secsOfDay(now());
   for(const [my] of ORDER){
-    const T=TIMES[my], iqS=cfg.iqSec||30;
+    const T=TIMES[my], iqS=cfg.iq[my]*60;
     const preS=T-cfg.pre*60;
     // iqamah is called at T + gap; the adhan screen eats the first minute of that gap
-    const adEnd=T+ADHAN_S, iqEnd=Math.max(adEnd,T+iqS), safEnd=iqEnd+ALIGN_S, stEnd=safEnd+STEALTH_MIN*60;
+    const adEnd=T+ADHAN_S, iqEnd=Math.max(adEnd,T+iqS), safEnd=iqEnd+(cfg.safSec||30), stEnd=safEnd+STEALTH_MIN*60;
     if(s>=preS&&s<T)   return{mode:'PRE',my,left:T-s};
     if(s>=T&&s<adEnd)  return{mode:'ADHAN',my,left:adEnd-s};
     if(s>=adEnd&&s<iqEnd)return{mode:'IQAMAH',my,left:iqEnd-s};
@@ -357,7 +362,7 @@ function buildCards(){
   $('cards').innerHTML=ORDER.map(([my,,ar,en])=>`<div class="card" data-p="${my}">
     <div class="name">${en}</div><div class="name-ar ar">${ar}</div>
     <div class="t"><span class="v">--:--</span><span class="mer"></span></div>
-    <div class="iq">Iqamah: +${cfg.iqSec}s</div></div>`).join('');
+    <div class="iq"></div></div>`).join('');
 }
 
 function render(){
@@ -379,7 +384,7 @@ function render(){
   document.querySelectorAll('.card').forEach(c=>{
     const my=c.dataset.p, [v,mer]=fmt12(TIMES[my]);
     c.querySelector('.v').textContent=v; c.querySelector('.mer').textContent=mer;
-    c.querySelector('.iq').textContent='Iqamah: +'+(cfg.iqSec||30)+'s';
+    c.querySelector('.iq').textContent='Iqamah '+fmt12(TIMES[my]+cfg.iq[my]*60).join(' ');
     c.classList.toggle('past',TIMES[my]<s);
     const isNext=my===nx.my; c.classList.toggle('next',isNext);
     let pill=c.querySelector('.pill');
@@ -446,7 +451,8 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 
 /* ---------------- admin ---------------- */
 function buildAdmin(){
-  $('cfgName').value=cfg.name; $('cfgIqSec').value=cfg.iqSec||30; $('cfgPre').value=cfg.pre; $('cfgChime').checked=cfg.chime;
+  $('iqGrid').innerHTML=ORDER.map(([my])=>`<div><span>${my}</span><input type="number" min="2" max="30" data-iq="${my}" value="${cfg.iq[my]}"></div>`).join('');
+  $('cfgName').value=cfg.name; $('cfgPre').value=cfg.pre; $('cfgChime').checked=cfg.chime; $('cfgSafSec').value=cfg.safSec||30;
   $('jump').innerHTML=ORDER.map(([my])=>`<button data-jump="${my}">${my} preview</button>`).join('')+
     `<button data-jump="__off">Clear</button>`;
 }
@@ -459,7 +465,9 @@ $('slider').oninput=e=>{ demoOffset=+e.target.value*60; $('offLbl').textContent=
 $('reset').onclick=()=>{ demoOffset=0;$('slider').value=0;$('offLbl').textContent='0 min';$('demoNote').textContent='';render(); };
 $('refetch').onclick=()=>loadTimes(true);
 $('save').onclick=()=>{
-  cfg.name=$('cfgName').value.trim()||'Masjid'; cfg.iqSec=Math.max(10,+$('cfgIqSec').value||30); cfg.pre=Math.max(1,+$('cfgPre').value||3); cfg.chime=$('cfgChime').checked;
+  cfg.name=$('cfgName').value.trim()||'Masjid'; cfg.pre=Math.max(1,+$('cfgPre').value||3); cfg.chime=$('cfgChime').checked;
+  cfg.safSec=Math.max(5,+$('cfgSafSec').value||30); $('cfgSafSec').value=cfg.safSec;
+  document.querySelectorAll('[data-iq]').forEach(i=>{const v=Math.max(2,+i.value||2);cfg.iq[i.dataset.iq]=v;i.value=v;});
   localStorage.setItem(KEY_CFG,JSON.stringify(cfg)); render(); $('demoNote').textContent='Settings saved.';
   setTimeout(()=>{if($('demoNote').textContent==='Settings saved.')$('demoNote').textContent=''},2500);
 };
