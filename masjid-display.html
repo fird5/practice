@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.aladhan.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.prayertimes.sg https://api.aladhan.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Paparan Waktu Solat — Masjid Display</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -262,7 +262,7 @@ button.solid{background:var(--slate);color:var(--cream);border-color:var(--slate
 <script>
 /* ---------------- config ---------------- */
 const KEY_CFG='masjid.cfg.v1', KEY_DATA='masjid.times.v1', KEY_PIN='masjid.pinhash.v1';
-const DEF={name:'Masjid', pre:3, chime:true, adjust:1, iq:{Subuh:9,Zohor:9,Asar:9,Maghrib:4,Isyak:9}};
+const DEF={name:'Masjid', pre:3, chime:true, adjust:0, iq:{Subuh:9,Zohor:9,Asar:9,Maghrib:4,Isyak:9}};
 let cfg=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY_CFG)||'{}'));
 cfg.iq=Object.assign({},DEF.iq,cfg.iq||{});
 const ORDER=[['Subuh','Fajr','الفجر','Fajr'],['Zohor','Dhuhr','الظهر','Dhuhr'],['Asar','Asr','العصر','Asr'],['Maghrib','Maghrib','المغرب','Maghrib'],['Isyak','Isha','العشاء','Isha']];
@@ -299,33 +299,60 @@ function fmt12(sec){let h=Math.floor(sec/3600),m=Math.floor(sec/60)%60;const mer
 function mmss(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+p2(s%60);}
 
 /* ---------------- data ---------------- */
-let TIMES=null, HIJRI='', GREG='', dataDate='', stale=false;
+let TIMES=null, HIJRI='', HIJRI_EN='', hijriIsArabic=false, stale=false;
 function todayKeySG(){const t=sgParts(now());return `${p2(t.d)}-${p2(t.m)}-${t.y}`;}
+function isoDateSG(){const t=sgParts(now());return `${t.y}-${p2(t.m)}-${p2(t.d)}`;}
 
+async function fetchPrimary(){
+  const r=await fetch(`https://api.prayertimes.sg/api/v1/prayer-times?date=${isoDateSG()}`);
+  if(!r.ok)throw new Error('primary http '+r.status);
+  const j=await r.json();
+  const t=j&&j.times;
+  if(!t) throw new Error('unexpected primary shape');
+  const need=['subuh','zohor','asar','maghrib','isyak','syuruk'];
+  for(const k of need){ if(typeof t[k]!=='string'||!/^\d{2}:\d{2}$/.test(t[k])) throw new Error('bad primary field'); }
+  return {
+    timings:{Fajr:t.subuh,Dhuhr:t.zohor,Asr:t.asar,Maghrib:t.maghrib,Isha:t.isyak,Sunrise:t.syuruk},
+    hijri: typeof j.hijri_date==='string' ? j.hijri_date : '',
+    hijriEn: typeof j.hijri_date==='string' ? j.hijri_date : '',
+    hijriIsArabic:false
+  };
+}
+async function fetchFallback(key){
+  const r=await fetch(`https://api.aladhan.com/v1/timingsByCity/${key}?city=Singapore&country=Singapore&method=11`);
+  if(!r.ok)throw new Error('fallback http '+r.status);
+  const j=await r.json();
+  if(!j||j.code!==200||!j.data||!j.data.timings||!j.data.date||!j.data.date.hijri) throw new Error('unexpected fallback shape');
+  const d=j.data;
+  const need=['Fajr','Dhuhr','Asr','Maghrib','Isha','Sunrise'];
+  for(const k of need){ if(typeof d.timings[k]!=='string'||!/^\d{2}:\d{2}/.test(d.timings[k])) throw new Error('bad fallback field'); }
+  return {
+    timings:d.timings,
+    hijri:`${d.date.hijri.day} ${d.date.hijri.month.ar} ${d.date.hijri.year} هـ`,
+    hijriEn:`${d.date.hijri.day} ${d.date.hijri.month.en} ${d.date.hijri.year} AH`,
+    hijriIsArabic:true
+  };
+}
 async function loadTimes(force){
   const key=todayKeySG();
   const cached=JSON.parse(localStorage.getItem(KEY_DATA)||'null');
   if(!force && cached && cached.key===key){apply(cached);stale=false;render();return;}
   if(cached){apply(cached);stale=cached.key!==key;render();}
-  try{
-    const r=await fetch(`https://api.aladhan.com/v1/timingsByCity/${key}?city=Singapore&country=Singapore&method=11`);
-    if(!r.ok)throw 0;
-    const j=await r.json();
-    if(!j||j.code!==200||!j.data||!j.data.timings||!j.data.date||!j.data.date.hijri) throw new Error('unexpected API shape');
-    const d=j.data;
-    const need=['Fajr','Dhuhr','Asr','Maghrib','Isha','Sunrise'];
-    for(const k of need){ if(typeof d.timings[k]!=='string'||!/^\d{2}:\d{2}/.test(d.timings[k])) throw new Error('bad timing field'); }
-    const pack={key,timings:d.timings,hijri:`${d.date.hijri.day} ${d.date.hijri.month.ar} ${d.date.hijri.year} هـ`,
-                hijriEn:`${d.date.hijri.day} ${d.date.hijri.month.en} ${d.date.hijri.year} AH`};
-    localStorage.setItem(KEY_DATA,JSON.stringify(pack));
-    apply(pack);stale=false;
-  }catch(e){ stale=true; }
+  let got=null, usedFallback=false;
+  try{ got=await fetchPrimary(); }
+  catch(e){
+    try{ got=await fetchFallback(key); usedFallback=true; }
+    catch(e2){ stale=true; render(); return; }
+  }
+  const pack={key,...got};
+  localStorage.setItem(KEY_DATA,JSON.stringify(pack));
+  apply(pack); stale=usedFallback;
   render();
 }
 function apply(pack){
   RAW={}; ORDER.forEach(([my,api])=>RAW[my]=hm(pack.timings[api].slice(0,5)));
   RAW.Syuruk=hm(pack.timings.Sunrise.slice(0,5));
-  HIJRI=pack.hijri; HIJRI_EN=pack.hijriEn||'';
+  HIJRI=pack.hijri; HIJRI_EN=pack.hijriEn||''; hijriIsArabic=!!pack.hijriIsArabic;
   applyOffset();
 }
 function applyOffset(){
@@ -334,7 +361,6 @@ function applyOffset(){
   TIMES={}; Object.keys(RAW).forEach(k=>TIMES[k]=RAW[k]+off);
 }
 let RAW=null;
-let HIJRI_EN='';
 
 /* ---------------- state machine ---------------- */
 // windows per prayer: pre → adhan → iqamah → saf → stealth
@@ -385,6 +411,7 @@ function render(){
   $('mosqueName').textContent=cfg.name;
   $('greg').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Singapore',weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now());
   $('hijri').textContent=HIJRI||'—';
+  $('hijri').classList.toggle('ar',hijriIsArabic);
   $('dot').classList.toggle('stale',stale);
   $('statusTxt').textContent=stale?'Showing saved timetable':'Live • MUIS';
 
